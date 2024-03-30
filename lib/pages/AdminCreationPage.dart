@@ -373,7 +373,7 @@ class _LoginFormState extends State<LoginForm> {
           ElevatedButton(
             onPressed: () {
               // Implement login logic here
-              String staffId = _staffIdController.text;
+              // String staffId = _staffIdController.text;
               String userName = _userNameController.text;
               String password = _passwordController.text;
               String fistName = _firstNameController.text;
@@ -386,18 +386,18 @@ class _LoginFormState extends State<LoginForm> {
               //     .push(MaterialPageRoute(builder: (BuildContext context) {
               //   return const SuperAdminDashboard();
               // }));
-              print('Username: $selectedBranch, Password: $nic');
+              // print('Username: $selectedBranch, Password: $nic');
               _fetchUsers(
                   userName,
                   password,
-                  staffId, 
+                  // staffId, 
                   fistName,
                   lastName,
                   email,
                   zip,
                   contact,
-                  nic,
-                  selectedBranch
+                  nic
+                  // selectedBranch
                 );
             },
             style: ElevatedButton.styleFrom(
@@ -415,14 +415,14 @@ class _LoginFormState extends State<LoginForm> {
   void _fetchUsers(
     userName,
     password,
-    staffId, 
+    // staffId, 
     fistName,
     lastName,
     email,
     zip,
     contact,
     nic,
-    selectedBranch
+    // selectedBranch
   ) async {
     try{
       setState(() {
@@ -436,14 +436,14 @@ class _LoginFormState extends State<LoginForm> {
     Map<String, String> data = {
       'userName': userName,
       'password': password,
-      'staffId':staffId , 
+      // 'staffId':staffId , 
       "fistName": fistName,
       "lastName": lastName,
       "email": email,
       "zip": zip,
       "contact": contact,
       "nic": nic,
-      "selectedBranch": selectedBranch
+      // "selectedBranch": selectedBranch
     };
 
     // Encode the data as JSON
