@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_p/pages/APICalling.dart';
 import 'package:flutter_p/pages/Login.dart';
 import 'package:flutter_p/pages/LoginPage.dart';
+import 'package:flutter_p/pages/StartingPage.dart';
 
 import 'pages/SecondPage.dart';
 
@@ -74,7 +75,7 @@ class _MyAppState extends State<MyApp> {
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       //   useMaterial3: true,
       // ),
-      home: Login(),
+      home: StartingPage(),
       // const MyHomePage(title: 'Flutter Demo Home Pagexxxg'),
     );
   }

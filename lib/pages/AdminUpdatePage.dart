@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:http/http.dart' as http;
 
-class BranchCreationPage extends StatelessWidget {
-  const BranchCreationPage({super.key});
+class AdminUpdatePage extends StatelessWidget {
+   final dynamic userData;
+
+  const AdminUpdatePage({Key? key,  required this.userData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Branch'),
+        title: const Text('Update Admin'),
         backgroundColor: Colors.red,
       ),
-      body: BranchCreationForm(),
+      body: LoginForm(userData: userData),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -49,66 +51,63 @@ class BranchCreationPage extends StatelessWidget {
   }
 }
 
-class BranchCreationForm extends StatefulWidget {
-  const BranchCreationForm({Key? key}) : super(key: key);
+class LoginForm extends StatefulWidget {
+  // const LoginForm({Key? key}) : super(key: key);
+  final dynamic userData;
+
+    LoginForm({
+    required this.userData
+  });
 
   @override
-  _BranchCreationFormState createState() => _BranchCreationFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _BranchCreationFormState extends State<BranchCreationForm> {
-  final TextEditingController _branchCodeController = TextEditingController();
-  final TextEditingController _branchNameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _contactNumberController =
+class _LoginFormState extends State<LoginForm> {
+
+  bool isLoading = false;
+
+  late TextEditingController _staffIdController = TextEditingController();
+  late TextEditingController _firstNameController = TextEditingController();
+  late TextEditingController _lastNameController = TextEditingController();
+  late TextEditingController _emailController = TextEditingController();
+  String? selectedBranch;
+  late TextEditingController _postalCodeController = TextEditingController();
+  late TextEditingController _contactNumberController =
       TextEditingController();
-  List<Map<String, dynamic>> admins = [];
-  String? selectedAdmin;
-  String? selectedProvince;
-  String? selectedDistrict;
-
-   bool isLoading = false;
-
-  List<dynamic> users = [];
+  late TextEditingController _nicController = TextEditingController();
+  late TextEditingController _passwordController = TextEditingController();
+  late TextEditingController _userNameController = TextEditingController();
 
     @override
   void initState() {
     super.initState();
-    _fetchAdmins(); // Call the function to fetch admins when the widget initializes
-  }
-
-  Future<void> _fetchAdmins() async {
-    print('calling');
-    final response = await http.get(Uri.parse('http://192.168.0.101:8080/api/users/get/allAdmin'));
-    print(response.body);
-    if (response.statusCode == 200) {
-       final body = response.body;
-        final json = jsonDecode(body);
-        setState(() {
-          users = json['results'];
-        });
-      // If the server returns a successful response, parse the JSON
-      // final Map<String, dynamic> responseData = json.decode(response.body);
-      // if (responseData['success']) {
-      //   setState(() {
-      //     // Clear the list and add new admins
-      //     admins.clear();
-      //     admins.addAll(responseData['admins']);
-      //   });
-      // } else {
-      //   // Handle the case when the server response indicates failure
-      //   throw Exception('Failed to load admins: ${responseData['message']}');
-      // }
-    } else {
-      // If the server did not return a successful response, throw an error
-      throw Exception('Failed to load admins');
-    }
+    _staffIdController =
+        TextEditingController(text: widget.userData['id']);
+    _firstNameController =
+        TextEditingController(text: widget.userData['firstname']);
+    _lastNameController =
+        TextEditingController(text: widget.userData['lastname']);
+    _emailController =
+        TextEditingController(text: widget.userData['email']);
+    _userNameController =
+        TextEditingController(text: widget.userData['user_name']);
+    _passwordController =
+        TextEditingController(text: widget.userData['password']);
+    _nicController =
+        TextEditingController(text: widget.userData['nic']);
+    _postalCodeController =
+        TextEditingController(text: widget.userData['zip']);
+    _contactNumberController =
+        TextEditingController(text: widget.userData['contact']);
+    // _postalCodeController =
+    //     TextEditingController(text: widget.userData['zip']);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0), // Adjust padding as needed
+      padding: const EdgeInsets.all(15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -119,7 +118,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(
                 width: 120.0,
                 child: Text(
-                  'Branch Code:',
+                  'Staff ID:',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),
@@ -128,10 +127,11 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                   height: 30.0,
                   child: TextField(
-                    controller: _branchCodeController,
+                    enabled: false,
+                    controller: _staffIdController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter branch code',
+                      hintText: 'Enter staff ID',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -146,7 +146,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(
                 width: 120.0,
                 child: Text(
-                  'Branch Name:',
+                  'First Name:',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),
@@ -155,10 +155,10 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                   height: 30.0,
                   child: TextField(
-                    controller: _branchNameController,
+                    controller: _firstNameController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter branch name',
+                      hintText: 'Enter first name',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -173,7 +173,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(
                 width: 120.0,
                 child: Text(
-                  'Address:',
+                  'Last Name:',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),
@@ -182,10 +182,65 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                   height: 30.0,
                   child: TextField(
-                    controller: _addressController,
+                    controller: _lastNameController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter address',
+                      hintText: 'Enter last name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+                    SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Username:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    controller: _userNameController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter username',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+                    SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Password:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    obscureText: true,
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter password',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -200,7 +255,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(
                 width: 120.0,
                 child: Text(
-                  'Contact Number:',
+                  'Email:',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),
@@ -209,10 +264,10 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                   height: 30.0,
                   child: TextField(
-                    controller: _contactNumberController,
+                    controller: _emailController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter contact number',
+                      hintText: 'Enter email',
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -227,104 +282,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(
                 width: 120.0,
                 child: Text(
-                  'Admin:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                    height: 30.0,
-                    child: DropdownButtonFormField(
-                       items: users.map((admin) {
-                      return DropdownMenuItem(
-                        value: admin['id'],
-                        child: Text(admin['user_name']),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      // print(value);
-                      setState(() {
-                        selectedAdmin = value as String?;
-                      });
-                    },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(4)),
-                    )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    ),
-              ),
-            ],
-          ),
-           SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Province:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                    height: 30.0,
-                    child: DropdownButtonFormField(
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'Central',
-                          child: Text('Central'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Western',
-                          child: Text('Western'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Uwa',
-                          child: Text('Uwa'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'North',
-                          child: Text('North'),
-                        ),
-                      ],
-                      onChanged: (value) {setState(() {
-                        selectedProvince = value;
-                      });},
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(4)),
-                    )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    ),
-              ),
-            ],
-          ),
-           SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Destrict:',
+                  'Branch:',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),
@@ -336,23 +294,15 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                       items: const [
                         DropdownMenuItem(
                           value: 'Kandy',
-                          child: Text('Kandy'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Mathale',
-                          child: Text('Mathale'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Nuwaraeliya',
-                          child: Text('Nuwaraeliya'),
+                          child: Text('Kandy - Main Branch'),
                         ),
                         DropdownMenuItem(
                           value: 'Colombo',
-                          child: Text('Colombo'),
+                          child: Text('Colombo - Bambalapitiya'),
                         ),
                       ],
                       onChanged: (value) {setState(() {
-                        selectedDistrict = value;
+                        selectedBranch = value;
                       });},
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -370,18 +320,116 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
             ],
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Postal/Zip Code:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    controller: _postalCodeController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter postal/zip code',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Contact Number',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    controller: _contactNumberController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter Contact Number',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'NIC',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    controller: _nicController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter NIC',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 30.0),
           ElevatedButton(
             onPressed: () {
-              // Perform action on button press (e.g., create branch)
-               _fetchUsers(
-                  _branchCodeController.text,
-                  _branchNameController.text,
-                  _addressController.text, 
-                  _contactNumberController.text,
-                  selectedAdmin,
-                  selectedProvince,
-                  selectedDistrict
+              // Implement login logic here
+              String staffId = _staffIdController.text;
+              String userName = _userNameController.text;
+              String password = _passwordController.text;
+              String fistName = _firstNameController.text;
+              String lastName = _lastNameController.text;
+              String email = _emailController.text;
+              String zip = _postalCodeController.text;
+              String contact = _contactNumberController.text;
+              String nic = _nicController.text;
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(builder: (BuildContext context) {
+              //   return const SuperAdminDashboard();
+              // }));
+              print('Username: $selectedBranch, Password: $nic');
+              _fetchUsers(
+                  userName,
+                  password,
+                  staffId, 
+                  fistName,
+                  lastName,
+                  email,
+                  zip,
+                  contact,
+                  nic,
+                  selectedBranch
                 );
             },
             style: ElevatedButton.styleFrom(
@@ -389,21 +437,24 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               backgroundColor: Colors.red, // Set button color to red
               minimumSize: Size(double.infinity, 40.0), // Set full width
             ),
-            child: Text('Create Branch'),
+            child: Text('Update Admin'),
           ),
         ],
       ),
     );
   }
 
-    void _fetchUsers(
-    branchCode,
-    branchName,
-    address,
+  void _fetchUsers(
+    userName,
+    password,
+    staffId, 
+    fistName,
+    lastName,
+    email,
+    zip,
     contact,
-    selectedAdmin,
-    selectedProvince,
-    selectedDistrict
+    nic,
+    selectedBranch
   ) async {
     try{
       setState(() {
@@ -411,24 +462,27 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       });
   print('fetching users');
     
-    const url = 'http://192.168.0.101:8080/api/users/add/branch';
+    const url = 'http://192.168.0.101:8080/api/users/add/admin';
 
     // Create a Map to hold the username and password
     Map<String, String> data = {
-      'branchCode': branchCode,
-      'branchName': branchName,
-      'address':address , 
+      'userName': userName,
+      'password': password,
+      'staffId':staffId , 
+      "fistName": fistName,
+      "lastName": lastName,
+      "email": email,
+      "zip": zip,
       "contact": contact,
-      "selectedAdmin": selectedAdmin,
-      "selectedProvince": selectedProvince,
-      "selectedDistrict": selectedDistrict,
+      "nic": nic,
+      "selectedBranch": selectedBranch
     };
 
     // Encode the data as JSON
     String body = json.encode(data);
 
     // Make the POST request with the username and password in the body
-    final response = await http.post(
+    final response = await http.put(
       Uri.parse(url),
       headers: {
         "Content-Type": "application/json"

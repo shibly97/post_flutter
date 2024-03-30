@@ -1,63 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
-import 'package:flutter_p/pages/UpdateAdmin.dart';
-import 'package:flutter_p/pages/UpdateBranch.dart';
+import 'package:flutter_p/pages/Login.dart';
 
-class SuperAdminDashboard extends StatelessWidget {
-  const SuperAdminDashboard({super.key});
+class StartingPage extends StatelessWidget {
+  const StartingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dashboard',
+      title: 'StartingPage',
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Dashboard'),
-            backgroundColor: Colors.red,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(
-                    context); // This will pop the current route and go back to the previous route
-              },
-            ),
-          ),
+          // appBar: AppBar(
+          //   title: const Text('Dashboard'),
+          //   backgroundColor: Colors.red,
+          //   leading: IconButton(
+          //     icon: Icon(Icons.arrow_back),
+          //     onPressed: () {
+          //       Navigator.pop(
+          //           context); // This will pop the current route and go back to the previous route
+          //     },
+          //   ),
+          // ),
           body: Padding(
             padding: EdgeInsets.all(20.0),
             // child: Text("Helloo"),
             child: DashboardCards(),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                label: 'Back',
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Home',
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Add',
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              )
-            ],
-            backgroundColor: Colors.red,
-            currentIndex: 0,
-            onTap: (int value) {
-              // Handle navigation here
-            },
-          )),
+          // bottomNavigationBar: BottomNavigationBar(
+          //   items: const [
+          //     BottomNavigationBarItem(
+          //       label: 'Back',
+          //       icon: Icon(
+          //         Icons.arrow_back,
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //     BottomNavigationBarItem(
+          //       label: 'Home',
+          //       icon: Icon(
+          //         Icons.home,
+          //         color: Colors.white,
+          //       ),
+          //     ),
+          //     BottomNavigationBarItem(
+          //       label: 'Add',
+          //       icon: Icon(
+          //         Icons.add,
+          //         color: Colors.white,
+          //       ),
+          //     )
+          //   ],
+          //   backgroundColor: Colors.red,
+          //   currentIndex: 0,
+          //   onTap: (int value) {
+          //     // Handle navigation here
+          //   },
+          // )
+          ),
     );
   }
 }
@@ -95,25 +95,21 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Create Admin Accounts',
+              title: 'Super Admin',
               icon: Icons.person_add,
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminCreationPage();
+                  return Login();
                 }));
               },
             ),
             DashboardCard(
-              title: 'Update Admin Accounts',
+              title: 'Admin',
               icon: Icons.person,
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateAdmin();
-                }));
               },
             ),
           ],
@@ -123,7 +119,7 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Create Branches',
+              title: 'Customer',
               icon: Icons.add_location,
               onPressed: () {
                  Navigator.of(context)
@@ -134,14 +130,10 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Update Branches',
+              title: 'Employee',
               icon: Icons.update,
               onPressed: () {
                 // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
-                }));
               },
             ),
           ],
