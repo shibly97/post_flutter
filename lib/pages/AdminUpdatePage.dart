@@ -276,51 +276,51 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Branch:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                    height: 30.0,
-                    child: DropdownButtonFormField(
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'Kandy',
-                          child: Text('Kandy - Main Branch'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'Colombo',
-                          child: Text('Colombo - Bambalapitiya'),
-                        ),
-                      ],
-                      onChanged: (value) {setState(() {
-                        selectedBranch = value;
-                      });},
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(4)),
-                    )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10.0),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     SizedBox(
+          //       width: 120.0,
+          //       child: Text(
+          //         'Branch:',
+          //         style: TextStyle(fontSize: 12.0), // Decrease font size
+          //       ),
+          //     ),
+          //     SizedBox(width: 10.0),
+          //     Expanded(
+          //       child: SizedBox(
+          //           height: 30.0,
+          //           child: DropdownButtonFormField(
+          //             items: const [
+          //               DropdownMenuItem(
+          //                 value: 'Kandy',
+          //                 child: Text('Kandy - Main Branch'),
+          //               ),
+          //               DropdownMenuItem(
+          //                 value: 'Colombo',
+          //                 child: Text('Colombo - Bambalapitiya'),
+          //               ),
+          //             ],
+          //             onChanged: (value) {setState(() {
+          //               selectedBranch = value;
+          //             });},
+          //             decoration: InputDecoration(
+          //                 border: OutlineInputBorder(),
+          //                 contentPadding: EdgeInsets.all(4)),
+          //           )
+          //           // TextField(
+          //           //   controller: _branchController,
+          //           //   decoration: InputDecoration(
+          //           //     contentPadding: EdgeInsets.all(8.0),
+          //           //     hintText: 'Enter branch',
+          //           //     border: OutlineInputBorder(),
+          //           //   ),
+          //           // ),
+          //           ),
+          //     ),
+          //   ],
+          // ),
+          // SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -418,7 +418,7 @@ class _LoginFormState extends State<LoginForm> {
               //     .push(MaterialPageRoute(builder: (BuildContext context) {
               //   return const SuperAdminDashboard();
               // }));
-              print('Username: $selectedBranch, Password: $nic');
+              // print('Username: $selectedBranch, Password: $nic');
               _fetchUsers(
                   userName,
                   password,
@@ -428,8 +428,8 @@ class _LoginFormState extends State<LoginForm> {
                   email,
                   zip,
                   contact,
-                  nic,
-                  selectedBranch
+                  nic
+                  // selectedBranch
                 );
             },
             style: ElevatedButton.styleFrom(
@@ -454,7 +454,7 @@ class _LoginFormState extends State<LoginForm> {
     zip,
     contact,
     nic,
-    selectedBranch
+    // selectedBranch
   ) async {
     try{
       setState(() {
@@ -475,7 +475,7 @@ class _LoginFormState extends State<LoginForm> {
       "zip": zip,
       "contact": contact,
       "nic": nic,
-      "selectedBranch": selectedBranch
+      // "selectedBranch": selectedBranch
     };
 
     // Encode the data as JSON

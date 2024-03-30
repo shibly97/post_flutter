@@ -5,16 +5,15 @@ import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:http/http.dart' as http;
 
 class BranchUpdatePage extends StatelessWidget {
-  
   final dynamic userData;
 
-  const BranchUpdatePage({super.key,  required this.userData});
+  const BranchUpdatePage({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Branch'),
+        title: const Text('Update Branch'),
         backgroundColor: Colors.red,
       ),
       body: BranchCreationForm(userData: userData),
@@ -55,9 +54,7 @@ class BranchUpdatePage extends StatelessWidget {
 class BranchCreationForm extends StatefulWidget {
   final dynamic userData;
   // const BranchCreationForm({Key? key}) : super(key: key);
-     BranchCreationForm({
-    required this.userData
-  });
+  BranchCreationForm({required this.userData});
 
   @override
   _BranchCreationFormState createState() => _BranchCreationFormState();
@@ -67,51 +64,79 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   late TextEditingController _branchCodeController = TextEditingController();
   late TextEditingController _branchNameController = TextEditingController();
   late TextEditingController _addressController = TextEditingController();
-  late TextEditingController _contactNumberController =
-      TextEditingController();
+  late TextEditingController _contactNumberController = TextEditingController();
+  late TextEditingController _staffIdController = TextEditingController();
   List<Map<String, dynamic>> admins = [];
-  int? selectedAdmin;
+  String? selectedAdmin;
   String? selectedProvince;
   String? selectedDistrict;
 
-   bool isLoading = false;
+  bool isLoading = false;
 
   List<dynamic> users = [];
 
-      @override
+  //     @override
+  // void initState() {
+  //   super.initState();
+  //       _fetchAdmins(); // Call the function to fetch admins when the widget initializes
+
+  //   _branchCodeController =
+  //       TextEditingController(text: widget.userData['branch_code']);
+  //   _branchNameController =
+  //       TextEditingController(text: widget.userData['branch_name']);
+  //   // _branchNameController =
+  //   //     TextEditingController(text: widget.userData['lastname']);
+  //   _addressController =
+  //       TextEditingController(text: widget.userData['address']);
+  //   _contactNumberController =
+  //       TextEditingController(text: widget.userData['contact']);
+  //  setState(() {
+  //   //  selectedAdmin = widget.userData['admin'];
+  //    selectedProvince = widget.userData['province'];
+  //   //  selectedDistrict = widget.userData['district'];
+
+  //  });
+  // }
+
+  @override
   void initState() {
     super.initState();
-        _fetchAdmins(); // Call the function to fetch admins when the widget initializes
-
+    // Call the function to fetch admins when the widget initializes
     _branchCodeController =
         TextEditingController(text: widget.userData['branch_code']);
     _branchNameController =
         TextEditingController(text: widget.userData['branch_name']);
-    // _branchNameController =
-    //     TextEditingController(text: widget.userData['lastname']);
     _addressController =
         TextEditingController(text: widget.userData['address']);
     _contactNumberController =
         TextEditingController(text: widget.userData['contact']);
-   setState(() {
-    //  selectedAdmin = widget.userData['admin'];
-     selectedProvince = widget.userData['province'];
-    //  selectedDistrict = widget.userData['district'];
+    _staffIdController =
+        TextEditingController(text: widget.userData['id']);
 
-   });
+    _fetchAdmins();
   }
-
 
   Future<void> _fetchAdmins() async {
     print('calling');
-    final response = await http.get(Uri.parse('http://192.168.0.101:8080/api/users/get/allAdmin'));
+    final response = await http
+        .get(Uri.parse('http://192.168.0.101:8080/api/users/get/allAdmin'));
     print(response.body);
     if (response.statusCode == 200) {
-       final body = response.body;
-        final json = jsonDecode(body);
-        setState(() {
-          users = json['results'];
-        });
+      final body = response.body;
+      final json = jsonDecode(body);
+      // setState(() {
+      // });
+      print(widget.userData);
+      setState(() {
+        users = json['results'];
+       selectedAdmin = widget.userData['admin'].toString();
+        selectedProvince = widget.userData['province'];
+        selectedDistrict = widget.userData['district'];
+        // if (users.isNotEmpty) {
+        //   // Set selectedAdmin to the first admin if available
+        //   selectedAdmin = users[0]['itestd'];
+        // }
+      });
       // If the server returns a successful response, parse the JSON
       // final Map<String, dynamic> responseData = json.decode(response.body);
       // if (responseData['success']) {
@@ -137,6 +162,34 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+           SizedBox(height: 20.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'ID:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    enabled: false,
+                    controller: _staffIdController,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter staff ID',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -261,18 +314,19 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                     height: 30.0,
                     child: DropdownButtonFormField(
-                       items: users.map((admin) {
-                      return DropdownMenuItem(
-                        value: admin['id'],
-                        child: Text(admin['user_name']),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      // print(value);
-                      setState(() {
-                        selectedAdmin = value as int?;
-                      });
-                    },
+                      value: selectedAdmin,
+                      items: users.map((admin) {
+                        return DropdownMenuItem(
+                          value: admin['id'],
+                          child: Text(admin['user_name']),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        // print(value);
+                        setState(() {
+                          selectedAdmin = value as String?;
+                        });
+                      },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.all(4)),
@@ -289,7 +343,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
             ],
           ),
-           SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -305,6 +359,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                     height: 30.0,
                     child: DropdownButtonFormField(
+                      value: selectedProvince,
                       items: const [
                         DropdownMenuItem(
                           value: 'Central',
@@ -323,9 +378,11 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                           child: Text('North'),
                         ),
                       ],
-                      onChanged: (value) {setState(() {
-                        selectedProvince = value;
-                      });},
+                      onChanged: (value) {
+                        setState(() {
+                          selectedProvince = value;
+                        });
+                      },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.all(4)),
@@ -342,7 +399,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
             ],
           ),
-           SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -358,6 +415,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: SizedBox(
                     height: 30.0,
                     child: DropdownButtonFormField(
+                      value: selectedDistrict,
                       items: const [
                         DropdownMenuItem(
                           value: 'Kandy',
@@ -376,9 +434,11 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                           child: Text('Colombo'),
                         ),
                       ],
-                      onChanged: (value) {setState(() {
-                        selectedDistrict = value;
-                      });},
+                      onChanged: (value) {
+                        setState(() {
+                          selectedDistrict = value;
+                        });
+                      },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.all(4)),
@@ -399,148 +459,142 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
           ElevatedButton(
             onPressed: () {
               // Perform action on button press (e.g., create branch)
-               _fetchUsers(
+              _fetchUsers(
                   _branchCodeController.text,
                   _branchNameController.text,
-                  _addressController.text, 
+                  _addressController.text,
                   _contactNumberController.text,
+                  _staffIdController.text,
                   selectedAdmin,
                   selectedProvince,
-                  selectedDistrict
-                );
+                  selectedDistrict);
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
               backgroundColor: Colors.red, // Set button color to red
               minimumSize: Size(double.infinity, 40.0), // Set full width
             ),
-            child: Text('Create Branch'),
+            child: Text('Update Branch'),
           ),
         ],
       ),
     );
   }
 
-    void _fetchUsers(
-    branchCode,
-    branchName,
-    address,
-    contact,
-    selectedAdmin,
-    selectedProvince,
-    selectedDistrict
-  ) async {
-    try{
+  void _fetchUsers(branchCode, branchName, address, contact, id, selectedAdmin,
+      selectedProvince, selectedDistrict) async {
+    try {
       setState(() {
         isLoading = true;
       });
-  print('fetching users');
-    
-    const url = 'http://192.168.0.101:8080/api/users/add/branch';
+      print('fetching users');
 
-    // Create a Map to hold the username and password
-    Map<String, String> data = {
-      'branchCode': branchCode,
-      'branchName': branchName,
-      'address':address , 
-      "contact": contact,
-      "selectedAdmin": selectedAdmin,
-      "selectedProvince": selectedProvince,
-      "selectedDistrict": selectedDistrict,
-    };
+      const url = 'http://192.168.0.101:8080/api/users/add/branch';
 
-    // Encode the data as JSON
-    String body = json.encode(data);
+      // Create a Map to hold the username and password
+      Map<String, String> data = {
+        'branchCode': branchCode,
+        'branchName': branchName,
+        'address': address,
+        "contact": contact,
+        "selectedAdmin": selectedAdmin,
+        "selectedProvince": selectedProvince,
+        "selectedDistrict": selectedDistrict,
+        "id": id
+      };
 
-    // Make the POST request with the username and password in the body
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json"
-      }, // Set headers for JSON data
-      body: body,
-    );
+      // Encode the data as JSON
+      String body = json.encode(data);
 
-    print(response.body);
+      // Make the POST request with the username and password in the body
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
 
-    final responseBody = response.body;
+      print(response.body);
 
-    // Check if the response status code is successful
-    if (response.statusCode == 200) {
-      // Parse the response body as JSON
-      Map<String, dynamic> responseBody = json.decode(response.body);
-      
-      // Access the 'success' variable from the parsed JSON
-      bool success = responseBody['success'];
+      final responseBody = response.body;
 
-      // if(!success){
-    ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-      SnackBar(
-        content: Container(
-          padding: EdgeInsets.all(16),
-          height: 90,
-          decoration: BoxDecoration(
-            color: !success? const Color.fromARGB(255, 147, 29, 20) : Color.fromARGB(255, 20, 147, 28),
-            borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-          child: Row(
-            children: [
-              // const SizedBox(width: 48),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Error",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        Map<String, dynamic> responseBody = json.decode(response.body);
+
+        // Access the 'success' variable from the parsed JSON
+        bool success = responseBody['success'];
+
+        // if(!success){
+        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+          SnackBar(
+            content: Container(
+              padding: EdgeInsets.all(16),
+              height: 90,
+              decoration: BoxDecoration(
+                  color: !success
+                      ? const Color.fromARGB(255, 147, 29, 20)
+                      : Color.fromARGB(255, 20, 147, 28),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Row(
+                children: [
+                  // const SizedBox(width: 48),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Error",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                        Text(success
+                            ? "Branch Created Successfully"
+                            : "Branch Creation Failed"),
+                      ],
                     ),
-                    Text(success? "Branch Created Successfully": "Branch Creation Failed"),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-    );
-    if(success){
-           Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return const SuperAdminDashboard();
-            }));
-    }
-      // }else{
-      //     // Navigator.of(context)
-      //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
-      //     //     return const SuperAdminDashboard();
-      //     //   }));
-      // }
-      
-      // Now you can use the 'success' variable
-      print('Success: $success');
-    } else {
-      // Handle error response
-      print('Request failed with status: ${response.statusCode}');
-    }
+        );
+        if (success) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return const SuperAdminDashboard();
+          }));
+        }
+        // }else{
+        //     // Navigator.of(context)
+        //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
+        //     //     return const SuperAdminDashboard();
+        //     //   }));
+        // }
 
+        // Now you can use the 'success' variable
+        print('Success: $success');
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
 
-    // Handle the response here
+      // Handle the response here
 
-    print('completed');
-     setState(() {
+      print('completed');
+      setState(() {
         isLoading = false;
       });
-    }
-    catch(err){
+    } catch (err) {
       print(err);
     }
     // setState(() {
     //   // isLoading = true
     // });
     // toggleLoading();
-  
   }
 }
