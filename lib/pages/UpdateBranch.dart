@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_p/pages/AdminUpdatePage.dart';
+import 'package:flutter_p/pages/BranchUpdatePage.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateBranch extends StatefulWidget {
   const UpdateBranch({super.key});
 
   @override
-  State<UpdateBranch> createState() => _UpdateBranchState();
+  State<UpdateBranch> createState() => _UpdateAdminState();
 }
 
-class _UpdateBranchState extends State<UpdateBranch> {
+class _UpdateAdminState extends State<UpdateBranch> {
   List<dynamic> users = [];
 
       @override
@@ -23,22 +25,38 @@ class _UpdateBranchState extends State<UpdateBranch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Test API'),
+        title: const Text('Update Admin'),
+         backgroundColor: Colors.red,
       ),
       body: ListView.builder(
           itemCount: users.length,
           itemBuilder: (context, index) {
             final user = users[index];
-            final email = user['email'];
+            final email = user['branch_name'];
             // final image = user['picture']['thumbnail'];
-            final name = user['firstname'];
-            return ListTile(
-              // leading: ClipRRect(
-              //   borderRadius: BorderRadius.circular(100),
-              // child: Image.network(image)),
-              // CircleAvatar(child: Text('${index}')),
-              title: Text(email),
-              subtitle: Text(name)
+            final name = user['branch_code'];
+            return Card(
+              margin: EdgeInsets.all(8),
+              child: ListTile(
+                // leading: ClipRRect(
+                //   borderRadius: BorderRadius.circular(100),
+                // child: Image.network(image)),
+                // CircleAvatar(child: Text('${index}')),
+                title: Text('Branch : $email'),
+                subtitle: Text('Code : $name'),
+                 trailing: ElevatedButton(
+                onPressed: () {
+                    // Navigate to the UpdateUserPage and pass user data as arguments
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BranchUpdatePage(userData: user),
+                    ));
+
+                },
+                child: Text('Edit'),
+              ),
+              ),
             );
           }),
       // floatingActionButton: FloatingActionButton(
@@ -49,7 +67,7 @@ class _UpdateBranchState extends State<UpdateBranch> {
 
   void fetchUsers() async {
     print('fetching users');
-    const url = 'http://192.168.0.101:8080/api/users/get/allAdmin';
+    const url = 'http://192.168.0.101:8080/api/users/get/allBranches';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
