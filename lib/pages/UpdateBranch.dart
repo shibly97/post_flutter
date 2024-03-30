@@ -25,7 +25,7 @@ class _UpdateAdminState extends State<UpdateBranch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Admin'),
+        title: const Text('Update Branch'),
          backgroundColor: Colors.red,
       ),
       body: ListView.builder(
