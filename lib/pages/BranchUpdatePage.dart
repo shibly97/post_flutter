@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:http/http.dart' as http;
 
@@ -119,7 +120,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   Future<void> _fetchAdmins() async {
     print('calling');
     final response = await http
-        .get(Uri.parse('http://192.168.0.101:8080/api/users/get/allAdmin'));
+        .get(Uri.parse(getAllAdmin));
     print(response.body);
     if (response.statusCode == 200) {
       final body = response.body;
@@ -489,8 +490,6 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       });
       print('fetching users');
 
-      const url = 'http://192.168.0.101:8080/api/users/add/branch';
-
       // Create a Map to hold the username and password
       Map<String, String> data = {
         'branchCode': branchCode,
@@ -508,7 +507,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
 
       // Make the POST request with the username and password in the body
       final response = await http.put(
-        Uri.parse(url),
+        Uri.parse(addBranch),
         headers: {
           "Content-Type": "application/json"
         }, // Set headers for JSON data

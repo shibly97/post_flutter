@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/pages/AdminUpdatePage.dart';
 import 'package:flutter_p/pages/BranchUpdatePage.dart';
 import 'package:http/http.dart' as http;
@@ -67,7 +68,7 @@ class _UpdateAdminState extends State<UpdateBranch> {
 
   void fetchUsers() async {
     print('fetching users');
-    const url = 'http://192.168.0.101:8080/api/users/get/allBranches';
+    const url = allBranches;
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;

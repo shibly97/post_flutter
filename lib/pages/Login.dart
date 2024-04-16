@@ -4,22 +4,32 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_p/Utils/API/API.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
+import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
+import 'package:flutter_p/pages/admin/AdminDashboard.dart';
+import 'package:flutter_p/pages/customer/CustomerCreation.dart';
+import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(Login());
-}
+// void main() {
+//   runApp(Login());
+// }
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  final String userType;
+
+  const Login({
+    Key? key,
+    required this.userType,
+  }) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-
   bool isLoading = false; // Add a boolean to track loading state
 
   // void toggleLoading() {
@@ -27,7 +37,7 @@ class _LoginState extends State<Login> {
   //     isLoading = !isLoading; // Toggle isLoading state
   //   });
   // }
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +51,13 @@ class _LoginState extends State<Login> {
                   context); // This will pop the current route and go back to the previous route
             },
           ),
-          title: const Text('Login Page'),
+          title: widget.userType == "superAdmin"
+              ? const Text('Super Admin Login Page')
+              : widget.userType == "admin"
+                  ? const Text('Admin Login Page')
+                  : widget.userType == "customer"
+                      ? const Text('Customer Login Page')
+                      : const Text('Employee Page'),
           backgroundColor: Colors.red, // Change app bar color to red
         ),
         body: Stack(
@@ -49,16 +65,19 @@ class _LoginState extends State<Login> {
             // Main content
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: LoginForm(toggleLoading : (){
-                 setState(() {
-                  isLoading = !isLoading; // Toggle isLoading state
-                });
-              }), // Your main content goes here
+              child: LoginForm(
+                  toggleLoading: () {
+                    setState(() {
+                      isLoading = !isLoading; // Toggle isLoading state
+                    });
+                  },
+                  userType: widget.userType), // Your main content goes here
             ),
             // Loading indicator (displayed above main content if isLoading is true)
             if (isLoading)
               Container(
-                color: Colors.black.withOpacity(0.5), // Semi-transparent black color
+                color: Colors.black
+                    .withOpacity(0.5), // Semi-transparent black color
                 child: Center(
                   child: CircularProgressIndicator(
                     color: Colors.white,
@@ -67,40 +86,10 @@ class _LoginState extends State<Login> {
               ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              label: 'Back',
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-            ),
-            BottomNavigationBarItem(
-              label: 'Add',
-              icon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-            )
-          ],
-          backgroundColor: Colors.red,
-          currentIndex: 0,
-          onTap: (int value) {
-            // Handle navigation here
-          },
-        ),
+        bottomNavigationBar: const BottomNaviatiobBar(),
       ),
     );
   }
-
 }
 
 class Progress extends StatelessWidget {
@@ -124,11 +113,10 @@ class LoginForm extends StatefulWidget {
   // MyCustomWidget({@required this.onFlatButtonPressed});
 
   final Function toggleLoading;
+  final String userType;
 
 // THE CONSTRUCTOR
-  LoginForm({
-    required this.toggleLoading
-  });
+  LoginForm({required this.toggleLoading, required this.userType});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -138,21 +126,67 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
-
-    // Define a callback function to toggle loading state
+  String? selectedOfficer;
+  // Define a callback function to toggle loading state
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(height: 20.0),
+         if (widget.userType == "employee") ...[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Employee Type:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                    height: 30.0,
+                    child: DropdownButtonFormField(
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'postOfficer',
+                          child: Text('Post Officer'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'postman',
+                          child: Text('Postman'),
+                        ),
+                      ],
+                      onChanged: (value) {setState(() {
+                        selectedOfficer = value;
+                      });},
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.all(4)),
+                    )
+                    // TextField(
+                    //   controller: _branchController,
+                    //   decoration: InputDecoration(
+                    //     contentPadding: EdgeInsets.all(8.0),
+                    //     hintText: 'Enter branch',
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    // ),
+                    ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.0),
+         ],
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(
               width: 120.0,
               child: Text(
-                'Username: ',
+                widget.userType == 'customer' ? 'E-mail: ' : 'Username: ',
                 style: TextStyle(fontSize: 12.0), // Decrease font size
               ),
             ),
@@ -211,138 +245,129 @@ class _LoginFormState extends State<LoginForm> {
             //   return const SuperAdminDashboard();
             // }));
             print('Username: $username, Password: $password');
-            _fetchUsers(username, password, );
+            _fetchUsers(
+              username,
+              password,
+            );
           },
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: Colors.red, // Set button color to red
             minimumSize: Size(double.infinity, 40.0), // Set full width
           ),
-          
           child: Text('Login'),
         ),
+        SizedBox(height: 20.0),
+        if (widget.userType == "customer") ...[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              // Login form widgets go here
+
+              // "Don't have an account : Sign Up" message
+              Text(
+                'Don\'t have an account? ',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return const CustomerCreationPage();
+                  }));
+                },
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue, // Set button text color to blue
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
       ],
     );
   }
 
   void _fetchUsers(username, password) async {
-    try{
+    try {
       widget.toggleLoading();
-  print('fetching users');
-    
-    const url = 'http://192.168.0.101:8080/api/auth/login';
+      print('fetching users');
+      print(widget.userType);
 
-    // Create a Map to hold the username and password
-    Map<String, String> data = {
-      'username': username,
-      'password': password,
-    };
+      // Create a Map to hold the username and password
+      Map<String, String> data = {
+        'username': username,
+        'password': password,
+        "type": widget.userType
+      };
 
-    // Encode the data as JSON
-    String body = json.encode(data);
+      // Encode the data as JSON
+      String body = json.encode(data);
 
-    // Make the POST request with the username and password in the body
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {
-        "Content-Type": "application/json"
-      }, // Set headers for JSON data
-      body: body,
-    );
+      // Make the POST request with the username and password in the body
+      final response = await http.post(
+        Uri.parse(login),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
 
-    print(response.body);
+      print(response.body);
 
-    final responseBody = response.body;
+      final responseBody = response.body;
 
-    // Check if the response status code is successful
-    if (response.statusCode == 200) {
-      // Parse the response body as JSON
-      Map<String, dynamic> responseBody = json.decode(response.body);
-      
-      // Access the 'success' variable from the parsed JSON
-      bool success = responseBody['success'];
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        Map<String, dynamic> responseBody = json.decode(response.body);
 
-      if(!success){
-    ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-      SnackBar(
-        content: Container(
-          padding: EdgeInsets.all(16),
-          height: 90,
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 147, 29, 20),
-            borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-          child: Row(
-            children: [
-              // const SizedBox(width: 48),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Error",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
-                    Text("Username or Password is Incorrect"),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-    );
-      }else{
+        // Access the 'success' variable from the parsed JSON
+        bool success = responseBody['success'];
+        String userId = responseBody['id'];
+
+        if (!success) {
+          final snackBar = Message(
+              message: "Username or Password is Incorrect", type: "error");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        } else {
+          final snackBar =
+              Message(message: "SuccessFully Logged In", type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+
+          await Future.delayed(Duration(seconds: 1));
+
+          final navigateTo = widget.userType == 'superAdmin'
+              ? SuperAdminDashboard()
+              : widget.userType == 'admin'
+                  ? AdminDashboard(userId: userId)
+                  : widget.userType == 'customer' ? CustomerDashboard(userId: userId) 
+                  : CustomerDashboard(userId: userId);
+
           Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return const SuperAdminDashboard();
-            }));
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return navigateTo;
+          }));
+        }
+        // Now you can use the 'success' variable
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
       }
-      
-      // Now you can use the 'success' variable
-      print('Success: $success');
-    } else {
-      // Handle error response
-      print('Request failed with status: ${response.statusCode}');
-    }
 
-
-    // Handle the response here
-
-    print('completed');
-    widget.toggleLoading();
-    }
-    catch(err){
+      // Handle the response here
+      widget.toggleLoading();
+    } catch (err) {
       print(err);
     }
-    // setState(() {
-    //   // isLoading = true
-    // });
-    // toggleLoading();
-  
-  }
-}
-
-class name extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
-class ET extends StatefulWidget {
-
-  @override
-  State<ET> createState() => _ETState();
-}
-
-class _ETState extends State<ET> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

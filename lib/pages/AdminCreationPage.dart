@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_p/Utils/API/API.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,39 +17,12 @@ class AdminCreationPage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            label: 'Back',
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(
-              Icons.home,
-              color: Colors.white,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Add',
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          )
-        ],
-        backgroundColor: Colors.red,
-        currentIndex: 0,
-        onTap: (int value) {
-          // Handle navigation here
-        },
-      ),
+      bottomNavigationBar: BottomNaviatiobBar(),
     );
   }
 }
+
+
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -430,7 +405,7 @@ class _LoginFormState extends State<LoginForm> {
       });
   print('fetching users');
     
-    const url = 'http://192.168.0.101:8080/api/users/add/admin';
+    
 
     // Create a Map to hold the username and password
     Map<String, String> data = {
@@ -451,7 +426,7 @@ class _LoginFormState extends State<LoginForm> {
 
     // Make the POST request with the username and password in the body
     final response = await http.post(
-      Uri.parse(url),
+      Uri.parse(createAdmin),
       headers: {
         "Content-Type": "application/json"
       }, // Set headers for JSON data
