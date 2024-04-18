@@ -51,11 +51,11 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
         data: widget.id,
       );
 
-      final image = await qrCode.toUint8List(200);
+      // final image = await qrCode.toUint8List(200);
 
       final directory = (await getExternalStorageDirectory())!.path;
       final file = File('$directory/qr_code.png');
-      await file.writeAsBytes(image);
+      // await file.writeAsBytes(image);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
