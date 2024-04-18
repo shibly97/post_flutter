@@ -4,21 +4,20 @@ import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
-import 'package:flutter_p/pages/admin/AdminUserDashboard.dart';
 
-class AdminDashboard extends StatelessWidget {
+class PostOfficerDashboard extends StatelessWidget {
 
    final String userId;
   
-  const AdminDashboard({super.key, required this.userId});
+  const PostOfficerDashboard({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AdminDashboard',
+      title: 'PostOfficerDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Admin Dashboard'),
+            title: const Text('Post Officer Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -33,7 +32,7 @@ class AdminDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: const BottomNaviatiobBar(),),
+          bottomNavigationBar:BottomNaviatiobBar(),),
     );
   }
 }
@@ -74,7 +73,7 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Registered Items',
+              title: 'Create Job',
               icon: Icons.person_add,
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
@@ -85,7 +84,7 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Retings',
+              title: 'Rete Us',
               icon: Icons.person,
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
@@ -102,7 +101,7 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Generate Reports',
+              title: 'Inquery',
               icon: Icons.add_location,
               onPressed: () {
                  Navigator.of(context)
@@ -113,35 +112,7 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Complaints',
-              icon: Icons.update,
-              onPressed: () {
-                // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
-                }));
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DashboardCard(
-              title: 'Users',
-              icon: Icons.add_location,
-              onPressed: () {
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminUserDashboard(userId: userId);
-                }));
-                // Action to perform when Create Branches card is pressed
-              },
-            ),
-            DashboardCard(
-              title: 'Approval Pending Items',
+              title: 'Complains',
               icon: Icons.update,
               onPressed: () {
                 // Action to perform when Update Branches card is pressed

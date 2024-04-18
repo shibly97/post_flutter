@@ -447,9 +447,9 @@ class _LoginFormState extends State<LoginForm> {
       // Access the 'success' variable from the parsed JSON
       bool success = responseBody['success'];
       String message = responseBody['message'];
-      final String userId = responseBody['id'];
 
     if(success){
+            final String userId = responseBody['id'];
            final snackBar = Message(
               message: message, type: "success");
 

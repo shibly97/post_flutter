@@ -213,7 +213,6 @@ class _LoginFormState extends State<LoginForm> {
         // Access the 'success' variable from the parsed JSON
         bool success = responseBody['success'];
         String message = responseBody['message'];
-        String id = responseBody['id'];
 
         if (!success) {
           final snackBar = Message(
@@ -235,7 +234,7 @@ class _LoginFormState extends State<LoginForm> {
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return CustomerDashboard(userId: id);
+            return CustomerDashboard(userId: widget.userId);
           }));
         }
 

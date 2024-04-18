@@ -248,6 +248,7 @@ class _LoginFormState extends State<LoginForm> {
             _fetchUsers(
               username,
               password,
+              selectedOfficer?? ''
             );
           },
           style: ElevatedButton.styleFrom(
@@ -291,7 +292,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void _fetchUsers(username, password) async {
+  void _fetchUsers(username, password,selectedOfficer) async {
     try {
       widget.toggleLoading();
       print('fetching users');
@@ -301,7 +302,8 @@ class _LoginFormState extends State<LoginForm> {
       Map<String, String> data = {
         'username': username,
         'password': password,
-        "type": widget.userType
+        "type": widget.userType,
+        "selectedOfficer": selectedOfficer
       };
 
       // Encode the data as JSON
@@ -327,7 +329,7 @@ class _LoginFormState extends State<LoginForm> {
 
         // Access the 'success' variable from the parsed JSON
         bool success = responseBody['success'];
-        String userId = responseBody['id'];
+        
 
         if (!success) {
           final snackBar = Message(
@@ -337,6 +339,8 @@ class _LoginFormState extends State<LoginForm> {
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         } else {
+          String userId = responseBody['id'];
+          
           final snackBar =
               Message(message: "SuccessFully Logged In", type: "success");
 

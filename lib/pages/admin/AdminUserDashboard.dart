@@ -4,21 +4,21 @@ import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
-import 'package:flutter_p/pages/admin/AdminUserDashboard.dart';
+import 'package:flutter_p/pages/admin/CreateUsers.dart';
 
-class AdminDashboard extends StatelessWidget {
+class AdminUserDashboard extends StatelessWidget {
 
    final String userId;
   
-  const AdminDashboard({super.key, required this.userId});
+  const AdminUserDashboard({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AdminDashboard',
+      title: 'AdminUserDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Admin Dashboard'),
+            title: const Text('Admin User Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -33,7 +33,7 @@ class AdminDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: const BottomNaviatiobBar(),),
+          bottomNavigationBar: BottomNaviatiobBar()),
     );
   }
 }
@@ -70,78 +70,23 @@ class DashboardCards extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DashboardCard(
-              title: 'Registered Items',
-              icon: Icons.person_add,
-              onPressed: () {
-                // Action to perform when Create Admin Accounts card is pressed
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminCreationPage();
-                }));
-              },
-            ),
-            DashboardCard(
-              title: 'Retings',
-              icon: Icons.person,
-              onPressed: () {
-                // Action to perform when Update Admin Accounts card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateAdmin();
-                }));
-              },
-            ),
-          ],
-        ),
         SizedBox(height: 20.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Generate Reports',
+              title: 'Create Users',
               icon: Icons.add_location,
               onPressed: () {
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return BranchCreationPage();
+                  return CreateUsers(userId: userId,);
                 }));
                 // Action to perform when Create Branches card is pressed
               },
             ),
             DashboardCard(
-              title: 'Complaints',
-              icon: Icons.update,
-              onPressed: () {
-                // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
-                }));
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DashboardCard(
-              title: 'Users',
-              icon: Icons.add_location,
-              onPressed: () {
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminUserDashboard(userId: userId);
-                }));
-                // Action to perform when Create Branches card is pressed
-              },
-            ),
-            DashboardCard(
-              title: 'Approval Pending Items',
+              title: 'Edit Users',
               icon: Icons.update,
               onPressed: () {
                 // Action to perform when Update Branches card is pressed

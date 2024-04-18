@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
+import 'package:flutter_p/pages/customer/createJobs.dart';
 
 class CustomerDashboard extends StatelessWidget {
 
@@ -31,36 +33,7 @@ class CustomerDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const [
-              BottomNavigationBarItem(
-                label: 'Back',
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Home',
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Add',
-                icon: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              )
-            ],
-            backgroundColor: Colors.red,
-            currentIndex: 0,
-            onTap: (int value) {
-              // Handle navigation here
-            },
-          )),
+          bottomNavigationBar: const BottomNaviatiobBar()),
     );
   }
 }
@@ -107,7 +80,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminCreationPage();
+                  return CreateJobs(userId: userId);
                 }));
               },
             ),

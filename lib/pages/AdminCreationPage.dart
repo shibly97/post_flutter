@@ -47,6 +47,30 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
 
+  List<dynamic> users = [];
+  String? selectedAdmin;
+
+      @override
+  void initState() {
+    super.initState();
+    _fetchBranch(); // Call the function to fetch admins when the widget initializes
+  }
+
+  Future<void> _fetchBranch() async {
+    final response = await http.get(Uri.parse(allBranches));
+    print(response.body);
+    if (response.statusCode == 200) {
+       final body = response.body;
+        final json = jsonDecode(body);
+        setState(() {
+          users = json['results'];
+        });
+    } else {
+      // If the server did not return a successful response, throw an error
+      throw Exception('Failed to load admins');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -218,6 +242,50 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
+          SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Branch:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                    height: 30.0,
+                    child: DropdownButtonFormField(
+                       items: users.map((admin) {
+                      return DropdownMenuItem(
+                        value: admin['id'],
+                        child: Text(admin['branch_name']),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      // print(value);
+                      setState(() {
+                        selectedBranch = value as String?;
+                      });
+                    },
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.all(4)),
+                    )
+                    // TextField(
+                    //   controller: _branchController,
+                    //   decoration: InputDecoration(
+                    //     contentPadding: EdgeInsets.all(8.0),
+                    //     hintText: 'Enter branch',
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    // ),
+                    ),
+              ),
+            ],
+          ),
           // SizedBox(height: 10.0),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
@@ -263,33 +331,33 @@ class _LoginFormState extends State<LoginForm> {
           //     ),
           //   ],
           // ),
-          SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Postal/Zip Code:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                  height: 30.0,
-                  child: TextField(
-                    controller: _postalCodeController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter postal/zip code',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // SizedBox(height: 10.0),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     SizedBox(
+          //       width: 120.0,
+          //       child: Text(
+          //         'Postal/Zip Code:',
+          //         style: TextStyle(fontSize: 12.0), // Decrease font size
+          //       ),
+          //     ),
+          //     SizedBox(width: 10.0),
+          //     Expanded(
+          //       child: SizedBox(
+          //         height: 30.0,
+          //         child: TextField(
+          //           controller: _postalCodeController,
+          //           decoration: InputDecoration(
+          //             contentPadding: EdgeInsets.all(8.0),
+          //             hintText: 'Enter postal/zip code',
+          //             border: OutlineInputBorder(),
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -357,6 +425,7 @@ class _LoginFormState extends State<LoginForm> {
               String zip = _postalCodeController.text;
               String contact = _contactNumberController.text;
               String nic = _nicController.text;
+              
               // Navigator.of(context)
               //     .push(MaterialPageRoute(builder: (BuildContext context) {
               //   return const SuperAdminDashboard();
@@ -369,10 +438,10 @@ class _LoginFormState extends State<LoginForm> {
                   fistName,
                   lastName,
                   email,
-                  zip,
+                  // zip,
                   contact,
-                  nic
-                  // selectedBranch
+                  nic,
+                  selectedBranch
                 );
             },
             style: ElevatedButton.styleFrom(
@@ -394,10 +463,10 @@ class _LoginFormState extends State<LoginForm> {
     fistName,
     lastName,
     email,
-    zip,
+    // zip,
     contact,
     nic,
-    // selectedBranch
+    selectedBranch
   ) async {
     try{
       setState(() {
@@ -415,10 +484,10 @@ class _LoginFormState extends State<LoginForm> {
       "fistName": fistName,
       "lastName": lastName,
       "email": email,
-      "zip": zip,
+      // "zip": zip,
       "contact": contact,
       "nic": nic,
-      // "selectedBranch": selectedBranch
+      "selectedBranch": selectedBranch
     };
 
     // Encode the data as JSON
@@ -466,7 +535,7 @@ class _LoginFormState extends State<LoginForm> {
                       "Error",
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
-                    Text(success? "Branch Created Successfully": "Branch Creation Failed"),
+                    Text(success? "Admin Created Successfully": "Admin Creation Failed"),
                   ],
                 ),
               ),

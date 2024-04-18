@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/pages/APICalling.dart';
 import 'package:flutter_p/pages/SecondPage.dart';
 import 'package:http/http.dart' as http;
@@ -93,35 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 ) 
                 : Image.asset('images/postPng.png'),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-              label: 'Back',
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              )),
-          BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(
-                Icons.home,
-                color: Colors.white,
-              )),
-          BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(
-                Icons.add_home,
-                color: Colors.white,
-              ))
-        ],
-        backgroundColor: Colors.red,
-        currentIndex: currentIndex,
-        onTap: (int value) {
-          setState(() {
-            currentIndex = value;
-          });
-        },
-      ),
+      bottomNavigationBar: BottomNaviatiobBar(),
     );
   }
 }

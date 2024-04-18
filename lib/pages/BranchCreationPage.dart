@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,36 +17,7 @@ class BranchCreationPage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: BranchCreationForm(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            label: 'Back',
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Home',
-            icon: Icon(
-              Icons.home,
-              color: Colors.white,
-            ),
-          ),
-          BottomNavigationBarItem(
-            label: 'Add',
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          )
-        ],
-        backgroundColor: Colors.red,
-        currentIndex: 0,
-        onTap: (int value) {
-          // Handle navigation here
-        },
-      ),
+      bottomNavigationBar: BottomNaviatiobBar(),
     );
   }
 }
@@ -63,8 +35,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _contactNumberController =
       TextEditingController();
-  List<Map<String, dynamic>> admins = [];
-  String? selectedAdmin;
+  // List<Map<String, dynamic>> admins = [];
+  // String? selectedAdmin;
   String? selectedProvince;
   String? selectedDistrict;
 
@@ -221,50 +193,50 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
             ],
           ),
-          SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Admin:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                    height: 30.0,
-                    child: DropdownButtonFormField(
-                       items: users.map((admin) {
-                      return DropdownMenuItem(
-                        value: admin['id'],
-                        child: Text(admin['user_name']),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      // print(value);
-                      setState(() {
-                        selectedAdmin = value as String?;
-                      });
-                    },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(4)),
-                    )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    ),
-              ),
-            ],
-          ),
+          // SizedBox(height: 10.0),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     SizedBox(
+          //       width: 120.0,
+          //       child: Text(
+          //         'Admin:',
+          //         style: TextStyle(fontSize: 12.0), // Decrease font size
+          //       ),
+          //     ),
+          //     SizedBox(width: 10.0),
+          //     Expanded(
+          //       child: SizedBox(
+          //           height: 30.0,
+          //           child: DropdownButtonFormField(
+          //              items: users.map((admin) {
+          //             return DropdownMenuItem(
+          //               value: admin['id'],
+          //               child: Text(admin['user_name']),
+          //             );
+          //           }).toList(),
+          //           onChanged: (value) {
+          //             // print(value);
+          //             setState(() {
+          //               selectedAdmin = value as String?;
+          //             });
+          //           },
+          //             decoration: InputDecoration(
+          //                 border: OutlineInputBorder(),
+          //                 contentPadding: EdgeInsets.all(4)),
+          //           )
+          //           // TextField(
+          //           //   controller: _branchController,
+          //           //   decoration: InputDecoration(
+          //           //     contentPadding: EdgeInsets.all(8.0),
+          //           //     hintText: 'Enter branch',
+          //           //     border: OutlineInputBorder(),
+          //           //   ),
+          //           // ),
+          //           ),
+          //     ),
+          //   ],
+          // ),
            SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -380,7 +352,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                   _branchNameController.text,
                   _addressController.text, 
                   _contactNumberController.text,
-                  selectedAdmin,
+                  // selectedAdmin,
                   selectedProvince,
                   selectedDistrict
                 );
@@ -402,7 +374,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     branchName,
     address,
     contact,
-    selectedAdmin,
+    // selectedAdmin,
     selectedProvince,
     selectedDistrict
   ) async {
@@ -418,7 +390,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       'branchName': branchName,
       'address':address , 
       "contact": contact,
-      "selectedAdmin": selectedAdmin,
+      // "selectedAdmin": selectedAdmin,
       "selectedProvince": selectedProvince,
       "selectedDistrict": selectedDistrict,
     };

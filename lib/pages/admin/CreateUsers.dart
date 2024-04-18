@@ -4,33 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
+import 'package:flutter_p/pages/admin/AdminUserDashboard.dart';
 import 'package:http/http.dart' as http;
 
-class AdminUpdatePage extends StatelessWidget {
-   final dynamic userData;
-
-  const AdminUpdatePage({Key? key,  required this.userData}) : super(key: key);
+class CreateUsers extends StatelessWidget {
+  final String userId;
+  
+  const CreateUsers({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Admin'),
+        title: const Text('Create Users'),
         backgroundColor: Colors.red,
       ),
-      body: LoginForm(userData: userData),
+      body: LoginForm(userId: userId),
       bottomNavigationBar: BottomNaviatiobBar(),
     );
   }
 }
 
-class LoginForm extends StatefulWidget {
-  // const LoginForm({Key? key}) : super(key: key);
-  final dynamic userData;
 
-    LoginForm({
-    required this.userData
-  });
+
+class LoginForm extends StatefulWidget {
+
+  final String userId;
+  
+  const LoginForm({Key? key, required this.userId}) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -40,42 +41,17 @@ class _LoginFormState extends State<LoginForm> {
 
   bool isLoading = false;
 
-  late TextEditingController _staffIdController = TextEditingController();
-  late TextEditingController _firstNameController = TextEditingController();
-  late TextEditingController _lastNameController = TextEditingController();
-  late TextEditingController _emailController = TextEditingController();
-  String? selectedBranch;
-  late TextEditingController _postalCodeController = TextEditingController();
-  late TextEditingController _contactNumberController =
+  final TextEditingController _staffIdController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _postalCodeController = TextEditingController();
+  final TextEditingController _contactNumberController =
       TextEditingController();
-  late TextEditingController _nicController = TextEditingController();
-  late TextEditingController _passwordController = TextEditingController();
-  late TextEditingController _userNameController = TextEditingController();
-
-    @override
-  void initState() {
-    super.initState();
-    _staffIdController =
-        TextEditingController(text: widget.userData['id']);
-    _firstNameController =
-        TextEditingController(text: widget.userData['firstname']);
-    _lastNameController =
-        TextEditingController(text: widget.userData['lastname']);
-    _emailController =
-        TextEditingController(text: widget.userData['email']);
-    _userNameController =
-        TextEditingController(text: widget.userData['user_name']);
-    _passwordController =
-        TextEditingController(text: widget.userData['password']);
-    _nicController =
-        TextEditingController(text: widget.userData['nic']);
-    _postalCodeController =
-        TextEditingController(text: widget.userData['zip']);
-    _contactNumberController =
-        TextEditingController(text: widget.userData['contact']);
-    // _postalCodeController =
-    //     TextEditingController(text: widget.userData['zip']);
-  }
+  final TextEditingController _nicController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  String? selectedOfficer;
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +60,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+
           SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -104,11 +81,55 @@ class _LoginFormState extends State<LoginForm> {
                     controller: _staffIdController,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter staff ID',
+                      hintText: 'Staff ID',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
+              ),
+            ],
+          ),
+                      Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 120.0,
+                child: Text(
+                  'Employee Type:',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                    height: 30.0,
+                    child: DropdownButtonFormField(
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'postOfficer',
+                          child: Text('Post Officer'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'postman',
+                          child: Text('Postman'),
+                        ),
+                      ],
+                      onChanged: (value) {setState(() {
+                        selectedOfficer = value;
+                      });},
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.all(4)),
+                    )
+                    // TextField(
+                    //   controller: _branchController,
+                    //   decoration: InputDecoration(
+                    //     contentPadding: EdgeInsets.all(8.0),
+                    //     hintText: 'Enter branch',
+                    //     border: OutlineInputBorder(),
+                    //   ),
+                    // ),
+                    ),
               ),
             ],
           ),
@@ -249,78 +270,6 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           SizedBox(height: 10.0),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     SizedBox(
-          //       width: 120.0,
-          //       child: Text(
-          //         'Branch:',
-          //         style: TextStyle(fontSize: 12.0), // Decrease font size
-          //       ),
-          //     ),
-          //     SizedBox(width: 10.0),
-          //     Expanded(
-          //       child: SizedBox(
-          //           height: 30.0,
-          //           child: DropdownButtonFormField(
-          //             items: const [
-          //               DropdownMenuItem(
-          //                 value: 'Kandy',
-          //                 child: Text('Kandy - Main Branch'),
-          //               ),
-          //               DropdownMenuItem(
-          //                 value: 'Colombo',
-          //                 child: Text('Colombo - Bambalapitiya'),
-          //               ),
-          //             ],
-          //             onChanged: (value) {setState(() {
-          //               selectedBranch = value;
-          //             });},
-          //             decoration: InputDecoration(
-          //                 border: OutlineInputBorder(),
-          //                 contentPadding: EdgeInsets.all(4)),
-          //           )
-          //           // TextField(
-          //           //   controller: _branchController,
-          //           //   decoration: InputDecoration(
-          //           //     contentPadding: EdgeInsets.all(8.0),
-          //           //     hintText: 'Enter branch',
-          //           //     border: OutlineInputBorder(),
-          //           //   ),
-          //           // ),
-          //           ),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Postal/Zip Code:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                  height: 30.0,
-                  child: TextField(
-                    controller: _postalCodeController,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(8.0),
-                      hintText: 'Enter postal/zip code',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -378,13 +327,12 @@ class _LoginFormState extends State<LoginForm> {
           ElevatedButton(
             onPressed: () {
               // Implement login logic here
-              String staffId = _staffIdController.text;
+              // String staffId = _staffIdController.text;
               String userName = _userNameController.text;
               String password = _passwordController.text;
               String fistName = _firstNameController.text;
               String lastName = _lastNameController.text;
               String email = _emailController.text;
-              String zip = _postalCodeController.text;
               String contact = _contactNumberController.text;
               String nic = _nicController.text;
               // Navigator.of(context)
@@ -395,14 +343,13 @@ class _LoginFormState extends State<LoginForm> {
               _fetchUsers(
                   userName,
                   password,
-                  staffId, 
+                  // staffId, 
                   fistName,
                   lastName,
                   email,
-                  zip,
                   contact,
-                  nic
-                  // selectedBranch
+                  nic,
+                  selectedOfficer
                 );
             },
             style: ElevatedButton.styleFrom(
@@ -410,7 +357,7 @@ class _LoginFormState extends State<LoginForm> {
               backgroundColor: Colors.red, // Set button color to red
               minimumSize: Size(double.infinity, 40.0), // Set full width
             ),
-            child: Text('Update Admin'),
+            child: Text('Create User'),
           ),
         ],
       ),
@@ -420,14 +367,13 @@ class _LoginFormState extends State<LoginForm> {
   void _fetchUsers(
     userName,
     password,
-    staffId, 
+    // staffId, 
     fistName,
     lastName,
     email,
-    zip,
     contact,
     nic,
-    // selectedBranch
+    selectedOfficer
   ) async {
     try{
       setState(() {
@@ -435,27 +381,27 @@ class _LoginFormState extends State<LoginForm> {
       });
   print('fetching users');
     
+    
 
     // Create a Map to hold the username and password
     Map<String, String> data = {
+      'userId': widget.userId , 
       'userName': userName,
       'password': password,
-      'staffId':staffId , 
       "fistName": fistName,
       "lastName": lastName,
       "email": email,
-      "zip": zip,
       "contact": contact,
       "nic": nic,
-      // "selectedBranch": selectedBranch
+      "selectedOfficer": selectedOfficer
     };
 
     // Encode the data as JSON
     String body = json.encode(data);
 
     // Make the POST request with the username and password in the body
-    final response = await http.put(
-      Uri.parse(createAdmin),
+    final response = await http.post(
+      Uri.parse(createEmployee),
       headers: {
         "Content-Type": "application/json"
       }, // Set headers for JSON data
@@ -495,7 +441,7 @@ class _LoginFormState extends State<LoginForm> {
                       "Error",
                       style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
-                    Text(success? "Branch Created Successfully": "Branch Creation Failed"),
+                    Text(success? "User Created Successfully": "User Creation Failed"),
                   ],
                 ),
               ),
@@ -510,7 +456,7 @@ class _LoginFormState extends State<LoginForm> {
     if(success){
            Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
-              return const SuperAdminDashboard();
+              return AdminUserDashboard(userId: widget.userId);
             }));
     }
       // }else{
