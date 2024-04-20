@@ -10,3 +10,5 @@ const String createEmployee = '$baseUrl/api/users/add/employee';
 
 const String createCustomer = '$baseUrl/api/users/add/customer';
 const String checkOTP = '$baseUrl/api/users/add/checkOTP';
+
+const String createJob = '$baseUrl/api/job/create';

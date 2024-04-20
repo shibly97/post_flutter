@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
+import 'package:flutter_p/components/GenerateQR.dart';
 import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:flutter_p/pages/customer/OTP.dart';
@@ -813,33 +814,33 @@ class _LoginFormState extends State<LoginForm> {
             //     ),
             //   ],
             // ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Contact Number',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _reContactNumberController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter Contact Number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // SizedBox(height: 10.0),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: <Widget>[
+            //     SizedBox(
+            //       width: 120.0,
+            //       child: Text(
+            //         'Contact Number',
+            //         style: TextStyle(fontSize: 12.0), // Decrease font size
+            //       ),
+            //     ),
+            //     SizedBox(width: 10.0),
+            //     Expanded(
+            //       child: SizedBox(
+            //         height: 30.0,
+            //         child: TextField(
+            //           controller: _reContactNumberController,
+            //           decoration: InputDecoration(
+            //             contentPadding: EdgeInsets.all(8.0),
+            //             // hintText: 'Enter Contact Number',
+            //             border: OutlineInputBorder(),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             // SizedBox(height: 10.0),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
@@ -912,18 +913,21 @@ class _LoginFormState extends State<LoginForm> {
                 //   return const SuperAdminDashboard();
                 // }));
                 // print('Username: $selectedBranch, Password: $nic');
-                // _fetchUsers(
-                //     userName,
-                //     password,
-                //     // staffId,
-                //     fistName,
-                //     lastName,
-                //     email,
-                //     zip,
-                //     contact,
-                //     // nic
-                //     // selectedBranch
-                //   );
+                _fetchUsers(
+                    _senderName.text,
+                    _senderAddressController.text,
+                    _senderContactNumberController.text,
+                    _senderEmailController.text,
+                    _reName.text,
+                    _reAddressController.text,
+                    _reContactNumberController.text,
+                    _reEmailController.text,
+                    _desController.text,
+                    _instructionController.text,
+                    _weightController.text,
+                    _hightController.text,
+                    _lengthController.text
+                  );
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
@@ -939,16 +943,19 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _fetchUsers(
-    userName,
-    password,
-    // staffId,
-    fistName,
-    lastName,
-    email,
-    zip,
-    contact,
-    // nic,
-    // selectedBranch
+    senderName,
+    senderContactNumberController,
+    senderAddressController,
+    senderEmailController,
+    reName,
+    reAddressController,
+    reContactNumberController,
+    reEmailController,
+    desController,
+    instructionController,
+    weightController,
+    hightController,
+    lengthController
   ) async {
     try {
       setState(() {
@@ -958,24 +965,28 @@ class _LoginFormState extends State<LoginForm> {
 
       // Create a Map to hold the username and password
       Map<String, String> data = {
-        'userName': userName,
-        'password': password,
-        // 'staffId':staffId ,
-        "fistName": fistName,
-        "lastName": lastName,
-        "email": email,
-        "zip": zip,
-        "contact": contact,
-        // "nic": nic,
-        // "selectedBranch": selectedBranch
-      };
+        "senderName": senderName,
+        "senderContactNumberController":     senderContactNumberController,
+        "senderAddressController":     senderAddressController,
+        "senderEmailController":     senderEmailController,
+        "reName":     reName,
+        "reAddressController":     reAddressController,
+        "reContactNumberController":     reContactNumberController,
+        "reEmailController":     reEmailController,
+        "desController":     desController,
+        "instructionController":     instructionController,
+        "weightController":     weightController,
+        "hightController":     hightController,
+        "lengthController":     lengthController,
+        "userId": widget.userId      
+        };
 
       // Encode the data as JSON
       String body = json.encode(data);
 
       // Make the POST request with the username and password in the body
       final response = await http.post(
-        Uri.parse(createCustomer),
+        Uri.parse(createJob),
         headers: {
           "Content-Type": "application/json"
         }, // Set headers for JSON data
@@ -996,18 +1007,18 @@ class _LoginFormState extends State<LoginForm> {
         String message = responseBody['message'];
 
         if (success) {
-          final String userId = responseBody['id'];
+          final String jobId = responseBody['id'];
           final snackBar = Message(message: message, type: "success");
 
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
 
-          await Future.delayed(Duration(seconds: 1));
+          // await Future.delayed(Duration(seconds: 1));
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return OTP(userId: userId);
+            return QRCodeWidget(id: jobId, userId: widget.userId);
           }));
         } else {
           final snackBar = Message(message: message, type: "error");

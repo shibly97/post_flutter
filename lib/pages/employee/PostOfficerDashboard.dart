@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
+import 'package:flutter_p/components/ScanQR.dart';
 import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
@@ -73,7 +74,7 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Create Job',
+              title: 'Scaned Items',
               icon: Icons.person_add,
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
@@ -84,41 +85,13 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Rete Us',
+              title: 'Scan A QR Code',
               icon: Icons.person,
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateAdmin();
-                }));
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DashboardCard(
-              title: 'Inquery',
-              icon: Icons.add_location,
-              onPressed: () {
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return BranchCreationPage();
-                }));
-                // Action to perform when Create Branches card is pressed
-              },
-            ),
-            DashboardCard(
-              title: 'Complains',
-              icon: Icons.update,
-              onPressed: () {
-                // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
+                  return ScanQRCode();
                 }));
               },
             ),

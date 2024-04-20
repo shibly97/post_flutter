@@ -1,69 +1,84 @@
+
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pretty_qr_code/pretty_qr_code.dart';
-import 'package:qr/qr.dart';
+import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
+
 
 class QRCodeWidget extends StatefulWidget {
   final String id;
+  final String userId;
 
-  const QRCodeWidget({Key? key, required this.id}) : super(key: key);
+  const QRCodeWidget({Key? key, required this.id, required this.userId})
+      : super(key: key);
 
   @override
   _QRCodeWidgetState createState() => _QRCodeWidgetState();
 }
 
 class _QRCodeWidgetState extends State<QRCodeWidget> {
+
+  final ScreenshotController screenshoController = ScreenshotController();
+
+  Future<void> captuAndSave() async{
+    final Uint8List? uint8list = await screenshoController.capture();
+    if(uint8list != null){
+      final result =
+          await ImageGallerySaver.saveImage(uint8list);
+        // final result = await ImageGallerySaver.saveImage(uint8list);
+        print('downloaddd');
+        if(result['isSuccess']){
+          print('QR Code Saved Successfully');
+        }else{
+          print('QR Code Saved Faild');
+        }
+      // final PermissionStatus status = await Permission.storage.request();
+      // if(status.isGranted){
+      // }else{
+      //   print('Permission to access storage denied');
+      // }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('QR Code Generator'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            PrettyQr(
-              typeNumber: 4,
-              size: 200,
-              data: widget.id,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: Screenshot(
+              controller: screenshoController,
+              child: QrImageView(
+                data: widget.id,
+                size: 250,
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _captureAndSharePng();
-              },
-              child: Text('Download QR Code'),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 20), // Add some space between QR code and text
+          const Text('Download for Future References'),
+          const SizedBox(height: 20), 
+          ElevatedButton(onPressed: ()  {
+            print('clicked');
+             captuAndSave();
+          }, child: Text('Capture and Download')),
+          ElevatedButton(onPressed: ()  {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return CustomerDashboard(userId: widget.userId);
+              }));
+          }, child: Text('To Dashboard'))
+          
+        ],
       ),
     );
-  }
-
-  _captureAndSharePng() async {
-    try {
-      final qrCode = PrettyQr(
-        typeNumber: 4,
-        size: 200,
-        data: widget.id,
-      );
-
-      // final image = await qrCode.toUint8List(200);
-
-      final directory = (await getExternalStorageDirectory())!.path;
-      final file = File('$directory/qr_code.png');
-      // await file.writeAsBytes(image);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('QR Code downloaded successfully'),
-        ),
-      );
-    } catch (e) {
-      print(e.toString());
-    }
   }
 }

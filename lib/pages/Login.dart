@@ -11,6 +11,8 @@ import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:flutter_p/pages/admin/AdminDashboard.dart';
 import 'package:flutter_p/pages/customer/CustomerCreation.dart';
 import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
+import 'package:flutter_p/pages/employee/PostOfficerDashboard.dart';
+import 'package:flutter_p/pages/employee/PostmanDashboard.dart';
 import 'package:http/http.dart' as http;
 
 // void main() {
@@ -355,7 +357,9 @@ class _LoginFormState extends State<LoginForm> {
               : widget.userType == 'admin'
                   ? AdminDashboard(userId: userId)
                   : widget.userType == 'customer' ? CustomerDashboard(userId: userId) 
-                  : CustomerDashboard(userId: userId);
+                  : selectedOfficer == 'postOfficer' ?
+                    PostOfficerDashboard(userId: userId)
+                  : PostmanDashboard(userId: userId);
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
