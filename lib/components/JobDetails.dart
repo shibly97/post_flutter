@@ -78,6 +78,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   double _rating = 0;
 
   bool isLoading = false;
+  bool _isChecked = false;
 
   List<dynamic> branches = [];
   List<dynamic> postmans = [];
@@ -105,14 +106,19 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     _senderEmailController =
         TextEditingController(text: widget.data['sender_email']);
     _reEmailController = TextEditingController(text: widget.data['re_email']);
-    _descriptionController = TextEditingController(text: widget.data['comment']);
-    _rateController = TextEditingController(text: widget.data['rate'].toString());
+    _descriptionController =
+        TextEditingController(text: widget.data['comment']);
+    _rateController =
+        TextEditingController(text: widget.data['rate'].toString());
     setState(() {
       _rating = widget.data['rate'].toDouble();
+      _isChecked = (widget.data['anonymous_feedback'] == true)? true : false;
     });
     _fetchBranches(); // Call the function to fetch admins when the widget initializes
     _fetchPostmans(); // Call the function to fetch admins when the widget initializes
-    if (widget.type == 'inquery' || widget.type == 'rate' || widget.type == 'admin-rate') {
+    if (widget.type == 'inquery' ||
+        widget.type == 'rate' ||
+        widget.type == 'admin-rate') {
       _fetchSequense(widget.data['id']);
     }
   }
@@ -177,574 +183,579 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Sender Name:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _senderName,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter branch code',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Sender Address:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _senderAddressController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter branch name',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Sender Contact: ',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _senderContactNumberController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter address',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Reciver Name:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _reName,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Reciver Address:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _reAddressController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Reciver Contact:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _reContactNumberController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Item Description:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _desController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Instruction:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _instructionController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Weight:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _weightController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Sender Email:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _senderEmailController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Receiver Email:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: widget.type == 'customer-edit' ? true : false,
-                      controller: _reEmailController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Current Status:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      enabled: false,
-                      controller: _currStatus,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: 'Enter contact number',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20.0),
-            if (widget.type == "postman") ...[
+            if(!(widget.type == 'anonymous-inquery' && (widget.data['anonymous_feedback'] == true)))...[
+              SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
                     width: 120.0,
                     child: Text(
-                      'Change Status',
+                      'Sender Name:',
                       style: TextStyle(fontSize: 12.0), // Decrease font size
                     ),
                   ),
                   SizedBox(width: 10.0),
                   Expanded(
                     child: SizedBox(
-                        height: 30.0,
-                        child: DropdownButtonFormField(
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'STARTING_DELIVERY',
-                              child: Text('Staring Delivery'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'DELIVERED',
-                              child: Text('Delivered'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'RECEIVER_NOT_FOUNT',
-                              child: Text('Reciver Not Found'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              statusTo = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(4)),
-                        )
-                        // TextField(
-                        //   controller: _branchController,
-                        //   decoration: InputDecoration(
-                        //     contentPadding: EdgeInsets.all(8.0),
-                        //     hintText: 'Enter branch',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _senderName,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter branch code',
+                          border: OutlineInputBorder(),
                         ),
-                  ),
-                ],
-              ),
-            ],
-            if (widget.type == "postOfficer") ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 120.0,
-                    child: Text(
-                      'Change Status',
-                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                      ),
                     ),
                   ),
-                  SizedBox(width: 10.0),
-                  Expanded(
-                    child: SizedBox(
-                        height: 30.0,
-                        child: DropdownButtonFormField(
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'COLLECTED',
-                              child: Text('Collected'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'DISPATCH',
-                              child: Text('Dispatch'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'ASSIGNED_TO_POSTMAN',
-                              child: Text('Assign To Postman'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              statusTo = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(4)),
-                        )
-                        // TextField(
-                        //   controller: _branchController,
-                        //   decoration: InputDecoration(
-                        //     contentPadding: EdgeInsets.all(8.0),
-                        //     hintText: 'Enter branch',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        ),
-                  ),
                 ],
               ),
-            ],
-            SizedBox(height: 10.0),
-            if (statusTo == "DISPATCH") ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 120.0,
-                    child: Text(
-                      'Dispatch To Branch',
-                      style: TextStyle(fontSize: 12.0), // Decrease font size
-                    ),
-                  ),
-                  SizedBox(width: 10.0),
-                  Expanded(
-                    child: SizedBox(
-                        height: 30.0,
-                        child: DropdownButtonFormField(
-                          items: branches.map((admin) {
-                            return DropdownMenuItem(
-                              value: admin['id'],
-                              child: Text(admin['branch_name']),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            // print(value);
-                            setState(() {
-                              dispatchBranch = value as String?;
-                            });
-                          },
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(4)),
-                        )
-                        // TextField(
-                        //   controller: _branchController,
-                        //   decoration: InputDecoration(
-                        //     contentPadding: EdgeInsets.all(8.0),
-                        //     hintText: 'Enter branch',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        ),
-                  ),
-                ],
-              ),
-            ],
-            SizedBox(height: 10.0),
-            if (statusTo == "ASSIGNED_TO_POSTMAN") ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 120.0,
-                    child: Text(
-                      'Assign To Postman',
-                      style: TextStyle(fontSize: 12.0), // Decrease font size
-                    ),
-                  ),
-                  SizedBox(width: 10.0),
-                  Expanded(
-                    child: SizedBox(
-                        height: 30.0,
-                        child: DropdownButtonFormField(
-                          items: postmans.map((admin) {
-                            return DropdownMenuItem(
-                              value: admin['id'],
-                              child: Text(
-                                  '${admin['firstname']} ${admin['lastname']}'),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            // print(value);
-                            setState(() {
-                              assingPostman = value as String?;
-                            });
-                          },
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              contentPadding: EdgeInsets.all(4)),
-                        )
-                        // TextField(
-                        //   controller: _branchController,
-                        //   decoration: InputDecoration(
-                        //     contentPadding: EdgeInsets.all(8.0),
-                        //     hintText: 'Enter branch',
-                        //     border: OutlineInputBorder(),
-                        //   ),
-                        // ),
-                        ),
-                  ),
-                ],
-              ),
-            ],
-            if (sequense.isNotEmpty &&
-                (widget.type == 'inquery' || widget.type == 'rate' || widget.type == 'admin-rate')) ...[
-              Text('Job Journey'),
               SizedBox(height: 10.0),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: sequense.length,
-                itemBuilder: (context, index) {
-                  final item = sequense[index];
-                  DateTime dateTime = DateTime.parse(item['created_date']);
-                  // Format the date and time
-                  String formattedDate =
-                      DateFormat.yMMMd().format(dateTime); // e.g., Apr 27, 2024
-                  String formattedTime = DateFormat.Hms().format(dateTime);
-                  return Card(
-                    margin: EdgeInsets.symmetric(vertical: 4.0),
-                    child: ListTile(
-                      title: Text('Status: ${item['status']}'),
-                      subtitle: Column(
-                        children: [
-                          Text('${item['description']}'),
-                          Text('${formattedDate} at ${formattedTime}'),
-                        ],
-                      ),
-                      // Add more details as needed
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Sender Address:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
                     ),
-                  );
-                },
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _senderAddressController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter branch name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Sender Contact: ',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _senderContactNumberController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter address',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Reciver Name:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _reName,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Reciver Address:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _reAddressController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Reciver Contact:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _reContactNumberController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Item Description:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _desController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Instruction:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _instructionController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Weight:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _weightController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Sender Email:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _senderEmailController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Receiver Email:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _reEmailController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Current Status:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        enabled: false,
+                        controller: _currStatus,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.0),
+              if (widget.type == "postman") ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 120.0,
+                      child: Text(
+                        'Change Status',
+                        style: TextStyle(fontSize: 12.0), // Decrease font size
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: SizedBox(
+                          height: 30.0,
+                          child: DropdownButtonFormField(
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'STARTING_DELIVERY',
+                                child: Text('Staring Delivery'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'DELIVERED',
+                                child: Text('Delivered'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'RECEIVER_NOT_FOUNT',
+                                child: Text('Reciver Not Found'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                statusTo = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.all(4)),
+                          )
+                          // TextField(
+                          //   controller: _branchController,
+                          //   decoration: InputDecoration(
+                          //     contentPadding: EdgeInsets.all(8.0),
+                          //     hintText: 'Enter branch',
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          // ),
+                          ),
+                    ),
+                  ],
+                ),
+              ],
+              if (widget.type == "postOfficer") ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 120.0,
+                      child: Text(
+                        'Change Status',
+                        style: TextStyle(fontSize: 12.0), // Decrease font size
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: SizedBox(
+                          height: 30.0,
+                          child: DropdownButtonFormField(
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'COLLECTED',
+                                child: Text('Collected'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'DISPATCH',
+                                child: Text('Dispatch'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'ASSIGNED_TO_POSTMAN',
+                                child: Text('Assign To Postman'),
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                statusTo = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.all(4)),
+                          )
+                          // TextField(
+                          //   controller: _branchController,
+                          //   decoration: InputDecoration(
+                          //     contentPadding: EdgeInsets.all(8.0),
+                          //     hintText: 'Enter branch',
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          // ),
+                          ),
+                    ),
+                  ],
+                ),
+              ],
+              SizedBox(height: 10.0),
+              if (statusTo == "DISPATCH") ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 120.0,
+                      child: Text(
+                        'Dispatch To Branch',
+                        style: TextStyle(fontSize: 12.0), // Decrease font size
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: SizedBox(
+                          height: 30.0,
+                          child: DropdownButtonFormField(
+                            items: branches.map((admin) {
+                              return DropdownMenuItem(
+                                value: admin['id'],
+                                child: Text(admin['branch_name']),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              // print(value);
+                              setState(() {
+                                dispatchBranch = value as String?;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.all(4)),
+                          )
+                          // TextField(
+                          //   controller: _branchController,
+                          //   decoration: InputDecoration(
+                          //     contentPadding: EdgeInsets.all(8.0),
+                          //     hintText: 'Enter branch',
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          // ),
+                          ),
+                    ),
+                  ],
+                ),
+              ],
+              SizedBox(height: 10.0),
+              if (statusTo == "ASSIGNED_TO_POSTMAN") ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 120.0,
+                      child: Text(
+                        'Assign To Postman',
+                        style: TextStyle(fontSize: 12.0), // Decrease font size
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: SizedBox(
+                          height: 30.0,
+                          child: DropdownButtonFormField(
+                            items: postmans.map((admin) {
+                              return DropdownMenuItem(
+                                value: admin['id'],
+                                child: Text(
+                                    '${admin['firstname']} ${admin['lastname']}'),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              // print(value);
+                              setState(() {
+                                assingPostman = value as String?;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.all(4)),
+                          )
+                          // TextField(
+                          //   controller: _branchController,
+                          //   decoration: InputDecoration(
+                          //     contentPadding: EdgeInsets.all(8.0),
+                          //     hintText: 'Enter branch',
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          // ),
+                          ),
+                    ),
+                  ],
+                ),
+              ],
+              if (sequense.isNotEmpty &&
+                  (widget.type == 'inquery' ||
+                      widget.type == 'rate' ||
+                      widget.type == 'admin-rate')) ...[
+                Text('Job Journey'),
+                SizedBox(height: 10.0),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: sequense.length,
+                  itemBuilder: (context, index) {
+                    final item = sequense[index];
+                    DateTime dateTime = DateTime.parse(item['created_date']);
+                    // Format the date and time
+                    String formattedDate =
+                        DateFormat.yMMMd().format(dateTime); // e.g., Apr 27, 2024
+                    String formattedTime = DateFormat.Hms().format(dateTime);
+                    return Card(
+                      margin: EdgeInsets.symmetric(vertical: 4.0),
+                      child: ListTile(
+                        title: Text('Status: ${item['status']}'),
+                        subtitle: Column(
+                          children: [
+                            Text('${item['description']}'),
+                            Text('${formattedDate} at ${formattedTime}'),
+                          ],
+                        ),
+                        // Add more details as needed
+                      ),
+                    );
+                  },
+                ),
+              ],
+              SizedBox(height: 20.0),
+
             ],
-            SizedBox(height: 20.0),
-            if (widget.type == "rate" || widget.type == "admin-rate") ...[
+            if (widget.type == "rate" || widget.type == "admin-rate" || widget.type == "anonymous-inquery"  ) ...[
               RatingBarIndicator(
                 rating: _rating,
                 itemBuilder: (context, index) => Icon(
@@ -758,7 +769,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(height: 20.0),
               TextField(
                 keyboardType: TextInputType.number,
-                enabled: widget.type == "rate"? true: false,
+                enabled: widget.type == "rate" ? true : false,
                 controller: _rateController,
                 onChanged: (value) {
                   setState(() {
@@ -782,7 +793,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
               SizedBox(height: 20.0),
               TextField(
-                enabled: widget.type == "rate"? true: false,
+                enabled: widget.type == "rate" ? true : false,
                 controller:
                     _descriptionController, // TextEditingController for handling input
                 maxLines:
@@ -799,8 +810,36 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 ),
               ),
             ],
+                          // SizedBox(height: 20.0),
+              if (widget.type == 'rate') ...[
+                SizedBox(height: 20.0),
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: Checkbox(
+                        value: _isChecked, // Current value of the checkbox
+                        onChanged: (bool? value) {
+                          // Update the value of the checkbox when it's changed
+                          setState(() {
+                            _isChecked = value ?? false;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 300.0,
+                      child: Text(
+                        'Submit Anonymously', // Label for the checkbox
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                  ],
+                ),
+              ],
             SizedBox(height: 20.0),
-            if (widget.type != 'inquery' && widget.type != 'admin-rate') ...[
+            if (widget.type != 'inquery' && widget.type != 'admin-rate' && widget.type != 'anonymous-inquery') ...[
               ElevatedButton(
                 onPressed: () {
                   // Perform action on button press (e.g., create branch)
@@ -823,7 +862,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                     print(widget.data);
                     _approvePending(widget.data['job'], 'approve');
                   } else if (widget.type == 'rate') {
-                      _addRating(widget.data['id'], _rating, _descriptionController.text);
+                    _addRating(widget.data['id'], _rating,
+                        _descriptionController.text, _isChecked);
                   } else {
                     _fetchUsers(widget.data['id'], statusTo, dispatchBranch,
                         assingPostman);
@@ -981,7 +1021,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     // toggleLoading();
   }
 
-  void _addRating(id, rating, comment) async {
+  void _addRating(id, rating, comment, anonymous) async {
     try {
       setState(() {
         isLoading = true;
@@ -993,6 +1033,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
         "id": id,
         "rate": rating.toString(),
         "comment": comment,
+        "anonymous": anonymous.toString()
       };
 
       // Encode the data as JSON
@@ -1034,7 +1075,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return CustomerAssignedItems(
               userId: widget.userId,
-              type: 'inquery',
+              type: 'rate',
             );
           }));
         } else {
@@ -1164,7 +1205,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       Map<String, String> data = {
         'jobId': jobId.toString(),
         'approvalType': approvalType
-        };
+      };
 
       // Encode the data as JSON
       String body = json.encode(data);

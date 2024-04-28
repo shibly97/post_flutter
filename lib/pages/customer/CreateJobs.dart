@@ -17,7 +17,7 @@ class CreateJobs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Jobs'),
+      title: const Text('Register Items'),
         backgroundColor: Colors.red,
       ),
       body: LoginForm(userId: userId),
@@ -38,12 +38,13 @@ class _LoginFormState extends State<LoginForm> {
   bool isLoading = false;
 
   final TextEditingController _senderName = TextEditingController();
-  final TextEditingController _senderAddressController = TextEditingController();
+  final TextEditingController _senderAddressController =
+      TextEditingController();
   final TextEditingController _senderContactNumberController =
       TextEditingController();
   final TextEditingController _senderEmailController = TextEditingController();
 
-    final TextEditingController _reName = TextEditingController();
+  final TextEditingController _reName = TextEditingController();
   final TextEditingController _reAddressController = TextEditingController();
   final TextEditingController _reContactNumberController =
       TextEditingController();
@@ -56,907 +57,938 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _widthController = TextEditingController();
   final TextEditingController _lengthController = TextEditingController();
 
+  bool _isChecked = false;
+
   int step = 0;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          if (step == 0) ...[
-            Text(
-              'Sender Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 40.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Name:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _senderName,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: '',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Address:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _senderAddressController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter last name',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Contact Number:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _senderContactNumberController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Email:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _senderEmailController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Branch:',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //           height: 30.0,
-            //           child: DropdownButtonFormField(
-            //             items: const [
-            //               DropdownMenuItem(
-            //                 value: 'Kandy',
-            //                 child: Text('Kandy - Main Branch'),
-            //               ),
-            //               DropdownMenuItem(
-            //                 value: 'Colombo',
-            //                 child: Text('Colombo - Bambalapitiya'),
-            //               ),
-            //             ],
-            //             onChanged: (value) {setState(() {
-            //               selectedBranch = value;
-            //             });},
-            //             decoration: InputDecoration(
-            //                 border: OutlineInputBorder(),
-            //                 contentPadding: EdgeInsets.all(4)),
-            //           )
-            //           // TextField(
-            //           //   controller: _branchController,
-            //           //   decoration: InputDecoration(
-            //           //     contentPadding: EdgeInsets.all(8.0),
-            //           //     hintText: 'Enter branch',
-            //           //     border: OutlineInputBorder(),
-            //           //   ),
-            //           // ),
-            //           ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Postal/Zip Code:',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _postalCodeController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             // hintText: 'Enter postal/zip code',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'NIC',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _nicController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             hintText: 'Enter NIC',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            SizedBox(height: 30.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Login form widgets go here
-
-                // "Don't have an account : Sign Up" message
-
-                TextButton(
-                  onPressed: () {
-                    // Navigator.of(context)
-                    //     .push(MaterialPageRoute(builder: (BuildContext context) {
-                    //   return const CustomerCreationPage();
-                    // }));
-                    setState(() {
-                      step = 1;
-                    });
-                  },
-                  child: Text(
-                    'Add Receiver\'s Details',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue, // Set button text color to blue
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-          if (step == 1) ...[
-            Text(
-              'Receiver Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 40.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Name:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _reName,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: '',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Address:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _reAddressController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter last name',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Contact Number:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _reContactNumberController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Email:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _reEmailController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Branch:',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //           height: 30.0,
-            //           child: DropdownButtonFormField(
-            //             items: const [
-            //               DropdownMenuItem(
-            //                 value: 'Kandy',
-            //                 child: Text('Kandy - Main Branch'),
-            //               ),
-            //               DropdownMenuItem(
-            //                 value: 'Colombo',
-            //                 child: Text('Colombo - Bambalapitiya'),
-            //               ),
-            //             ],
-            //             onChanged: (value) {setState(() {
-            //               selectedBranch = value;
-            //             });},
-            //             decoration: InputDecoration(
-            //                 border: OutlineInputBorder(),
-            //                 contentPadding: EdgeInsets.all(4)),
-            //           )
-            //           // TextField(
-            //           //   controller: _branchController,
-            //           //   decoration: InputDecoration(
-            //           //     contentPadding: EdgeInsets.all(8.0),
-            //           //     hintText: 'Enter branch',
-            //           //     border: OutlineInputBorder(),
-            //           //   ),
-            //           // ),
-            //           ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Postal/Zip Code:',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _postalCodeController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             // hintText: 'Enter postal/zip code',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            SizedBox(height: 10.0),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'NIC',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _nicController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             hintText: 'Enter NIC',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            SizedBox(height: 20.0),
-                        Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Login form widgets go here
-
-                // "Don't have an account : Sign Up" message
-
-                TextButton(
-                  onPressed: () {
-                    // Navigator.of(context)
-                    //     .push(MaterialPageRoute(builder: (BuildContext context) {
-                    //   return const CustomerCreationPage();
-                    // }));
-                    setState(() {
-                      step = 0;
-                    });
-                  },
-                  child: Text(
-                    'Back To sender\'s Details',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue, // Set button text color to blue
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Login form widgets go here
-
-                // "Don't have an account : Sign Up" message
-
-                TextButton(
-                  onPressed: () {
-                    // Navigator.of(context)
-                    //     .push(MaterialPageRoute(builder: (BuildContext context) {
-                    //   return const CustomerCreationPage();
-                    // }));
-                    setState(() {
-                      step = 2;
-                    });
-                  },
-                  child: Text(
-                    'Add item Details',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue, // Set button text color to blue
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-          if (step == 2) ...[
-            Text(
-              'Item Details',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 40.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Description of Content:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _desController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        hintText: '',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Instruction:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _instructionController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter last name',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Weight:',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _weightController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Length',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _lengthController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-                       SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Height',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _hightController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-                       SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120.0,
-                  child: Text(
-                    'Width',
-                    style: TextStyle(fontSize: 12.0), // Decrease font size
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Expanded(
-                  child: SizedBox(
-                    height: 30.0,
-                    child: TextField(
-                      controller: _widthController,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0),
-                        // hintText: 'Enter email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Branch:',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //           height: 30.0,
-            //           child: DropdownButtonFormField(
-            //             items: const [
-            //               DropdownMenuItem(
-            //                 value: 'Kandy',
-            //                 child: Text('Kandy - Main Branch'),
-            //               ),
-            //               DropdownMenuItem(
-            //                 value: 'Colombo',
-            //                 child: Text('Colombo - Bambalapitiya'),
-            //               ),
-            //             ],
-            //             onChanged: (value) {setState(() {
-            //               selectedBranch = value;
-            //             });},
-            //             decoration: InputDecoration(
-            //                 border: OutlineInputBorder(),
-            //                 contentPadding: EdgeInsets.all(4)),
-            //           )
-            //           // TextField(
-            //           //   controller: _branchController,
-            //           //   decoration: InputDecoration(
-            //           //     contentPadding: EdgeInsets.all(8.0),
-            //           //     hintText: 'Enter branch',
-            //           //     border: OutlineInputBorder(),
-            //           //   ),
-            //           // ),
-            //           ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Postal/Zip Code:',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _postalCodeController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             // hintText: 'Enter postal/zip code',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'Contact Number',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _reContactNumberController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             // hintText: 'Enter Contact Number',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 10.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     SizedBox(
-            //       width: 120.0,
-            //       child: Text(
-            //         'NIC',
-            //         style: TextStyle(fontSize: 12.0), // Decrease font size
-            //       ),
-            //     ),
-            //     SizedBox(width: 10.0),
-            //     Expanded(
-            //       child: SizedBox(
-            //         height: 30.0,
-            //         child: TextField(
-            //           controller: _nicController,
-            //           decoration: InputDecoration(
-            //             contentPadding: EdgeInsets.all(8.0),
-            //             hintText: 'Enter NIC',
-            //             border: OutlineInputBorder(),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            SizedBox(height: 30.0),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Login form widgets go here
-
-                // "Don't have an account : Sign Up" message
-
-                TextButton(
-                  onPressed: () {
-                    // Navigator.of(context)
-                    //     .push(MaterialPageRoute(builder: (BuildContext context) {
-                    //   return const CustomerCreationPage();
-                    // }));
-                    setState(() {
-                      step = 1;
-                    });
-                  },
-                  child: Text(
-                    'Back To Receiver\'s Details',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.blue, // Set button text color to blue
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Implement login logic here
-                // String staffId = _staffIdController.text;
-                // String userName = _userNameController.text;
-                // String password = _passwordController.text;
-                // String fistName = _firstNameController.text;
-                // // String lastName = _lastNameController.text;
-                // String email = _emailController.text;
-                // String zip = _postalCodeController.text;
-                // String contact = _contactNumberController.text;
-                // String nic = _nicController.text;
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (BuildContext context) {
-                //   return const SuperAdminDashboard();
-                // }));
-                // print('Username: $selectedBranch, Password: $nic');
-                _fetchUsers(
-                    _senderName.text,
-                    _senderAddressController.text,
-                    _senderContactNumberController.text,
-                    _senderEmailController.text,
-                    _reName.text,
-                    _reAddressController.text,
-                    _reContactNumberController.text,
-                    _reEmailController.text,
-                    _desController.text,
-                    _instructionController.text,
-                    _weightController.text,
-                    _hightController.text,
-                    _lengthController.text
-                  );
-              },
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.red, // Set button color to red
-                minimumSize: Size(double.infinity, 40.0), // Set full width
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (step == 0) ...[
+              Text(
+                'Sender Details',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              child: Text('Submit and Generate QR Code'),
-            ),
+              SizedBox(height: 40.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Name:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _senderName,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: '',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Address:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _senderAddressController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter last name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Contact Number:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _senderContactNumberController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Email:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _senderEmailController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Branch:',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //           height: 30.0,
+              //           child: DropdownButtonFormField(
+              //             items: const [
+              //               DropdownMenuItem(
+              //                 value: 'Kandy',
+              //                 child: Text('Kandy - Main Branch'),
+              //               ),
+              //               DropdownMenuItem(
+              //                 value: 'Colombo',
+              //                 child: Text('Colombo - Bambalapitiya'),
+              //               ),
+              //             ],
+              //             onChanged: (value) {setState(() {
+              //               selectedBranch = value;
+              //             });},
+              //             decoration: InputDecoration(
+              //                 border: OutlineInputBorder(),
+              //                 contentPadding: EdgeInsets.all(4)),
+              //           )
+              //           // TextField(
+              //           //   controller: _branchController,
+              //           //   decoration: InputDecoration(
+              //           //     contentPadding: EdgeInsets.all(8.0),
+              //           //     hintText: 'Enter branch',
+              //           //     border: OutlineInputBorder(),
+              //           //   ),
+              //           // ),
+              //           ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Postal/Zip Code:',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _postalCodeController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             // hintText: 'Enter postal/zip code',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'NIC',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _nicController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             hintText: 'Enter NIC',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              SizedBox(height: 30.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Login form widgets go here
+        
+                  // "Don't have an account : Sign Up" message
+        
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                      //   return const CustomerCreationPage();
+                      // }));
+                      setState(() {
+                        step = 1;
+                      });
+                    },
+                    child: Text(
+                      'Add Receiver\'s Details',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.blue, // Set button text color to blue
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+            if (step == 1) ...[
+              Text(
+                'Receiver Details',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: 40.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Name:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _reName,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: '',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Address:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _reAddressController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter last name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Contact Number:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _reContactNumberController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Email:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _reEmailController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Branch:',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //           height: 30.0,
+              //           child: DropdownButtonFormField(
+              //             items: const [
+              //               DropdownMenuItem(
+              //                 value: 'Kandy',
+              //                 child: Text('Kandy - Main Branch'),
+              //               ),
+              //               DropdownMenuItem(
+              //                 value: 'Colombo',
+              //                 child: Text('Colombo - Bambalapitiya'),
+              //               ),
+              //             ],
+              //             onChanged: (value) {setState(() {
+              //               selectedBranch = value;
+              //             });},
+              //             decoration: InputDecoration(
+              //                 border: OutlineInputBorder(),
+              //                 contentPadding: EdgeInsets.all(4)),
+              //           )
+              //           // TextField(
+              //           //   controller: _branchController,
+              //           //   decoration: InputDecoration(
+              //           //     contentPadding: EdgeInsets.all(8.0),
+              //           //     hintText: 'Enter branch',
+              //           //     border: OutlineInputBorder(),
+              //           //   ),
+              //           // ),
+              //           ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Postal/Zip Code:',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _postalCodeController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             // hintText: 'Enter postal/zip code',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              SizedBox(height: 10.0),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'NIC',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _nicController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             hintText: 'Enter NIC',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              SizedBox(height: 20.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Login form widgets go here
+        
+                  // "Don't have an account : Sign Up" message
+        
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                      //   return const CustomerCreationPage();
+                      // }));
+                      setState(() {
+                        step = 0;
+                      });
+                    },
+                    child: Text(
+                      'Back To sender\'s Details',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.blue, // Set button text color to blue
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Login form widgets go here
+        
+                  // "Don't have an account : Sign Up" message
+        
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                      //   return const CustomerCreationPage();
+                      // }));
+                      setState(() {
+                        step = 2;
+                      });
+                    },
+                    child: Text(
+                      'Add item Details',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.blue, // Set button text color to blue
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+            if (step == 2) ...[
+              Text(
+                'Item Details',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: 40.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Description of Content:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _desController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          hintText: '',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Instruction:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _instructionController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter last name',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Weight:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _weightController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Length',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _lengthController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Height',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _hightController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Width',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        controller: _widthController,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+               SizedBox(height: 20.0),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: Checkbox(
+                      value: _isChecked, // Current value of the checkbox
+                      onChanged: (bool? value) {
+                        // Update the value of the checkbox when it's changed
+                        setState(() {
+                          _isChecked = value ?? false;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: 300.0,
+                    child: Text(
+                      'I like to pay extra charge for SMS facility', // Label for the checkbox
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                ],
+              ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Branch:',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //           height: 30.0,
+              //           child: DropdownButtonFormField(
+              //             items: const [
+              //               DropdownMenuItem(
+              //                 value: 'Kandy',
+              //                 child: Text('Kandy - Main Branch'),
+              //               ),
+              //               DropdownMenuItem(
+              //                 value: 'Colombo',
+              //                 child: Text('Colombo - Bambalapitiya'),
+              //               ),
+              //             ],
+              //             onChanged: (value) {setState(() {
+              //               selectedBranch = value;
+              //             });},
+              //             decoration: InputDecoration(
+              //                 border: OutlineInputBorder(),
+              //                 contentPadding: EdgeInsets.all(4)),
+              //           )
+              //           // TextField(
+              //           //   controller: _branchController,
+              //           //   decoration: InputDecoration(
+              //           //     contentPadding: EdgeInsets.all(8.0),
+              //           //     hintText: 'Enter branch',
+              //           //     border: OutlineInputBorder(),
+              //           //   ),
+              //           // ),
+              //           ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Postal/Zip Code:',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _postalCodeController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             // hintText: 'Enter postal/zip code',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'Contact Number',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _reContactNumberController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             // hintText: 'Enter Contact Number',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 10.0),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       width: 120.0,
+              //       child: Text(
+              //         'NIC',
+              //         style: TextStyle(fontSize: 12.0), // Decrease font size
+              //       ),
+              //     ),
+              //     SizedBox(width: 10.0),
+              //     Expanded(
+              //       child: SizedBox(
+              //         height: 30.0,
+              //         child: TextField(
+              //           controller: _nicController,
+              //           decoration: InputDecoration(
+              //             contentPadding: EdgeInsets.all(8.0),
+              //             hintText: 'Enter NIC',
+              //             border: OutlineInputBorder(),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              SizedBox(height: 30.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  // Login form widgets go here
+        
+                  // "Don't have an account : Sign Up" message
+        
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                      //   return const CustomerCreationPage();
+                      // }));
+                      setState(() {
+                        step = 1;
+                      });
+                    },
+                    child: Text(
+                      'Back To Receiver\'s Details',
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.blue, // Set button text color to blue
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Implement login logic here
+                  // String staffId = _staffIdController.text;
+                  // String userName = _userNameController.text;
+                  // String password = _passwordController.text;
+                  // String fistName = _firstNameController.text;
+                  // // String lastName = _lastNameController.text;
+                  // String email = _emailController.text;
+                  // String zip = _postalCodeController.text;
+                  // String contact = _contactNumberController.text;
+                  // String nic = _nicController.text;
+                  // Navigator.of(context)
+                  //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                  //   return const SuperAdminDashboard();
+                  // }));
+                  // print('Username: $selectedBranch, Password: $nic');
+                  _fetchUsers(
+                      _senderName.text,
+                      _senderAddressController.text,
+                      _senderContactNumberController.text,
+                      _senderEmailController.text,
+                      _reName.text,
+                      _reAddressController.text,
+                      _reContactNumberController.text,
+                      _reEmailController.text,
+                      _desController.text,
+                      _instructionController.text,
+                      _weightController.text,
+                      _hightController.text,
+                      _lengthController.text,
+                      _isChecked
+                      );
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red, // Set button color to red
+                  minimumSize: Size(double.infinity, 40.0), // Set full width
+                ),
+                child: Text('Submit and Generate QR Code'),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
 
   void _fetchUsers(
-    senderName,
-    senderContactNumberController,
-    senderAddressController,
-    senderEmailController,
-    reName,
-    reAddressController,
-    reContactNumberController,
-    reEmailController,
-    desController,
-    instructionController,
-    weightController,
-    hightController,
-    lengthController
-  ) async {
+      senderName,
+      senderContactNumberController,
+      senderAddressController,
+      senderEmailController,
+      reName,
+      reAddressController,
+      reContactNumberController,
+      reEmailController,
+      desController,
+      instructionController,
+      weightController,
+      hightController,
+      lengthController,
+      _isChecked
+      ) async {
     try {
       setState(() {
         isLoading = true;
@@ -966,20 +998,21 @@ class _LoginFormState extends State<LoginForm> {
       // Create a Map to hold the username and password
       Map<String, String> data = {
         "senderName": senderName,
-        "senderContactNumberController":     senderContactNumberController,
-        "senderAddressController":     senderAddressController,
-        "senderEmailController":     senderEmailController,
-        "reName":     reName,
-        "reAddressController":     reAddressController,
-        "reContactNumberController":     reContactNumberController,
-        "reEmailController":     reEmailController,
-        "desController":     desController,
-        "instructionController":     instructionController,
-        "weightController":     weightController,
-        "hightController":     hightController,
-        "lengthController":     lengthController,
-        "userId": widget.userId      
-        };
+        "senderContactNumberController": senderContactNumberController,
+        "senderAddressController": senderAddressController,
+        "senderEmailController": senderEmailController,
+        "reName": reName,
+        "reAddressController": reAddressController,
+        "reContactNumberController": reContactNumberController,
+        "reEmailController": reEmailController,
+        "desController": desController,
+        "instructionController": instructionController,
+        "weightController": weightController,
+        "hightController": hightController,
+        "lengthController": lengthController,
+        "userId": widget.userId,
+        "sms": _isChecked
+      };
 
       // Encode the data as JSON
       String body = json.encode(data);
@@ -1036,7 +1069,6 @@ class _LoginFormState extends State<LoginForm> {
 
         // Now you can use the 'success' variable
         print('Success: $success');
-        
       } else {
         // Handle error response
         print('Request failed with status: ${response.statusCode}');

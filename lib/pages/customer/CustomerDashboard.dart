@@ -75,8 +75,9 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Create Job',
+              title: 'Register Items',
               icon: Icons.person_add,
+              imagePath: 'images/register items.png',
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
@@ -88,6 +89,7 @@ class DashboardCards extends StatelessWidget {
             DashboardCard(
               title: 'Rate Us',
               icon: Icons.person,
+              imagePath: 'images/Rate-Us.png',
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
@@ -103,8 +105,9 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Inquery',
+              title: 'View Item\'s Journey',
               icon: Icons.add_location,
+              imagePath: 'images/ViewItems.png',
               onPressed: () {
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -113,17 +116,18 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Create Branches card is pressed
               },
             ),
-            // DashboardCard(
-            //   title: 'Complains',
-            //   icon: Icons.update,
-            //   onPressed: () {
-            //     // Action to perform when Update Branches card is pressed
-            //      Navigator.of(context)
-            //         .push(MaterialPageRoute(builder: (BuildContext context) {
-            //       return CustomerAssignedItems(userId: userId, type: 'complain',);
-            //     }));
-            //   },
-            // ),
+            DashboardCard(
+              title: 'Complaints',
+              icon: Icons.update,
+               imagePath: 'images/complaints.png',
+              onPressed: () {
+                // Action to perform when Update Branches card is pressed
+                 Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return CustomerAssignedItems(userId: userId, type: 'complain',);
+                }));
+              },
+            ),
           ],
         ),
       ],
@@ -135,12 +139,14 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+  final String imagePath;
 
   const DashboardCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onPressed,
+    required this.imagePath,
   });
 
   @override
@@ -156,9 +162,10 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40.0,
+              Image.asset(
+                imagePath,
+                width: 80.0,
+                height: 80.0,
               ),
               SizedBox(height: 10.0),
               Text(

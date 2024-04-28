@@ -25,8 +25,6 @@ class CustomerCreationPage extends StatelessWidget {
   }
 }
 
-
-
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
 
@@ -35,7 +33,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-
   bool isLoading = false;
 
   final TextEditingController _staffIdController = TextEditingController();
@@ -57,6 +54,20 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          SizedBox(
+            width: 250.0,
+            height: 100.0,
+            child: Center(
+              child: Text(
+                'Create Account To Get Started Now!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
           // SizedBox(height: 20.0),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +150,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
-                    SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -166,7 +177,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
-                    SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -366,17 +377,17 @@ class _LoginFormState extends State<LoginForm> {
               // }));
               // print('Username: $selectedBranch, Password: $nic');
               _fetchUsers(
-                  userName,
-                  password,
-                  // staffId, 
-                  fistName,
-                  lastName,
-                  email,
-                  zip,
-                  contact,
-                  // nic
-                  // selectedBranch
-                );
+                userName,
+                password,
+                // staffId,
+                fistName,
+                lastName,
+                email,
+                zip,
+                contact,
+                // nic
+                // selectedBranch
+              );
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
@@ -393,7 +404,7 @@ class _LoginFormState extends State<LoginForm> {
   void _fetchUsers(
     userName,
     password,
-    // staffId, 
+    // staffId,
     fistName,
     lastName,
     email,
@@ -402,57 +413,54 @@ class _LoginFormState extends State<LoginForm> {
     // nic,
     // selectedBranch
   ) async {
-    try{
+    try {
       setState(() {
         isLoading = true;
       });
-  print('fetching users');
-    
-    
+      print('fetching users');
 
-    // Create a Map to hold the username and password
-    Map<String, String> data = {
-      'userName': userName,
-      'password': password,
-      // 'staffId':staffId , 
-      "fistName": fistName,
-      "lastName": lastName,
-      "email": email,
-      "zip": zip,
-      "contact": contact,
-      // "nic": nic,
-      // "selectedBranch": selectedBranch
-    };
+      // Create a Map to hold the username and password
+      Map<String, String> data = {
+        'userName': userName,
+        'password': password,
+        // 'staffId':staffId ,
+        "fistName": fistName,
+        "lastName": lastName,
+        "email": email,
+        "zip": zip,
+        "contact": contact,
+        // "nic": nic,
+        // "selectedBranch": selectedBranch
+      };
 
-    // Encode the data as JSON
-    String body = json.encode(data);
+      // Encode the data as JSON
+      String body = json.encode(data);
 
-    // Make the POST request with the username and password in the body
-    final response = await http.post(
-      Uri.parse(createCustomer),
-      headers: {
-        "Content-Type": "application/json"
-      }, // Set headers for JSON data
-      body: body,
-    );
+      // Make the POST request with the username and password in the body
+      final response = await http.post(
+        Uri.parse(createCustomer),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
 
-    print(response.body);
+      print(response.body);
 
-    final responseBody = response.body;
+      final responseBody = response.body;
 
-    // Check if the response status code is successful
-    if (response.statusCode == 200) {
-      // Parse the response body as JSON
-      Map<String, dynamic> responseBody = json.decode(response.body);
-      
-      // Access the 'success' variable from the parsed JSON
-      bool success = responseBody['success'];
-      String message = responseBody['message'];
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        Map<String, dynamic> responseBody = json.decode(response.body);
 
-    if(success){
-            final String userId = responseBody['id'];
-           final snackBar = Message(
-              message: message, type: "success");
+        // Access the 'success' variable from the parsed JSON
+        bool success = responseBody['success'];
+        String message = responseBody['message'];
+
+        if (success) {
+          final String userId = responseBody['id'];
+          final snackBar = Message(message: message, type: "success");
 
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
@@ -460,47 +468,43 @@ class _LoginFormState extends State<LoginForm> {
 
           await Future.delayed(Duration(seconds: 1));
 
-           Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return  OTP(userId: userId);
-            }));
-    }else{
-       final snackBar = Message(
-              message: message, type: "error");
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return OTP(userId: userId);
+          }));
+        } else {
+          final snackBar = Message(message: message, type: "error");
 
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
-    }
-      // }else{
-      //     // Navigator.of(context)
-      //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
-      //     //     return const SuperAdminDashboard();
-      //     //   }));
-      // }
-      
-      // Now you can use the 'success' variable
-      print('Success: $success');
-    } else {
-      // Handle error response
-      print('Request failed with status: ${response.statusCode}');
-    }
+        }
+        // }else{
+        //     // Navigator.of(context)
+        //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
+        //     //     return const SuperAdminDashboard();
+        //     //   }));
+        // }
 
+        // Now you can use the 'success' variable
+        print('Success: $success');
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
 
-    // Handle the response here
+      // Handle the response here
 
-    print('completed');
-     setState(() {
+      print('completed');
+      setState(() {
         isLoading = false;
       });
-    }
-    catch(err){
+    } catch (err) {
       print(err);
     }
     // setState(() {
     //   // isLoading = true
     // });
     // toggleLoading();
-  
   }
 }

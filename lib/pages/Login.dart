@@ -132,171 +132,188 @@ class _LoginFormState extends State<LoginForm> {
   // Define a callback function to toggle loading state
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-         if (widget.userType == "employee") ...[
+    return SingleChildScrollView(
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 70.0),
+          Image.asset(
+            'images/post.jpg', // Replace 'image_name.png' with the path to your local asset
+            width: 100, // Set the width of the image
+            height: 100, // Set the height of the image
+          ),
+          SizedBox(height: 20.0),
+          SizedBox(
+            width: 250.0,
+            height: 100,
+            child: Text(
+              'Welcome, Glad to See You!',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w800), // Decrease font size
+            ),
+          ),
+          if (widget.userType == "employee") ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 110.0,
+                  child: Text(
+                    'Employee Type:',
+                    style: TextStyle(fontSize: 12.0), // Decrease font size
+                  ),
+                ),
+                SizedBox(width: 10.0),
+                Expanded(
+                  child: SizedBox(
+                      height: 30.0,
+                      child: DropdownButtonFormField(
+                        items: const [
+                          DropdownMenuItem(
+                            value: 'postOfficer',
+                            child: Text('Post Officer'),
+                          ),
+                          DropdownMenuItem(
+                            value: 'postman',
+                            child: Text('Postman'),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            selectedOfficer = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.all(4)),
+                      )
+                      // TextField(
+                      //   controller: _branchController,
+                      //   decoration: InputDecoration(
+                      //     contentPadding: EdgeInsets.all(8.0),
+                      //     hintText: 'Enter branch',
+                      //     border: OutlineInputBorder(),
+                      //   ),
+                      // ),
+                      ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10.0),
+          ],
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SizedBox(
-                width: 120.0,
+                width: 100.0,
                 child: Text(
-                  'Employee Type:',
+                  widget.userType == 'customer' ? 'E-mail: ' : 'Username: ',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),
               SizedBox(width: 10.0),
               Expanded(
                 child: SizedBox(
-                    height: 30.0,
-                    child: DropdownButtonFormField(
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'postOfficer',
-                          child: Text('Post Officer'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'postman',
-                          child: Text('Postman'),
-                        ),
-                      ],
-                      onChanged: (value) {setState(() {
-                        selectedOfficer = value;
-                      });},
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(4)),
-                    )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
+                  height: 30.0,
+                  child: TextField(
+                    controller: _usernameController,
+                    //  maxLines: 3, // Allow the TextField to expand vertically
+                    //   minLines: 2, // Set a minimum number of lines to start with
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter your username',
+                      border: OutlineInputBorder(),
                     ),
+                  ),
+                ),
               ),
             ],
           ),
           SizedBox(height: 10.0),
-         ],
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SizedBox(
-              width: 120.0,
-              child: Text(
-                widget.userType == 'customer' ? 'E-mail: ' : 'Username: ',
-                style: TextStyle(fontSize: 12.0), // Decrease font size
-              ),
-            ),
-            SizedBox(width: 10.0),
-            Expanded(
-              child: SizedBox(
-                height: 30.0,
-                child: TextField(
-                  controller: _usernameController,
-                  //  maxLines: 3, // Allow the TextField to expand vertically
-                  //   minLines: 2, // Set a minimum number of lines to start with
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(8.0),
-                    hintText: 'Enter your username',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 10.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SizedBox(
-              width: 120.0,
-              child: Text(
-                'Password: ',
-                style: TextStyle(fontSize: 12.0), // Decrease font size
-              ),
-            ),
-            SizedBox(width: 10.0),
-            Expanded(
-              child: SizedBox(
-                height: 30.0,
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(8.0),
-                    hintText: 'Enter your password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        ElevatedButton(
-          onPressed: () {
-            // Implement login logic here
-            String username = _usernameController.text;
-            String password = _passwordController.text;
-            // Navigator.of(context)
-            //     .push(MaterialPageRoute(builder: (BuildContext context) {
-            //   return const SuperAdminDashboard();
-            // }));
-            print('Username: $username, Password: $password');
-            _fetchUsers(
-              username,
-              password,
-              selectedOfficer?? ''
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-            backgroundColor: Colors.red, // Set button color to red
-            minimumSize: Size(double.infinity, 40.0), // Set full width
-          ),
-          child: Text('Login'),
-        ),
-        SizedBox(height: 20.0),
-        if (widget.userType == "customer") ...[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              // Login form widgets go here
-
-              // "Don't have an account : Sign Up" message
-              Text(
-                'Don\'t have an account? ',
-                style: TextStyle(fontSize: 16.0),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return const CustomerCreationPage();
-                  }));
-                },
+              SizedBox(
+                width: 100.0,
                 child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.blue, // Set button text color to blue
+                  'Password: ',
+                  style: TextStyle(fontSize: 12.0), // Decrease font size
+                ),
+              ),
+              SizedBox(width: 10.0),
+              Expanded(
+                child: SizedBox(
+                  height: 30.0,
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(8.0),
+                      hintText: 'Enter your password',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                 ),
               ),
             ],
-          )
+          ),
+          SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              // Implement login logic here
+              String username = _usernameController.text;
+              String password = _passwordController.text;
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(builder: (BuildContext context) {
+              //   return const SuperAdminDashboard();
+              // }));
+              print('Username: $username, Password: $password');
+              _fetchUsers(username, password, selectedOfficer ?? '');
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.red, // Set button color to red
+              minimumSize: Size(double.infinity, 40.0), // Set full width
+            ),
+            child: Text('Login'),
+          ),
+          SizedBox(height: 20.0),
+          if (widget.userType == "customer") ...[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                // Login form widgets go here
+      
+                // "Don't have an account : Sign Up" message
+                Text(
+                  'Don\'t have an account? ',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (BuildContext context) {
+                      return const CustomerCreationPage();
+                    }));
+                  },
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.blue, // Set button text color to blue
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ],
-      ],
+      ),
     );
   }
 
-  void _fetchUsers(username, password,selectedOfficer) async {
+  void _fetchUsers(username, password, selectedOfficer) async {
     try {
       widget.toggleLoading();
       print('fetching users');
@@ -333,7 +350,6 @@ class _LoginFormState extends State<LoginForm> {
 
         // Access the 'success' variable from the parsed JSON
         bool success = responseBody['success'];
-        
 
         if (!success) {
           final snackBar = Message(
@@ -344,7 +360,7 @@ class _LoginFormState extends State<LoginForm> {
             ..showSnackBar(snackBar);
         } else {
           String userId = responseBody['id'];
-          
+
           final snackBar =
               Message(message: "Successfully Logged In", type: "success");
 
@@ -358,10 +374,11 @@ class _LoginFormState extends State<LoginForm> {
               ? SuperAdminDashboard()
               : widget.userType == 'admin'
                   ? AdminDashboard(userId: userId)
-                  : widget.userType == 'customer' ? CustomerDashboard(userId: userId) 
-                  : selectedOfficer == 'postOfficer' ?
-                    PostOfficerDashboard(userId: userId)
-                  : PostmanDashboard(userId: userId);
+                  : widget.userType == 'customer'
+                      ? CustomerDashboard(userId: userId)
+                      : selectedOfficer == 'postOfficer'
+                          ? PostOfficerDashboard(userId: userId)
+                          : PostmanDashboard(userId: userId);
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {

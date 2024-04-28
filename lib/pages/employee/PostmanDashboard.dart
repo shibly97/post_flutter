@@ -19,7 +19,7 @@ class PostmanDashboard extends StatelessWidget {
       title: 'PostmanDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('PostmanDashboard Dashboard'),
+            title: const Text('Postman Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -63,6 +63,7 @@ class DashboardCards extends StatelessWidget {
 
   final String userId;
 
+
   const DashboardCards({super.key, required this.userId});
 
   @override
@@ -75,8 +76,9 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Items Assigned To Me',
+              title: 'QR Genarated Items',
               icon: Icons.person_add,
+               imagePath: 'images/QRgen.png',
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
@@ -86,13 +88,32 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Scan A QR Code',
+              title: 'Scan Your QR Code',
               icon: Icons.person,
+              imagePath: 'images/Scan.png',
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return ScanQRCode(userId: userId, type: 'postman');
+                }));
+              },
+            ),
+          ],
+        ),
+         SizedBox(height: 20.0),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            DashboardCard(
+              title: 'Ratings',
+              icon: Icons.person,
+               imagePath: 'images/Rate-Us.png',
+              onPressed: () {
+                // Action to perform when Update Admin Accounts card is pressed
+                 Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                   return AssignedItems(userId: userId, type: 'postman-rate');
                 }));
               },
             ),
@@ -107,12 +128,14 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+  final String imagePath;
 
   const DashboardCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onPressed,
+    required this.imagePath,
   });
 
   @override
@@ -128,9 +151,10 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40.0,
+               Image.asset(
+                imagePath,
+                width: 80.0,
+                height: 80.0,
               ),
               SizedBox(height: 10.0),
               Text(

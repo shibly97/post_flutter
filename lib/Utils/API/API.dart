@@ -17,6 +17,7 @@ const String createJob = '$baseUrl/api/job/create';
 const String getJobById = '$baseUrl/api/job/get/details';
 const String getPendingJobById = '$baseUrl/api/job/get/pendingJobDetails';
 const String getJobsByOfficer = '$baseUrl/api/job/get/detailsByOfficer';
+const String getRateJobsByOfficer = '$baseUrl/api/job/get/rateDetailsByOfficer';
 const String  getJobsByCustomer = '$baseUrl/api/job/get/detailsByCustomer';
 const String  getJobsByAdmin = '$baseUrl/api/job/get/detailsByAdmin';
 const String  getJobsByRating = '$baseUrl/api/job/get/detailsByRating';

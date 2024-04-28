@@ -98,6 +98,7 @@ class DashboardCards extends StatelessWidget {
             DashboardCard(
               title: 'Super Admin',
               icon: Icons.person_add,
+              imagePath: 'images/super.png',
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
@@ -109,6 +110,7 @@ class DashboardCards extends StatelessWidget {
             DashboardCard(
               title: 'Admin',
               icon: Icons.person,
+              imagePath: 'images/admin.png',
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
                   Navigator.of(context)
@@ -125,6 +127,7 @@ class DashboardCards extends StatelessWidget {
           children: [
             DashboardCard(
               title: 'Customer',
+              imagePath: 'images/customer.png',
               icon: Icons.add_location,
               onPressed: () {
                 Navigator.of(context)
@@ -136,7 +139,8 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Employee',
+              title: 'Staff',
+              imagePath: 'images/staff.png',
               icon: Icons.update,
               onPressed: () {
                 // Action to perform when Update Branches card is pressed
@@ -157,11 +161,13 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+  final String imagePath;
 
   const DashboardCard({
     super.key,
     required this.title,
     required this.icon,
+    required this.imagePath,
     required this.onPressed,
   });
 
@@ -178,9 +184,10 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40.0,
+              Image.asset(
+                imagePath,
+                width: 80.0,
+                height: 80.0,
               ),
               SizedBox(height: 10.0),
               Text(

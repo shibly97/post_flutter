@@ -8,7 +8,6 @@ import 'package:flutter_p/pages/AdminUpdatePage.dart';
 import 'package:http/http.dart' as http;
 
 class AssignedItems extends StatefulWidget {
-
   final String type;
   final String userId;
   const AssignedItems({super.key, required this.userId, required this.type});
@@ -22,12 +21,13 @@ class _UpdateAdminState extends State<AssignedItems> {
   late String type;
   List<dynamic> users = [];
 
-      @override
+  @override
   void initState() {
     super.initState();
     userId = widget.userId;
     type = widget.type;
-    fetchUsers(userId, type); // Call the function to fetch admins when the widget initializes
+    fetchUsers(userId,
+        type); // Call the function to fetch admins when the widget initializes
   }
 
   @override
@@ -35,7 +35,7 @@ class _UpdateAdminState extends State<AssignedItems> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Items In my Bucket'),
-         backgroundColor: Colors.red,
+        backgroundColor: Colors.red,
       ),
       body: ListView.builder(
           itemCount: users.length,
@@ -47,21 +47,28 @@ class _UpdateAdminState extends State<AssignedItems> {
             return Card(
               margin: EdgeInsets.all(8),
               child: ListTile(
-                title: Text('Job Id : $id'),
-                subtitle: Text('Status : $status'),
-                 trailing: ElevatedButton(
-                onPressed: () {
-                  _getJobData(id);
+                title: Text(
+                    ((type == 'postOfficer-rate' || type == 'postman-rate') &&
+                           ( user['anonymous_feedback'] == true) )
+                        ? 'Job Id : Anonymous'
+                        : 'Job Id : $id'),
+                subtitle: Text(
+                    ((type == 'postOfficer-rate' || type == 'postman-rate') &&
+                             ( user['anonymous_feedback'] == true))
+                        ? 'Status : Anonymous'
+                        : 'Status : $status'),
+                trailing: ElevatedButton(
+                  onPressed: () {
+                    _getJobData(id);
                     // Navigate to the UpdateUserPage and pass user data as arguments
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => JobDetailsPage(userData: user),
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => JobDetailsPage(userData: user),
                     // ));
-
-                },
-                child: Text('Edit Job'),
-              ),
+                  },
+                  child: Text((type == 'postOfficer-rate' || type == 'postman-rate')? 'Rate' : 'Edit Job'),
+                ),
               ),
             );
           }),
@@ -73,7 +80,9 @@ class _UpdateAdminState extends State<AssignedItems> {
 
   void fetchUsers(id, type) async {
     print('fetching items');
-    final url = '$getJobsByOfficer/$id/$type';
+    final url = (type == 'postOfficer-rate' || type == 'postman-rate')
+        ? '$getRateJobsByOfficer/$id/$type'
+        : '$getJobsByOfficer/$id/$type';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
@@ -86,13 +95,10 @@ class _UpdateAdminState extends State<AssignedItems> {
 
   void _getJobData(id) async {
     try {
-
       // Make the POST request with the username and password in the body
       final response = await http.get(
         Uri.parse('$getJobById/$id'),
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
       );
 
       print(response.body);
@@ -107,7 +113,7 @@ class _UpdateAdminState extends State<AssignedItems> {
         // Access the 'success' variable from the parsed JSON
         bool success = responseBody['success'];
         String message = responseBody['message'];
-        Map<String, dynamic> data =  responseBody['data'];
+        Map<String, dynamic> data = responseBody['data'];
 
         if (success) {
           // final String jobId = responseBody['id'];
@@ -121,7 +127,11 @@ class _UpdateAdminState extends State<AssignedItems> {
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return JobDetailsPage(data:data, userId: widget.userId, type: widget.type,);
+            return JobDetailsPage(
+              data: data,
+              userId: widget.userId,
+              type: 'anonymous-inquery',
+            );
           }));
         } else {
           final snackBar = Message(message: message, type: "error");
@@ -139,7 +149,6 @@ class _UpdateAdminState extends State<AssignedItems> {
 
         // Now you can use the 'success' variable
         print('Success: $success');
-        
       } else {
         // Handle error response
         print('Request failed with status: ${response.statusCode}');

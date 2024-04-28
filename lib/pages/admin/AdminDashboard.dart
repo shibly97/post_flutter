@@ -8,9 +8,8 @@ import 'package:flutter_p/pages/admin/AdminAssignedItems.dart';
 import 'package:flutter_p/pages/admin/AdminUserDashboard.dart';
 
 class AdminDashboard extends StatelessWidget {
+  final String userId;
 
-   final String userId;
-  
   const AdminDashboard({super.key, required this.userId});
 
   @override
@@ -34,7 +33,8 @@ class AdminDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: BottomNaviatiobBar(type: 'admin', userId: userId)),
+          bottomNavigationBar:
+              BottomNaviatiobBar(type: 'admin', userId: userId)),
     );
   }
 }
@@ -60,7 +60,6 @@ class AdminDashboard extends StatelessWidget {
 // }
 
 class DashboardCards extends StatelessWidget {
-
   final String userId;
 
   const DashboardCards({super.key, required this.userId});
@@ -76,6 +75,7 @@ class DashboardCards extends StatelessWidget {
           children: [
             DashboardCard(
               title: 'Registered Items',
+              imagePath: 'images/register items.png',
               icon: Icons.person_add,
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
@@ -87,12 +87,13 @@ class DashboardCards extends StatelessWidget {
             ),
             DashboardCard(
               title: 'Ratings',
+              imagePath: 'images/Rate-Us.png',
               icon: Icons.person,
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
-                 Navigator.of(context)
+                Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                   return AdminAssignedItems(userId: userId, type: 'admin-rate');
+                  return AdminAssignedItems(userId: userId, type: 'admin-rate');
                 }));
               },
             ),
@@ -103,10 +104,11 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Users',
+              title: 'Create/Update Users',
+              imagePath: 'images/CreateAcc.png',
               icon: Icons.add_location,
               onPressed: () {
-                 Navigator.of(context)
+                Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return AdminUserDashboard(userId: userId);
                 }));
@@ -115,10 +117,11 @@ class DashboardCards extends StatelessWidget {
             ),
             DashboardCard(
               title: 'Approval Pending Items',
+              imagePath: 'images/ApprovalPending.png',
               icon: Icons.update,
               onPressed: () {
                 // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
+                Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return AdminAssignedItems(userId: userId, type: 'pending');
                 }));
@@ -133,8 +136,21 @@ class DashboardCards extends StatelessWidget {
             DashboardCard(
               title: 'Generate Reports',
               icon: Icons.add_location,
+              imagePath: 'images/GenRe.png',
               onPressed: () {
-                 Navigator.of(context)
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return BranchCreationPage();
+                }));
+                // Action to perform when Create Branches card is pressed
+              },
+            ),
+            DashboardCard(
+              title: 'Complaints',
+              icon: Icons.add_location,
+              imagePath: 'images/complaints.png',
+              onPressed: () {
+                Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return BranchCreationPage();
                 }));
@@ -152,12 +168,14 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+  final String imagePath;
 
   const DashboardCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onPressed,
+    required this.imagePath,
   });
 
   @override
@@ -173,9 +191,10 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40.0,
+              Image.asset(
+                imagePath,
+                width: 80.0,
+                height: 80.0,
               ),
               SizedBox(height: 10.0),
               Text(
