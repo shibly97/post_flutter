@@ -6,6 +6,7 @@ import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/components/ScanQR.dart';
 import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
+import 'package:flutter_p/pages/admin/AdminAssignedItems.dart';
 import 'package:flutter_p/pages/customer/CustomerAssignedItems.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -21,7 +22,7 @@ class JobDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(type == 'pending' ? 'Pending Job Details' :'Job Details'),
+        title: Text(type == 'pending' ? 'Pending Job Details' : 'Job Details'),
         backgroundColor: Colors.red,
       ),
       body: BranchCreationForm(
@@ -97,7 +98,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
         TextEditingController(text: widget.data['instruction']);
     _currStatus = TextEditingController(text: widget.data['status']);
     _weightController = TextEditingController(text: widget.data['weight']);
-    _senderEmailController = TextEditingController(text: widget.data['sender_email']);
+    _senderEmailController =
+        TextEditingController(text: widget.data['sender_email']);
     _reEmailController = TextEditingController(text: widget.data['re_email']);
     _fetchBranches(); // Call the function to fetch admins when the widget initializes
     _fetchPostmans(); // Call the function to fetch admins when the widget initializes
@@ -736,7 +738,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ElevatedButton(
                 onPressed: () {
                   // Perform action on button press (e.g., create branch)
-                  if(widget.type == 'customer-edit'){
+                  if (widget.type == 'customer-edit') {
                     _updateUsers(
                         _senderName.text,
                         _senderAddressController.text,
@@ -750,11 +752,13 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                         _instructionController.text,
                         _weightController.text,
                         widget.data['id'],
-                        _currStatus.text
-                    );
-                  }else{
+                        _currStatus.text);
+                  } else if (widget.type == 'pending') {
+                    print(widget.data);
+                    _approvePending(widget.data['job']);
+                  } else {
                     _fetchUsers(widget.data['id'], statusTo, dispatchBranch,
-                        assingPostman);   
+                        assingPostman);
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -765,7 +769,9 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 child: Text((widget.type == 'customer-edit' &&
                         widget.data['status'] != 'PENDING')
                     ? 'Send To Approval'
-                    : widget.type == 'pending'? 'Approve Changes' :  'Update Job Details'),
+                    : widget.type == 'pending'
+                        ? 'Approve Changes'
+                        : 'Update Job Details'),
               ),
             ],
           ],
@@ -774,21 +780,20 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     );
   }
 
- void _updateUsers(
-    senderName,
-    senderContactNumberController,
-    senderAddressController,
-    senderEmailController,
-    reName,
-    reAddressController,
-    reContactNumberController,
-    reEmailController,
-    desController,
-    instructionController,
-    weightController,
-    id,
-    currentStatus
-  ) async {
+  void _updateUsers(
+      senderName,
+      senderContactNumberController,
+      senderAddressController,
+      senderEmailController,
+      reName,
+      reAddressController,
+      reContactNumberController,
+      reEmailController,
+      desController,
+      instructionController,
+      weightController,
+      id,
+      currentStatus) async {
     try {
       setState(() {
         isLoading = true;
@@ -798,20 +803,20 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       // Create a Map to hold the username and password
       Map<String, String> data = {
         "senderName": senderName,
-        "senderContactNumberController":     senderContactNumberController,
-        "senderAddressController":     senderAddressController,
-        "senderEmailController":     senderEmailController,
-        "reName":     reName,
-        "reAddressController":     reAddressController,
-        "reContactNumberController":     reContactNumberController,
-        "reEmailController":     reEmailController,
-        "desController":     desController,
-        "instructionController":     instructionController,
-        "weightController":     weightController,
+        "senderContactNumberController": senderContactNumberController,
+        "senderAddressController": senderAddressController,
+        "senderEmailController": senderEmailController,
+        "reName": reName,
+        "reAddressController": reAddressController,
+        "reContactNumberController": reContactNumberController,
+        "reEmailController": reEmailController,
+        "desController": desController,
+        "instructionController": instructionController,
+        "weightController": weightController,
         "userId": widget.userId,
-        "id":   id  ,
+        "id": id,
         "currentStatus": currentStatus
-        };
+      };
 
       // Encode the data as JSON
       String body = json.encode(data);
@@ -848,10 +853,13 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
 
           await Future.delayed(Duration(seconds: 2));
 
-           Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return CustomerAssignedItems(userId: widget.userId, type: 'inquery',);
-                }));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return CustomerAssignedItems(
+              userId: widget.userId,
+              type: 'inquery',
+            );
+          }));
         } else {
           final snackBar = Message(message: message, type: "error");
 
@@ -868,7 +876,6 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
 
         // Now you can use the 'success' variable
         print('Success: $success');
-        
       } else {
         // Handle error response
         print('Request failed with status: ${response.statusCode}');
@@ -940,6 +947,80 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return ScanQRCode(userId: widget.userId, type: widget.type);
+          }));
+        } else {
+          final snackBar = Message(message: message, type: "error");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        }
+        print('Success: $success');
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+
+      // Handle the response here
+
+      print('completed');
+      setState(() {
+        isLoading = false;
+      });
+    } catch (err) {
+      print(err);
+    }
+    // setState(() {
+    //   // isLoading = true
+    // });
+    // toggleLoading();
+  }
+
+  void _approvePending(jobId) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      print('fetching users');
+
+      // Create a Map to hold the username and password
+      Map<String, int> data = {'jobId': jobId};
+
+      // Encode the data as JSON
+      String body = json.encode(data);
+
+      // Make the POST request with the username and password in the body
+      final response = await http.put(
+        Uri.parse(approveJob),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
+
+      print(response.body);
+
+      Map<String, dynamic> responseBody = json.decode(response.body);
+
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        bool success = responseBody['success'];
+        String message = responseBody['message'];
+
+        if (success) {
+          // final String jobId = responseBody['id'];
+          final snackBar = Message(message: message, type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+
+          // await Future.delayed(Duration(seconds: 2));
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return AdminAssignedItems(userId: widget.userId, type: 'pending');
           }));
         } else {
           final snackBar = Message(message: message, type: "error");

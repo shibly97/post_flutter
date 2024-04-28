@@ -19,6 +19,7 @@ const String  getJobsByCustomer = '$baseUrl/api/job/get/detailsByCustomer';
 const String  getJobsByAdmin = '$baseUrl/api/job/get/detailsByAdmin';
 const String  getPendingJobsByAdmin = '$baseUrl/api/job/get/pendingDetailsByAdmin';
 const String updateJobStatus = '$baseUrl/api/job/update/status';
+const String approveJob = '$baseUrl/api/job/update/pending';
 const String updateJob = '$baseUrl/api/job/update/';
 
 const String getSequenceByCustomerId = '$baseUrl/api/job/get/sequence';

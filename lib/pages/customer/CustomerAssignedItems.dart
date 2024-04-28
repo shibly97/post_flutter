@@ -62,7 +62,7 @@ class _UpdateAdminState extends State<CustomerAssignedItems> {
                     if (widget.type == 'rate') ...[
                       ElevatedButton(
                         onPressed: () {
-                          _getJobData(id, 'inquery');
+                          _getJobData(id, 'rate');
                           // Navigate to the UpdateUserPage and pass user data as arguments
                           // Navigator.push(
                           //   context,

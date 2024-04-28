@@ -198,6 +198,8 @@ class _LoginFormState extends State<LoginForm> {
                 height: 30.0,
                 child: TextField(
                   controller: _usernameController,
+                  //  maxLines: 3, // Allow the TextField to expand vertically
+                  //   minLines: 2, // Set a minimum number of lines to start with
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(8.0),
                     hintText: 'Enter your username',
