@@ -92,7 +92,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateAdmin();
+                   return AdminAssignedItems(userId: userId, type: 'rate');
                 }));
               },
             ),
@@ -120,7 +120,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Branches card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
+                   return AdminAssignedItems(userId: userId, type: 'complaint');
                 }));
               },
             ),

@@ -35,7 +35,7 @@ class _UpdateAdminState extends State<AdminAssignedItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Items In the Branch'),
+        title: Text(type == 'pending'? 'Approval Requests' : type == 'rate'? 'Rated Jobs' : type == 'complaint'? 'Complaints' : 'Items In the Branch'),
         backgroundColor: Colors.red,
       ),
       body: ListView.builder(
