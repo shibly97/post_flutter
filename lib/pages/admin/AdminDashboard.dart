@@ -4,6 +4,7 @@ import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
+import 'package:flutter_p/pages/admin/AdminAssignedItems.dart';
 import 'package:flutter_p/pages/admin/AdminUserDashboard.dart';
 
 class AdminDashboard extends StatelessWidget {
@@ -80,12 +81,12 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminCreationPage();
+                  return AdminAssignedItems(userId: userId, type: 'view');
                 }));
               },
             ),
             DashboardCard(
-              title: 'Retings',
+              title: 'Ratings',
               icon: Icons.person,
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
@@ -147,7 +148,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Branches card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
+                  return AdminAssignedItems(userId: userId, type: 'pending');
                 }));
               },
             ),

@@ -344,7 +344,7 @@ class _LoginFormState extends State<LoginForm> {
           String userId = responseBody['id'];
           
           final snackBar =
-              Message(message: "SuccessFully Logged In", type: "success");
+              Message(message: "Successfully Logged In", type: "success");
 
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()

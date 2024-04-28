@@ -5,6 +5,7 @@ import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
+import 'package:flutter_p/pages/employee/AssignedItems.dart';
 
 class PostOfficerDashboard extends StatelessWidget {
 
@@ -80,7 +81,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminCreationPage();
+                  return AssignedItems(userId: userId, type: 'postOfficer',);
                 }));
               },
             ),
@@ -91,7 +92,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return ScanQRCode();
+                  return ScanQRCode(userId: userId, type: 'postOfficer',);
                 }));
               },
             ),

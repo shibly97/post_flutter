@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_p/components/QRScanner.dart';
 import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/Login.dart';
@@ -129,6 +130,7 @@ class DashboardCards extends StatelessWidget {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return  Login(userType: 'customer');
+                  // return  QRScanner();
                 }));
                 // Action to perform when Create Branches card is pressed
               },

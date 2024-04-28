@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
+import 'package:flutter_p/components/ScanQR.dart';
 import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
+import 'package:flutter_p/pages/employee/AssignedItems.dart';
 
 class PostmanDashboard extends StatelessWidget {
 
@@ -17,7 +19,7 @@ class PostmanDashboard extends StatelessWidget {
       title: 'PostmanDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Postman Dashboard'),
+            title: const Text('PostmanDashboard Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -32,7 +34,7 @@ class PostmanDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: const BottomNaviatiobBar(),),
+          bottomNavigationBar:BottomNaviatiobBar(),),
     );
   }
 }
@@ -73,52 +75,24 @@ class DashboardCards extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             DashboardCard(
-              title: 'Create Job',
+              title: 'Items Assigned To Me',
               icon: Icons.person_add,
               onPressed: () {
                 // Action to perform when Create Admin Accounts card is pressed
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return AdminCreationPage();
+                  return AssignedItems(userId: userId, type: 'postman',);
                 }));
               },
             ),
             DashboardCard(
-              title: 'Rete Us',
+              title: 'Scan A QR Code',
               icon: Icons.person,
               onPressed: () {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateAdmin();
-                }));
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DashboardCard(
-              title: 'Inquery',
-              icon: Icons.add_location,
-              onPressed: () {
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return BranchCreationPage();
-                }));
-                // Action to perform when Create Branches card is pressed
-              },
-            ),
-            DashboardCard(
-              title: 'Complains',
-              icon: Icons.update,
-              onPressed: () {
-                // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
+                  return ScanQRCode(userId: userId, type: 'postman');
                 }));
               },
             ),

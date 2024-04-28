@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -30,11 +31,22 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
       final result =
           await ImageGallerySaver.saveImage(uint8list);
         // final result = await ImageGallerySaver.saveImage(uint8list);
-        print('downloaddd');
+        print('download');
         if(result['isSuccess']){
           print('QR Code Saved Successfully');
+           final snackBar = Message(message: 'QR Code Saved Successfully', type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
         }else{
           print('QR Code Saved Faild');
+           print('QR Code Saved Faild');
+           final snackBar = Message(message: 'QR Code Saved Successfully', type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
         }
       // final PermissionStatus status = await Permission.storage.request();
       // if(status.isGranted){
