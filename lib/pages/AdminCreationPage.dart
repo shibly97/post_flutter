@@ -17,7 +17,7 @@ class AdminCreationPage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'super-admin', userId: ''),
     );
   }
 }

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_p/pages/StartingPage.dart';
+import 'package:flutter_p/pages/SuperAdminDashboard.dart';
+import 'package:flutter_p/pages/admin/AdminDashboard.dart';
+import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
+import 'package:flutter_p/pages/employee/PostOfficerDashboard.dart';
+import 'package:flutter_p/pages/employee/PostmanDashboard.dart';
 
 class BottomNaviatiobBar extends StatelessWidget {
+  final String type;
+  final String userId;
   const BottomNaviatiobBar({
-    super.key,
+    super.key, required this.type, required this.userId,
   });
 
   @override
@@ -44,6 +51,20 @@ class BottomNaviatiobBar extends StatelessWidget {
           case 1:
              Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
+                      if(type == 'super-admin'){
+                        return const SuperAdminDashboard();
+                      }
+                      if(type == 'admin'){
+                        return AdminDashboard(userId: userId);
+                      }
+                       if(type == 'customer'){
+                        return CustomerDashboard(userId: userId);
+                      }
+                       if(type == 'post-officer'){
+                        return PostOfficerDashboard(userId: userId);
+                      }else if(type == 'postman'){
+                        return PostmanDashboard(userId: userId);      
+                      }
                   return const StartingPage();
                 })); // Navigate to the second screen
             break;

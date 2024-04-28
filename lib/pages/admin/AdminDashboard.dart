@@ -34,7 +34,7 @@ class AdminDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: const BottomNaviatiobBar(),),
+          bottomNavigationBar: BottomNaviatiobBar(type: 'admin', userId: userId)),
     );
   }
 }
@@ -92,35 +92,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Admin Accounts card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                   return AdminAssignedItems(userId: userId, type: 'rate');
-                }));
-              },
-            ),
-          ],
-        ),
-        SizedBox(height: 20.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            DashboardCard(
-              title: 'Generate Reports',
-              icon: Icons.add_location,
-              onPressed: () {
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return BranchCreationPage();
-                }));
-                // Action to perform when Create Branches card is pressed
-              },
-            ),
-            DashboardCard(
-              title: 'Complaints',
-              icon: Icons.update,
-              onPressed: () {
-                // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                   return AdminAssignedItems(userId: userId, type: 'complaint');
+                   return AdminAssignedItems(userId: userId, type: 'admin-rate');
                 }));
               },
             ),
@@ -150,6 +122,23 @@ class DashboardCards extends StatelessWidget {
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return AdminAssignedItems(userId: userId, type: 'pending');
                 }));
+              },
+            ),
+          ],
+        ),
+        SizedBox(height: 20.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            DashboardCard(
+              title: 'Generate Reports',
+              icon: Icons.add_location,
+              onPressed: () {
+                 Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return BranchCreationPage();
+                }));
+                // Action to perform when Create Branches card is pressed
               },
             ),
           ],

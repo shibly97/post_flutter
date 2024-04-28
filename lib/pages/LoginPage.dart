@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 ) 
                 : Image.asset('images/postPng.png'),
       ),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      // bottomNavigationBar: BottomNaviatiobBar(),
     );
   }
 }

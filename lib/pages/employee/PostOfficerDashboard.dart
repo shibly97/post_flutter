@@ -34,7 +34,7 @@ class PostOfficerDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar:BottomNaviatiobBar(),),
+          bottomNavigationBar:BottomNaviatiobBar(type: 'admin', userId: userId),),
     );
   }
 }

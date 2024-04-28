@@ -34,7 +34,7 @@ class PostmanDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar:BottomNaviatiobBar(),),
+          bottomNavigationBar:BottomNaviatiobBar(type: 'postman', userId: userId),),
     );
   }
 }

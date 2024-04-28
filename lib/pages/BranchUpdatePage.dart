@@ -19,7 +19,7 @@ class BranchUpdatePage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: BranchCreationForm(userData: userData),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'super-admin', userId: ''),
     );
   }
 }

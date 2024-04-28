@@ -34,7 +34,7 @@ class CustomerDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: const BottomNaviatiobBar()),
+          bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId)),
     );
   }
 }
@@ -113,17 +113,17 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Create Branches card is pressed
               },
             ),
-            DashboardCard(
-              title: 'Complains',
-              icon: Icons.update,
-              onPressed: () {
-                // Action to perform when Update Branches card is pressed
-                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return CustomerAssignedItems(userId: userId, type: 'complain',);
-                }));
-              },
-            ),
+            // DashboardCard(
+            //   title: 'Complains',
+            //   icon: Icons.update,
+            //   onPressed: () {
+            //     // Action to perform when Update Branches card is pressed
+            //      Navigator.of(context)
+            //         .push(MaterialPageRoute(builder: (BuildContext context) {
+            //       return CustomerAssignedItems(userId: userId, type: 'complain',);
+            //     }));
+            //   },
+            // ),
           ],
         ),
       ],

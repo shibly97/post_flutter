@@ -8,6 +8,7 @@ import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:flutter_p/pages/admin/AdminAssignedItems.dart';
 import 'package:flutter_p/pages/customer/CustomerAssignedItems.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -30,7 +31,7 @@ class JobDetailsPage extends StatelessWidget {
         userId: userId,
         type: type,
       ),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      // bottomNavigationBar: BottomNaviatiobBar(),
     );
   }
 }
@@ -67,11 +68,14 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   late TextEditingController _widthController = TextEditingController();
   late TextEditingController _lengthController = TextEditingController();
   late TextEditingController _currStatus = TextEditingController();
+  late TextEditingController _descriptionController = TextEditingController();
+  late TextEditingController _rateController = TextEditingController();
 
   String? statusTo;
   String? dispatchBranch;
   String? dispatchBranchName;
   String? assingPostman;
+  double _rating = 0;
 
   bool isLoading = false;
 
@@ -101,9 +105,14 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     _senderEmailController =
         TextEditingController(text: widget.data['sender_email']);
     _reEmailController = TextEditingController(text: widget.data['re_email']);
+    _descriptionController = TextEditingController(text: widget.data['comment']);
+    _rateController = TextEditingController(text: widget.data['rate'].toString());
+    setState(() {
+      _rating = widget.data['rate'].toDouble();
+    });
     _fetchBranches(); // Call the function to fetch admins when the widget initializes
     _fetchPostmans(); // Call the function to fetch admins when the widget initializes
-    if (widget.type == 'inquery') {
+    if (widget.type == 'inquery' || widget.type == 'rate' || widget.type == 'admin-rate') {
       _fetchSequense(widget.data['id']);
     }
   }
@@ -703,7 +712,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 ],
               ),
             ],
-            if (sequense.isNotEmpty && widget.type == 'inquery') ...[
+            if (sequense.isNotEmpty &&
+                (widget.type == 'inquery' || widget.type == 'rate' || widget.type == 'admin-rate')) ...[
               Text('Job Journey'),
               SizedBox(height: 10.0),
               ListView.builder(
@@ -734,7 +744,63 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
             ],
             SizedBox(height: 20.0),
-            if (widget.type != 'inquery') ...[
+            if (widget.type == "rate" || widget.type == "admin-rate") ...[
+              RatingBarIndicator(
+                rating: _rating,
+                itemBuilder: (context, index) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                itemCount: 5,
+                itemSize: 50.0,
+                direction: Axis.horizontal,
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                keyboardType: TextInputType.number,
+                enabled: widget.type == "rate"? true: false,
+                controller: _rateController,
+                onChanged: (value) {
+                  setState(() {
+                    // Parse the input value to a double and assign it to _rating
+                    _rating = double.tryParse(value) ??
+                        0; // If parsing fails, default to 0
+                  });
+                }, // TextEditingController for handling input
+                maxLines:
+                    null, // Allow the TextField to expand vertically based on content
+                decoration: InputDecoration(
+                  labelText:
+                      'Rating', // Label text displayed above the input field
+                  hintText:
+                      'Add the Rating', // Placeholder text when the field is empty
+                  border:
+                      OutlineInputBorder(), // Border decoration for the input field
+                  contentPadding:
+                      EdgeInsets.all(12.0), // Padding inside the input field
+                ),
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                enabled: widget.type == "rate"? true: false,
+                controller:
+                    _descriptionController, // TextEditingController for handling input
+                maxLines:
+                    null, // Allow the TextField to expand vertically based on content
+                decoration: InputDecoration(
+                  labelText:
+                      'Description', // Label text displayed above the input field
+                  hintText:
+                      'Enter your description', // Placeholder text when the field is empty
+                  border:
+                      OutlineInputBorder(), // Border decoration for the input field
+                  contentPadding:
+                      EdgeInsets.all(12.0), // Padding inside the input field
+                ),
+              ),
+            ],
+            SizedBox(height: 20.0),
+            if (widget.type != 'inquery' && widget.type != 'admin-rate') ...[
               ElevatedButton(
                 onPressed: () {
                   // Perform action on button press (e.g., create branch)
@@ -755,7 +821,9 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                         _currStatus.text);
                   } else if (widget.type == 'pending') {
                     print(widget.data);
-                    _approvePending(widget.data['job']);
+                    _approvePending(widget.data['job'], 'approve');
+                  } else if (widget.type == 'rate') {
+                      _addRating(widget.data['id'], _rating, _descriptionController.text);
                   } else {
                     _fetchUsers(widget.data['id'], statusTo, dispatchBranch,
                         assingPostman);
@@ -771,8 +839,25 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                     ? 'Send To Approval'
                     : widget.type == 'pending'
                         ? 'Approve Changes'
-                        : 'Update Job Details'),
+                        : widget.type == 'rate'
+                            ? 'Add Rating'
+                            : 'Update Job Details'),
               ),
+            ],
+            SizedBox(height: 1.0),
+            if (widget.type == 'pending') ...[
+              ElevatedButton(
+                  onPressed: () {
+                    _approvePending(widget.data['job'], 'reject');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red, // Set button color to red
+                    minimumSize: Size(double.infinity, 40.0), // Set full width
+                  ),
+                  child: Text(
+                    ('Reject Changes'),
+                  )),
             ],
           ],
         ),
@@ -824,6 +909,98 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       // Make the POST request with the username and password in the body
       final response = await http.put(
         Uri.parse(updateJob),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
+
+      print(response.body);
+
+      final responseBody = response.body;
+
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        Map<String, dynamic> responseBody = json.decode(response.body);
+
+        // Access the 'success' variable from the parsed JSON
+        bool success = responseBody['success'];
+        String message = responseBody['message'];
+
+        if (success) {
+          // final String jobId = responseBody['id'];
+          final snackBar = Message(message: message, type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+
+          await Future.delayed(Duration(seconds: 2));
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return CustomerAssignedItems(
+              userId: widget.userId,
+              type: 'inquery',
+            );
+          }));
+        } else {
+          final snackBar = Message(message: message, type: "error");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        }
+        // }else{
+        //     // Navigator.of(context)
+        //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
+        //     //     return const SuperAdminDashboard();
+        //     //   }));
+        // }
+
+        // Now you can use the 'success' variable
+        print('Success: $success');
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+
+      // Handle the response here
+
+      print('completed');
+      setState(() {
+        isLoading = false;
+      });
+    } catch (err) {
+      print(err);
+    }
+    // setState(() {
+    //   // isLoading = true
+    // });
+    // toggleLoading();
+  }
+
+  void _addRating(id, rating, comment) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      print('fetching users');
+
+      // Create a Map to hold the username and password
+      Map<String, String> data = {
+        "id": id,
+        "rate": rating.toString(),
+        "comment": comment,
+      };
+
+      // Encode the data as JSON
+      String body = json.encode(data);
+
+      // Make the POST request with the username and password in the body
+      final response = await http.put(
+        Uri.parse(updateJobRating),
         headers: {
           "Content-Type": "application/json"
         }, // Set headers for JSON data
@@ -976,7 +1153,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     // toggleLoading();
   }
 
-  void _approvePending(jobId) async {
+  void _approvePending(jobId, approvalType) async {
     try {
       setState(() {
         isLoading = true;
@@ -984,7 +1161,10 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       print('fetching users');
 
       // Create a Map to hold the username and password
-      Map<String, int> data = {'jobId': jobId};
+      Map<String, String> data = {
+        'jobId': jobId.toString(),
+        'approvalType': approvalType
+        };
 
       // Encode the data as JSON
       String body = json.encode(data);

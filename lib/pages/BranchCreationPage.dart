@@ -17,7 +17,7 @@ class BranchCreationPage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: BranchCreationForm(),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'super-admin', userId: ''),
     );
   }
 }

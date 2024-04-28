@@ -35,7 +35,7 @@ class _UpdateAdminState extends State<AdminAssignedItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(type == 'pending'? 'Approval Requests' : type == 'rate'? 'Rated Jobs' : type == 'complaint'? 'Complaints' : 'Items In the Branch'),
+        title: Text(type == 'pending'? 'Approval Requests' : type == 'admin-rate'? 'Rated Jobs' : type == 'complaint'? 'Complaints' : 'Items In the Branch'),
         backgroundColor: Colors.red,
       ),
       body: ListView.builder(
@@ -100,6 +100,20 @@ class _UpdateAdminState extends State<AdminAssignedItems> {
                         child: Text('Pending'),
                       ),
                     ],
+                    if (widget.type == 'admin-rate') ...[
+                      ElevatedButton(
+                        onPressed: () {
+                          _getJobData(id, 'admin-rate');
+                          // Navigate to the UpdateUserPage and pass user data as arguments
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => JobDetailsPage(userData: user),
+                          // ));
+                        },
+                        child: Text('View'),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -113,7 +127,7 @@ class _UpdateAdminState extends State<AdminAssignedItems> {
 
   void fetchUsers(id, typea) async {
     print('fetching items');
-    final url =( (type == 'pending')? '$getPendingJobsByAdmin/$id'  :  '$getJobsByAdmin/$id');
+    final url =( (type == 'pending')? '$getPendingJobsByAdmin/$id'  : (type == 'admin-rate')?'$getJobsByRating/$id' :  '$getJobsByAdmin/$id');
     print(url);
     final uri = Uri.parse(url);
     final response = await http.get(uri);

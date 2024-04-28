@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class CreateUsers extends StatelessWidget {
   final String userId;
-  
+
   const CreateUsers({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -20,17 +20,14 @@ class CreateUsers extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(userId: userId),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'admin', userId: userId),
     );
   }
 }
 
-
-
 class LoginForm extends StatefulWidget {
-
   final String userId;
-  
+
   const LoginForm({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -38,7 +35,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-
   bool isLoading = false;
 
   final TextEditingController _staffIdController = TextEditingController();
@@ -60,7 +56,6 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-
           SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
-                      Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
@@ -114,21 +109,15 @@ class _LoginFormState extends State<LoginForm> {
                           child: Text('Postman'),
                         ),
                       ],
-                      onChanged: (value) {setState(() {
-                        selectedOfficer = value;
-                      });},
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOfficer = value;
+                        });
+                      },
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.all(4)),
                     )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
                     ),
               ),
             ],
@@ -187,7 +176,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
-                    SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -214,7 +203,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ],
           ),
-                    SizedBox(height: 10.0),
+          SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -343,14 +332,13 @@ class _LoginFormState extends State<LoginForm> {
               _fetchUsers(
                   userName,
                   password,
-                  // staffId, 
+                  // staffId,
                   fistName,
                   lastName,
                   email,
                   contact,
                   nic,
-                  selectedOfficer
-                );
+                  selectedOfficer);
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
@@ -365,129 +353,126 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _fetchUsers(
-    userName,
-    password,
-    // staffId, 
-    fistName,
-    lastName,
-    email,
-    contact,
-    nic,
-    selectedOfficer
-  ) async {
-    try{
+      userName,
+      password,
+      // staffId,
+      fistName,
+      lastName,
+      email,
+      contact,
+      nic,
+      selectedOfficer) async {
+    try {
       setState(() {
         isLoading = true;
       });
-  print('fetching users');
-    
-    
+      print('fetching users');
 
-    // Create a Map to hold the username and password
-    Map<String, String> data = {
-      'userId': widget.userId , 
-      'userName': userName,
-      'password': password,
-      "fistName": fistName,
-      "lastName": lastName,
-      "email": email,
-      "contact": contact,
-      "nic": nic,
-      "selectedOfficer": selectedOfficer
-    };
+      // Create a Map to hold the username and password
+      Map<String, String> data = {
+        'userId': widget.userId,
+        'userName': userName,
+        'password': password,
+        "fistName": fistName,
+        "lastName": lastName,
+        "email": email,
+        "contact": contact,
+        "nic": nic,
+        "selectedOfficer": selectedOfficer
+      };
 
-    // Encode the data as JSON
-    String body = json.encode(data);
+      // Encode the data as JSON
+      String body = json.encode(data);
 
-    // Make the POST request with the username and password in the body
-    final response = await http.post(
-      Uri.parse(createEmployee),
-      headers: {
-        "Content-Type": "application/json"
-      }, // Set headers for JSON data
-      body: body,
-    );
+      // Make the POST request with the username and password in the body
+      final response = await http.post(
+        Uri.parse(createEmployee),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
 
-    print(response.body);
+      print(response.body);
 
-    final responseBody = response.body;
+      final responseBody = response.body;
 
-    // Check if the response status code is successful
-    if (response.statusCode == 200) {
-      // Parse the response body as JSON
-      Map<String, dynamic> responseBody = json.decode(response.body);
-      
-      // Access the 'success' variable from the parsed JSON
-      bool success = responseBody['success'];
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        Map<String, dynamic> responseBody = json.decode(response.body);
 
-      // if(!success){
-    ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-      SnackBar(
-        content: Container(
-          padding: EdgeInsets.all(16),
-          height: 90,
-          decoration: BoxDecoration(
-            color: !success? const Color.fromARGB(255, 147, 29, 20) : Color.fromARGB(255, 20, 147, 28),
-            borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-          child: Row(
-            children: [
-              // const SizedBox(width: 48),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Error",
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+        // Access the 'success' variable from the parsed JSON
+        bool success = responseBody['success'];
+
+        // if(!success){
+        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+          SnackBar(
+            content: Container(
+              padding: EdgeInsets.all(16),
+              height: 90,
+              decoration: BoxDecoration(
+                  color: !success
+                      ? const Color.fromARGB(255, 147, 29, 20)
+                      : Color.fromARGB(255, 20, 147, 28),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Row(
+                children: [
+                  // const SizedBox(width: 48),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Error",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                        Text(success
+                            ? "User Created Successfully"
+                            : "User Creation Failed"),
+                      ],
                     ),
-                    Text(success? "User Created Successfully": "User Creation Failed"),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
           ),
-        ),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-    );
-    if(success){
-           Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return AdminUserDashboard(userId: widget.userId);
-            }));
-    }
-      // }else{
-      //     // Navigator.of(context)
-      //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
-      //     //     return const SuperAdminDashboard();
-      //     //   }));
-      // }
-      
-      // Now you can use the 'success' variable
-      print('Success: $success');
-    } else {
-      // Handle error response
-      print('Request failed with status: ${response.statusCode}');
-    }
+        );
+        if (success) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return AdminUserDashboard(userId: widget.userId);
+          }));
+        }
+        // }else{
+        //     // Navigator.of(context)
+        //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
+        //     //     return const SuperAdminDashboard();
+        //     //   }));
+        // }
 
+        // Now you can use the 'success' variable
+        print('Success: $success');
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
 
-    // Handle the response here
+      // Handle the response here
 
-    print('completed');
-     setState(() {
+      print('completed');
+      setState(() {
         isLoading = false;
       });
-    }
-    catch(err){
+    } catch (err) {
       print(err);
     }
     // setState(() {
     //   // isLoading = true
     // });
     // toggleLoading();
-  
   }
 }

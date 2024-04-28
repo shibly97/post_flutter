@@ -79,7 +79,7 @@ class _LoginState extends State<OTP> {
               ),
           ],
         ),
-        bottomNavigationBar: const BottomNaviatiobBar(),
+        bottomNavigationBar:  BottomNaviatiobBar(type: 'customer', userId: widget.userId),
       ),
     );
   }

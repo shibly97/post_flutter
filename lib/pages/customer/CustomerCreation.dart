@@ -9,6 +9,7 @@ import 'package:flutter_p/pages/customer/OTP.dart';
 import 'package:http/http.dart' as http;
 
 class CustomerCreationPage extends StatelessWidget {
+  // final String userId;
   const CustomerCreationPage({Key? key}) : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class CustomerCreationPage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      // bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId),
     );
   }
 }

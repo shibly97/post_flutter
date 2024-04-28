@@ -29,7 +29,7 @@ class SuperAdminDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(),
           ),
-          bottomNavigationBar: BottomNaviatiobBar()),
+          bottomNavigationBar: BottomNaviatiobBar(type: 'super-admin', userId: '')),
     );
   }
 }

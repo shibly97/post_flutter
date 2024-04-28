@@ -19,7 +19,7 @@ class AdminUpdatePage extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(userData: userData),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'super-admin', userId: ''),
     );
   }
 }

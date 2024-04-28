@@ -5,6 +5,7 @@ import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
 import 'package:flutter_p/pages/admin/CreateUsers.dart';
+import 'package:flutter_p/pages/admin/UpdateUsers.dart';
 
 class AdminUserDashboard extends StatelessWidget {
 
@@ -33,7 +34,7 @@ class AdminUserDashboard extends StatelessWidget {
             // child: Text("Helloo"),
             child: DashboardCards(userId: userId),
           ),
-          bottomNavigationBar: BottomNaviatiobBar()),
+          bottomNavigationBar: BottomNaviatiobBar(type: 'admin', userId: userId)),
     );
   }
 }
@@ -92,7 +93,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Branches card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return UpdateBranch();
+                  return UpdateUsers(userId: userId,);
                 }));
               },
             ),

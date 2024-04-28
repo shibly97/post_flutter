@@ -88,7 +88,7 @@ class _LoginState extends State<Login> {
               ),
           ],
         ),
-        bottomNavigationBar: const BottomNaviatiobBar(),
+        // bottomNavigationBar: const BottomNaviatiobBar(),
       ),
     );
   }

@@ -2,7 +2,9 @@ import 'package:flutter_p/Utils/constants.dart';
 
 const String branchAddEndpoint = '$baseUrl/api/users/add/branch';
 const String createAdmin = '$baseUrl/api/users/add/admin';
+const String updateUser = '$baseUrl/api/users/add/updateUser';
 const String getAllAdmin = '$baseUrl/api/users/get/allAdmin';
+const String getAllUsersByAdmin = '$baseUrl/api/users/get/getAllUsersByAdmin';
 const String addBranch = '$baseUrl/api/users/add/branch';
 const String login = '$baseUrl/api/auth/login';
 const String allBranches = '$baseUrl/api/users/get/allBranches';
@@ -17,8 +19,10 @@ const String getPendingJobById = '$baseUrl/api/job/get/pendingJobDetails';
 const String getJobsByOfficer = '$baseUrl/api/job/get/detailsByOfficer';
 const String  getJobsByCustomer = '$baseUrl/api/job/get/detailsByCustomer';
 const String  getJobsByAdmin = '$baseUrl/api/job/get/detailsByAdmin';
+const String  getJobsByRating = '$baseUrl/api/job/get/detailsByRating';
 const String  getPendingJobsByAdmin = '$baseUrl/api/job/get/pendingDetailsByAdmin';
 const String updateJobStatus = '$baseUrl/api/job/update/status';
+const String updateJobRating = '$baseUrl/api/job/update/jobRating';
 const String approveJob = '$baseUrl/api/job/update/pending';
 const String updateJob = '$baseUrl/api/job/update/';
 

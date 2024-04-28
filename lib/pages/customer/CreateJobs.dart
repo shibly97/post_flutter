@@ -21,7 +21,7 @@ class CreateJobs extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(userId: userId),
-      bottomNavigationBar: BottomNaviatiobBar(),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId),
     );
   }
 }
