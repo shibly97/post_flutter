@@ -47,6 +47,36 @@ class BottomNaviatiobBar extends StatelessWidget {
          switch (value) {
           case 0:
             // Navigator.pushNamed(context, '/'); // Navigate to the first screen
+             showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Logout'),
+                content: Text('Are you sure you want to logout?'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      // Perform logout action here
+                      // For example, navigate to the login screen
+                      Navigator.of(context).pop();
+                       Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                     
+                  return const StartingPage();
+                })); 
+                    },
+                    child: Text('Yes'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('No'),
+                  ),
+                ],
+              );
+            },
+          );
             break;
           case 1:
              Navigator.of(context)
