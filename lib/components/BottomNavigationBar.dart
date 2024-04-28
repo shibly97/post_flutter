@@ -11,24 +11,24 @@ class BottomNaviatiobBar extends StatelessWidget {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(
-          label: 'Back',
+          label: '',
           icon: Icon(
-            Icons.arrow_back,
+            Icons.accessibility_sharp,
             color: Colors.white,
           ),
         ),
         BottomNavigationBarItem(
 
-          label: 'Home',
+          label: '',
           icon: Icon(
             Icons.home,
             color: Colors.white,
           ),
         ),
         BottomNavigationBarItem(
-          label: 'Add',
+          label: '',
           icon: Icon(
-            Icons.add,
+            Icons.notification_add_rounded,
             color: Colors.white,
           ),
         )
