@@ -4,6 +4,7 @@ import 'package:flutter_p/pages/AdminCreationPage.dart';
 import 'package:flutter_p/pages/BranchCreationPage.dart';
 import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
+import 'package:flutter_p/pages/customer/ComplaintList.dart';
 import 'package:flutter_p/pages/customer/CustomerAssignedItems.dart';
 import 'package:flutter_p/pages/customer/createJobs.dart';
 
@@ -124,7 +125,7 @@ class DashboardCards extends StatelessWidget {
                 // Action to perform when Update Branches card is pressed
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return CustomerAssignedItems(userId: userId, type: 'complain',);
+                  return ComplaintList(userId: userId, type: 'complain',);
                 }));
               },
             ),

@@ -10,6 +10,7 @@ import 'package:flutter_p/pages/admin/AdminAssignedItems.dart';
 import 'package:flutter_p/pages/customer/CustomerAssignedItems.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class JobDetailsPage extends StatelessWidget {
@@ -88,14 +89,14 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   void initState() {
     super.initState();
     // Call the function to fetch admins when the widget initializes
-    _senderName = TextEditingController(text: widget.data['sender_name']);
-    _senderAddressController =
-        TextEditingController(text: widget.data['sender_address']);
-    _senderContactNumberController =
-        TextEditingController(text: widget.data['sender_contact']);
-    _reName = TextEditingController(text: widget.data['re_name']);
-    _reAddressController =
-        TextEditingController(text: widget.data['re_address']);
+      _senderName = TextEditingController(text: widget.data['sender_name']);
+      _senderAddressController =
+          TextEditingController(text: widget.data['sender_address']);
+      _senderContactNumberController =
+          TextEditingController(text: widget.data['sender_contact']);
+      _reName = TextEditingController(text: widget.data['re_name']);
+      _reAddressController =
+          TextEditingController(text: widget.data['re_address']);
     _reContactNumberController =
         TextEditingController(text: widget.data['re_contact']);
     _desController = TextEditingController(text: widget.data['description']);
@@ -174,6 +175,32 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       throw Exception('Failed to load admins');
     }
   }
+
+  //   Future<void> _pickImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+  //   if (pickedFile != null) {
+  //     // Do something with the selected image file
+  //     // For example, set the image file path to a variable
+  //     String imagePath = pickedFile.path;
+  //     print('Image Path: $imagePath');
+  //   }
+  // }
+
+  Future<void> getLostData() async {
+  final ImagePicker picker = ImagePicker();
+  final LostDataResponse response = await picker.retrieveLostData();
+  if (response.isEmpty) {
+    return;
+  }
+  final List<XFile>? files = response.files;
+  if (files != null) {
+    // _handleLostFiles(files);
+  } else {
+    // _handleError(response.exaception);
+  }
+}
 
   @override
   Widget build(BuildContext context) {

@@ -30,4 +30,10 @@ const String updateJob = '$baseUrl/api/job/update/';
 const String getSequenceByCustomerId = '$baseUrl/api/job/get/sequence';
 
 const String getPostmansByBranch = '$baseUrl/api/employee/get/postman/byBranch';
+
+const String  getComplaintByCustomer = '$baseUrl/api/job/get/complaintByCustomer';
+const String  getComplaintByAdmin = '$baseUrl/api/job/get/complaintByAdmin';
+const String createComplaint   = '$baseUrl/api/job/create/createCOmplaint';
+const String updateComplaint   = '$baseUrl/api/job/update/complaint';
+const String getComplaintById = '$baseUrl/api/job/get/complaintDetails';
 // const String createJob = '$baseUrl/api/job/details';

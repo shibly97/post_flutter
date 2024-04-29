@@ -6,6 +6,7 @@ import 'package:flutter_p/pages/UpdateAdmin.dart';
 import 'package:flutter_p/pages/UpdateBranch.dart';
 import 'package:flutter_p/pages/admin/AdminAssignedItems.dart';
 import 'package:flutter_p/pages/admin/AdminUserDashboard.dart';
+import 'package:flutter_p/pages/customer/ComplaintList.dart';
 
 class AdminDashboard extends StatelessWidget {
   final String userId;
@@ -152,7 +153,7 @@ class DashboardCards extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return BranchCreationPage();
+                  return ComplaintList(userId: userId, type: 'admin',);
                 }));
                 // Action to perform when Create Branches card is pressed
               },
