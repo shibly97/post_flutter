@@ -74,7 +74,7 @@ class _UpdateAdminState extends State<CustomerAssignedItems> {
                       ),
                     ],
                     if (widget.type == 'complain') ...[
-                       ElevatedButton(
+                      ElevatedButton(
                         onPressed: () {
                           _getJobData(id, 'inquery');
                           // Navigate to the UpdateUserPage and pass user data as arguments
@@ -128,7 +128,13 @@ class _UpdateAdminState extends State<CustomerAssignedItems> {
     final body = response.body;
     final json = jsonDecode(body);
     setState(() {
-      users = json['data'];
+      List<dynamic> filteredData =
+          json['data']?.where((element) => element['status'] == 'DELIVERED').toList();
+      if (widget.type == 'rate') {
+        users = filteredData;
+      } else {
+        users = json['data'];
+      }
     });
     print('completed');
   }

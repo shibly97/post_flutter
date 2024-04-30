@@ -130,7 +130,7 @@ class _UpdateAdminState extends State<AssignedItems> {
             return JobDetailsPage(
               data: data,
               userId: widget.userId,
-              type: 'anonymous-inquery',
+              type: ((type == 'postOfficer-rate' || type == 'postman-rate')? 'anonymous-inquery': 'inquery'),
             );
           }));
         } else {
