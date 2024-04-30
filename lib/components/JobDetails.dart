@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
@@ -85,18 +86,31 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   List<dynamic> postmans = [];
   List<dynamic> sequense = [];
 
+  File? _image;
+
+  Future<void> _getImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedImage != null) {
+        _image = File(pickedImage.path);
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     // Call the function to fetch admins when the widget initializes
-      _senderName = TextEditingController(text: widget.data['sender_name']);
-      _senderAddressController =
-          TextEditingController(text: widget.data['sender_address']);
-      _senderContactNumberController =
-          TextEditingController(text: widget.data['sender_contact']);
-      _reName = TextEditingController(text: widget.data['re_name']);
-      _reAddressController =
-          TextEditingController(text: widget.data['re_address']);
+    _senderName = TextEditingController(text: widget.data['sender_name']);
+    _senderAddressController =
+        TextEditingController(text: widget.data['sender_address']);
+    _senderContactNumberController =
+        TextEditingController(text: widget.data['sender_contact']);
+    _reName = TextEditingController(text: widget.data['re_name']);
+    _reAddressController =
+        TextEditingController(text: widget.data['re_address']);
     _reContactNumberController =
         TextEditingController(text: widget.data['re_contact']);
     _desController = TextEditingController(text: widget.data['description']);
@@ -112,8 +126,11 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
     _rateController =
         TextEditingController(text: widget.data['rate'].toString());
     setState(() {
-      _rating = widget.data['rate'].toDouble();
-      _isChecked = (widget.data['anonymous_feedback'] == true)? true : false;
+      // _rating = widget.data['rate'].toDouble();
+      if (widget.data['rate'] != null) {
+        _rating = widget.data['rate']!.toDouble();
+      }
+      _isChecked = (widget.data['anonymous_feedback'] == true) ? true : false;
     });
     _fetchBranches(); // Call the function to fetch admins when the widget initializes
     _fetchPostmans(); // Call the function to fetch admins when the widget initializes
@@ -189,18 +206,18 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   // }
 
   Future<void> getLostData() async {
-  final ImagePicker picker = ImagePicker();
-  final LostDataResponse response = await picker.retrieveLostData();
-  if (response.isEmpty) {
-    return;
+    final ImagePicker picker = ImagePicker();
+    final LostDataResponse response = await picker.retrieveLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    final List<XFile>? files = response.files;
+    if (files != null) {
+      // _handleLostFiles(files);
+    } else {
+      // _handleError(response.exaception);
+    }
   }
-  final List<XFile>? files = response.files;
-  if (files != null) {
-    // _handleLostFiles(files);
-  } else {
-    // _handleError(response.exaception);
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +227,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if(!(widget.type == 'anonymous-inquery' && (widget.data['anonymous_feedback'] == true)))...[
+            if (!(widget.type == 'anonymous-inquery' &&
+                (widget.data['anonymous_feedback'] == true))) ...[
               SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -760,8 +778,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                     final item = sequense[index];
                     DateTime dateTime = DateTime.parse(item['created_date']);
                     // Format the date and time
-                    String formattedDate =
-                        DateFormat.yMMMd().format(dateTime); // e.g., Apr 27, 2024
+                    String formattedDate = DateFormat.yMMMd()
+                        .format(dateTime); // e.g., Apr 27, 2024
                     String formattedTime = DateFormat.Hms().format(dateTime);
                     return Card(
                       margin: EdgeInsets.symmetric(vertical: 4.0),
@@ -780,9 +798,10 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 ),
               ],
               SizedBox(height: 20.0),
-
             ],
-            if (widget.type == "rate" || widget.type == "admin-rate" || widget.type == "anonymous-inquery"  ) ...[
+            if (widget.type == "rate" ||
+                widget.type == "admin-rate" ||
+                widget.type == "anonymous-inquery") ...[
               RatingBarIndicator(
                 rating: _rating,
                 itemBuilder: (context, index) => Icon(
@@ -837,36 +856,57 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 ),
               ),
             ],
-                          // SizedBox(height: 20.0),
-              if (widget.type == 'rate') ...[
-                SizedBox(height: 20.0),
-                Row(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      child: Checkbox(
-                        value: _isChecked, // Current value of the checkbox
-                        onChanged: (bool? value) {
-                          // Update the value of the checkbox when it's changed
-                          setState(() {
-                            _isChecked = value ?? false;
-                          });
-                        },
-                      ),
+            // SizedBox(height: 20.0),
+            if (widget.type == 'rate') ...[
+              SizedBox(height: 20.0),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: Checkbox(
+                      value: _isChecked, // Current value of the checkbox
+                      onChanged: (bool? value) {
+                        // Update the value of the checkbox when it's changed
+                        setState(() {
+                          _isChecked = value ?? false;
+                        });
+                      },
                     ),
-                    SizedBox(
-                      width: 300.0,
-                      child: Text(
-                        'Submit Anonymously', // Label for the checkbox
-                        style: TextStyle(fontSize: 15.0),
-                      ),
+                  ),
+                  SizedBox(
+                    width: 300.0,
+                    child: Text(
+                      'Submit Anonymously', // Label for the checkbox
+                      style: TextStyle(fontSize: 15.0),
                     ),
-                    SizedBox(width: 10.0),
-                  ],
+                  ),
+                  SizedBox(width: 10.0),
+                ],
+              ),
+            ],
+            if (statusTo == 'DELIVERED') ...[
+              SizedBox(height: 1.0),
+              Text('Add Evidence'),
+              SizedBox(height: 10.0),
+              FloatingActionButton(
+                onPressed: _getImage,
+                tooltip: 'Pick Image',
+                child: Icon(Icons.add_a_photo),
+              ),
+              SizedBox(height: 5.0),
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: 40.0),// Adjust the padding as needed
+                child: Center(
+                  child: _image == null
+                      ? Text('No image selected.')
+                      : Image.file(_image!),
                 ),
-              ],
+              ),
+            ],
             SizedBox(height: 20.0),
-            if (widget.type != 'inquery' && widget.type != 'admin-rate' && widget.type != 'anonymous-inquery') ...[
+            if (widget.type != 'inquery' &&
+                widget.type != 'admin-rate' &&
+                widget.type != 'anonymous-inquery') ...[
               ElevatedButton(
                 onPressed: () {
                   // Perform action on button press (e.g., create branch)

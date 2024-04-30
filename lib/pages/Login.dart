@@ -208,7 +208,7 @@ class _LoginFormState extends State<LoginForm> {
               SizedBox(
                 width: 100.0,
                 child: Text(
-                  widget.userType == 'customer' ? 'E-mail: ' : 'Username: ',
+                  'Username: ',
                   style: TextStyle(fontSize: 12.0), // Decrease font size
                 ),
               ),

@@ -1011,7 +1011,7 @@ class _LoginFormState extends State<LoginForm> {
         "hightController": hightController,
         "lengthController": lengthController,
         "userId": widget.userId,
-        "sms": _isChecked
+        "sms": _isChecked.toString()
       };
 
       // Encode the data as JSON
