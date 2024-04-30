@@ -886,7 +886,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
             ],
             if (statusTo == 'DELIVERED') ...[
               SizedBox(height: 1.0),
-              Text('Add Evidence'),
+              Text('Here, you can upload the evidence to prove that the item was delivered successfully.'),
               SizedBox(height: 10.0),
               FloatingActionButton(
                 onPressed: _getImage,

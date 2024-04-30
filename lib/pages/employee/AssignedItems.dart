@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/components/JobDetails.dart';
 import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/AdminUpdatePage.dart';
@@ -67,11 +68,12 @@ class _UpdateAdminState extends State<AssignedItems> {
                     //     builder: (context) => JobDetailsPage(userData: user),
                     // ));
                   },
-                  child: Text((type == 'postOfficer-rate' || type == 'postman-rate')? 'Rate' : 'Edit Job'),
+                  child: Text((type == 'postOfficer-rate' || type == 'postman-rate')? 'Rate' : 'View'),
                 ),
               ),
             );
           }),
+      bottomNavigationBar: BottomNaviatiobBar(type: type == 'postOfficer-rate'? 'post-officer' : 'postman', userId: userId),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: fetchUsers,
       // ),

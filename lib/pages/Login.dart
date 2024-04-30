@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
                   ? const Text('Admin Login Page')
                   : widget.userType == "customer"
                       ? const Text('Customer Login Page')
-                      : const Text('Employee Page'),
+                      : const Text('Staff Page'),
           backgroundColor: Colors.red, // Change app bar color to red
         ),
         body: Stack(

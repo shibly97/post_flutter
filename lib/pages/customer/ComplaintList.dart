@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/components/ComplaintDetails.dart';
 import 'package:flutter_p/components/JobDetails.dart';
 import 'package:flutter_p/components/SnackBar.dart';
@@ -100,6 +101,7 @@ class _UpdateAdminState extends State<ComplaintList> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: fetchUsers,
       // ),
