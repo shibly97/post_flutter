@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_p/pages/customer/OTP.dart';
 import 'package:http/http.dart' as http;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ReportGenaration extends StatelessWidget {
   final String userId;
@@ -40,11 +43,11 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool isLoading = false;
 
-  final TextEditingController _ticketId = TextEditingController();
-  final TextEditingController _description = TextEditingController();
-  final TextEditingController _date = TextEditingController();
-  final TextEditingController _comment = TextEditingController();
-  final TextEditingController _time = TextEditingController();
+  // final TextEditingController _ticketId = TextEditingController();
+  // final TextEditingController _description = TextEditingController();
+  // final TextEditingController _date = TextEditingController();
+  // final TextEditingController _comment = TextEditingController();
+  // final TextEditingController _time = TextEditingController();
   // final TextEditingController _reAddressController = TextEditingController();
   // final TextEditingController _reContactNumberController =
   //     TextEditingController();
@@ -56,6 +59,8 @@ class _LoginFormState extends State<LoginForm> {
   // final TextEditingController _hightController = TextEditingController();
   // final TextEditingController _widthController = TextEditingController();
   // final TextEditingController _lengthController = TextEditingController();
+  final TextEditingController fromDate = TextEditingController();
+  final TextEditingController toDate = TextEditingController();
   String? nature;
   bool _isChecked = false;
 
@@ -69,33 +74,6 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(height: 20.0),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     SizedBox(
-          //       width: 120.0,
-          //       child: Text(
-          //         'Ticket / Reference Id:',
-          //         style: TextStyle(fontSize: 12.0), // Decrease font size
-          //       ),
-          //     ),
-          //     SizedBox(width: 10.0),
-          //     Expanded(
-          //       child: SizedBox(
-          //         height: 30.0,
-          //         child: TextField(
-          //           // enabled: false,
-          //           controller: _ticketId,
-          //           decoration: InputDecoration(
-          //             contentPadding: EdgeInsets.all(8.0),
-          //             // hintText: 'Staff ID',
-          //             border: OutlineInputBorder(),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
           SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -114,16 +92,16 @@ class _LoginFormState extends State<LoginForm> {
                     child: DropdownButtonFormField(
                       items: const [
                         DropdownMenuItem(
-                          value: 'pending_items',
+                          value: 'PENDING',
                           child: Text('Pending Item'),
                         ),
                         DropdownMenuItem(
-                          value: 'delivered',
+                          value: 'DELIVERED',
                           child: Text('Delivered Item'),
                         ),
                         DropdownMenuItem(
-                          value: 'canceled',
-                          child: Text('Canceled'),
+                          value: 'RECEIVER_NOT_FOUNT',
+                          child: Text('Receiver not found Items'),
                         ),
                       ],
                       onChanged: (value) {
@@ -139,59 +117,6 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           SizedBox(height: 10.0),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     SizedBox(
-          //       width: 120.0,
-          //       child: Text(
-          //         'Description:',
-          //         style: TextStyle(fontSize: 12.0), // Decrease font size
-          //       ),
-          //     ),
-          //     SizedBox(width: 10.0),
-          //     Expanded(
-          //       child: SizedBox(
-          //         height: 30.0,
-          //         child: TextField(
-          //           controller: _description,
-          //           decoration: InputDecoration(
-          //             contentPadding: EdgeInsets.all(8.0),
-          //             // hintText: 'Enter first name',
-          //             border: OutlineInputBorder(),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(height: 10.0),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: <Widget>[
-          //     SizedBox(
-          //       width: 120.0,
-          //       child: Text(
-          //         'Additional Comments:',
-          //         style: TextStyle(fontSize: 12.0), // Decrease font size
-          //       ),
-          //     ),
-          //     SizedBox(width: 10.0),
-          //     Expanded(
-          //       child: SizedBox(
-          //         height: 30.0,
-          //         child: TextField(
-          //           controller: _comment,
-          //           decoration: InputDecoration(
-          //             contentPadding: EdgeInsets.all(8.0),
-          //             // hintText: 'Enter last name',
-          //             border: OutlineInputBorder(),
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
           SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -222,14 +147,14 @@ class _LoginFormState extends State<LoginForm> {
                         lastDate: DateTime(2100),
                       );
                     },
-                    controller: _date,
+                    controller: fromDate,
                   ),
                 ),
               ),
             ],
           ),
           SizedBox(height: 10.0),
-                   Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
@@ -258,7 +183,7 @@ class _LoginFormState extends State<LoginForm> {
                         lastDate: DateTime(2100),
                       );
                     },
-                    controller: _date,
+                    controller: toDate,
                   ),
                 ),
               ),
@@ -268,8 +193,7 @@ class _LoginFormState extends State<LoginForm> {
           ElevatedButton(
             onPressed: () {
               // print('Username: $selectedBranch, Password: $nic');
-              _fetchUsers(
-                  _time.text, _comment.text, _date.text, _description.text, _ticketId.text, nature);
+              _fetchUsers(nature, fromDate.text, toDate.text);
             },
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.white,
@@ -283,7 +207,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void _fetchUsers(time, comment, date, description, ticketId, nature) async {
+  void _fetchUsers(nature, fromDate, toDate) async {
     try {
       setState(() {
         isLoading = true;
@@ -292,12 +216,9 @@ class _LoginFormState extends State<LoginForm> {
 
       // Create a Map to hold the username and password
       Map<String, String> data = {
-        "time": time,
-        "comment": comment,
-        "date": date,
-        "description": description,
-        "ticketId": ticketId,
-        "nature": nature,
+        "status": nature,
+        "fromDate": fromDate,
+        "toDate": toDate,
         "userId": widget.userId
       };
 
@@ -306,7 +227,7 @@ class _LoginFormState extends State<LoginForm> {
 
       // Make the POST request with the username and password in the body
       final response = await http.post(
-        Uri.parse(createComplaint),
+        Uri.parse(genarateReport),
         headers: {
           "Content-Type": "application/json"
         }, // Set headers for JSON data
@@ -325,10 +246,38 @@ class _LoginFormState extends State<LoginForm> {
         // Access the 'success' variable from the parsed JSON
         bool success = responseBody['success'];
         String message = responseBody['message'];
+        List<dynamic> data = responseBody['data'];
 
         if (success) {
-          final String jobId = responseBody['id'];
+          // final String jobId = responseBody['id'];
           final snackBar = Message(message: message, type: "success");
+
+          final excel = Excel.createExcel();
+          final sheet = excel['Sheet1'];
+
+          // Add data to Excel sheet
+          for (int row = 0; row < data.length; row++) {
+            for (int col = 0; col < data[row].length; col++) {
+              sheet
+                  .cell(CellIndex.indexByColumnRow(
+                      rowIndex: row, columnIndex: col))
+                  .value = data[row][col];
+            }
+          }
+
+          final Directory directory =
+              await getExternalStorageDirectory() ?? Directory('default_path');
+          final String path = '${directory.path}/data.xlsx';
+          final File file = File(path);
+          // await file.writeAsBytes(excel.encode());
+          final List<int>? excelBytes = excel.encode();
+          if (excelBytes != null) {
+             print('ErAuccessror: Excel data encoded.');
+            await file.writeAsBytes(excelBytes);
+          } else {
+            // Handle the case where excel.encode() returns null
+            print('Error: Excel data could not be encoded.');
+          }
 
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
@@ -336,10 +285,10 @@ class _LoginFormState extends State<LoginForm> {
 
           // await Future.delayed(Duration(seconds: 1));
 
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return ComplaintList(userId: widget.userId, type: 'customer',);
-          }));
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (BuildContext context) {
+          //   return ComplaintList(userId: widget.userId, type: 'customer',);
+          // }));
         } else {
           final snackBar = Message(message: message, type: "error");
 

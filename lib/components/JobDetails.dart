@@ -321,7 +321,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                   SizedBox(
                     width: 120.0,
                     child: Text(
-                      'Reciver Name:',
+                      'Receiver Name:',
                       style: TextStyle(fontSize: 12.0), // Decrease font size
                     ),
                   ),
@@ -349,7 +349,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                   SizedBox(
                     width: 120.0,
                     child: Text(
-                      'Reciver Address:',
+                      'Reciever Address:',
                       style: TextStyle(fontSize: 12.0), // Decrease font size
                     ),
                   ),
@@ -377,7 +377,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                   SizedBox(
                     width: 120.0,
                     child: Text(
-                      'Reciver Contact:',
+                      'Reciever Contact:',
                       style: TextStyle(fontSize: 12.0), // Decrease font size
                     ),
                   ),
@@ -594,8 +594,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                                 child: Text('Delivered'),
                               ),
                               DropdownMenuItem(
-                                value: 'RECEIVER_NOT_FOUNT',
-                                child: Text('Reciver Not Found'),
+                                value: '  ',
+                                child: Text('Reciever Not Found'),
                               ),
                             ],
                             onChanged: (value) {

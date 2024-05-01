@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/components/SnackBar.dart';
+import 'package:flutter_p/pages/Login.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:flutter_p/pages/customer/CustomerCreation.dart';
 import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
@@ -16,19 +17,19 @@ import 'package:http/http.dart' as http;
 //   runApp(Login());
 // }
 
-class OTP extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   final String userId;
 
-  const OTP({
+  const ResetPassword({
     Key? key,
     required this.userId,  
   }) : super(key: key);
 
   @override
-  State<OTP> createState() => _LoginState();
+  State<ResetPassword> createState() => _LoginState();
 }
 
-class _LoginState extends State<OTP> {
+class _LoginState extends State<ResetPassword> {
   bool isLoading = false; // Add a boolean to track loading state
 
   // void toggleLoading() {
@@ -40,7 +41,7 @@ class _LoginState extends State<OTP> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'OTP Page',
+      title: 'Reset Password',
       home: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -50,7 +51,7 @@ class _LoginState extends State<OTP> {
                   context); // This will pop the current route and go back to the previous route
             },
           ),
-          title: Text('OTP'),
+          title: Text('Reset Password'),
           backgroundColor: Colors.red, // Change app bar color to red
         ),
         body: Stack(
@@ -154,6 +155,33 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
         SizedBox(height: 10.0),
+         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            SizedBox(
+              width: 120.0,
+              child: Text(
+                'New Password',
+                style: TextStyle(fontSize: 12.0), // Decrease font size
+              ),
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: SizedBox(
+                height: 30.0,
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(8.0),
+                    hintText: '',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
        
         SizedBox(height: 20.0),
         ElevatedButton(
@@ -162,7 +190,8 @@ class _LoginFormState extends State<LoginForm> {
             String otp = _usernameController.text;
             // }));
             _fetchUsers(
-              otp
+              otp,
+              _passwordController.text
             );
           },
           style: ElevatedButton.styleFrom(
@@ -177,7 +206,7 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 
-  void _fetchUsers(username) async {
+  void _fetchUsers(otp, password) async {
     try {
       widget.toggleLoading();
       print('fetching users');
@@ -185,7 +214,8 @@ class _LoginFormState extends State<LoginForm> {
 
       // Create a Map to hold the username and password
       Map<String, String> data = {
-        'otp': username,
+        'otp': otp,
+        'password': password,
         "id": widget.userId
       };
 
@@ -194,7 +224,7 @@ class _LoginFormState extends State<LoginForm> {
 
       // Make the POST request with the username and password in the body
       final response = await http.post(
-        Uri.parse(checkOTP),
+        Uri.parse(resetPassword),
         headers: {
           "Content-Type": "application/json"
         }, // Set headers for JSON data
@@ -234,7 +264,7 @@ class _LoginFormState extends State<LoginForm> {
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return CustomerDashboard(userId: widget.userId);
+            return Login(userType: 'customer');
           }));
         }
 

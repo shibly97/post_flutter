@@ -11,6 +11,7 @@ import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:flutter_p/pages/admin/AdminDashboard.dart';
 import 'package:flutter_p/pages/customer/CustomerCreation.dart';
 import 'package:flutter_p/pages/customer/CustomerDashboard.dart';
+import 'package:flutter_p/pages/customer/RestPassword.dart';
 import 'package:flutter_p/pages/employee/PostOfficerDashboard.dart';
 import 'package:flutter_p/pages/employee/PostmanDashboard.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +57,7 @@ class _LoginState extends State<Login> {
           title: widget.userType == "superAdmin"
               ? const Text('Super Admin Login Page')
               : widget.userType == "admin"
-                  ? const Text('Postal Master Login Page')
+                  ? const Text('Postmaster Login Page')
                   : widget.userType == "customer"
                       ? const Text('Customer Login Page')
                       : const Text('Staff Page'),
@@ -305,6 +306,18 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                 ),
+                TextButton(
+                  onPressed: () {
+                   _resetPassword( _usernameController.text);
+                  },
+                  child: Text(
+                    'Reset Password',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.blue, // Set button text color to blue
+                    ),
+                  ),
+                ),
               ],
             )
           ],
@@ -383,6 +396,80 @@ class _LoginFormState extends State<LoginForm> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return navigateTo;
+          }));
+        }
+        // Now you can use the 'success' variable
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+
+      // Handle the response here
+      widget.toggleLoading();
+    } catch (err) {
+      print(err);
+    }
+  }
+
+   void _resetPassword(username) async {
+    try {
+      widget.toggleLoading();
+      print('fetching users');
+
+      // Create a Map to hold the username and password
+      Map<String, String> data = {
+        'username': username,
+      };
+
+      // Encode the data as JSON
+      String body = json.encode(data);
+
+      // Make the POST request with the username and password in the body
+      final response = await http.post(
+        Uri.parse(otpForPassword),
+        headers: {
+          "Content-Type": "application/json"
+        }, // Set headers for JSON data
+        body: body,
+      );
+
+      print(response.body);
+
+      final responseBody = response.body;
+
+      // Check if the response status code is successful
+      if (response.statusCode == 200) {
+        // Parse the response body as JSON
+        Map<String, dynamic> responseBody = json.decode(response.body);
+
+        // Access the 'success' variable from the parsed JSON
+        bool success = responseBody['success'];
+        String messsage = responseBody['message'];
+
+        print(messsage);
+
+        if (!success) {
+          final snackBar = Message(
+              message: messsage, type: "error");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+        } else {
+          String userId = responseBody['id'];
+
+          final snackBar =
+              Message(message: messsage , type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+
+          await Future.delayed(Duration(seconds: 1));
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return ResetPassword(userId: userId);
           }));
         }
         // Now you can use the 'success' variable

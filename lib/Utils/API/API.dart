@@ -10,6 +10,9 @@ const String login = '$baseUrl/api/auth/login';
 const String allBranches = '$baseUrl/api/users/get/allBranches';
 const String createEmployee = '$baseUrl/api/users/add/employee';
 
+const String otpForPassword = '$baseUrl/api/users/add/otpForPassword';
+const String resetPassword = '$baseUrl/api/users/add/resetPassword';
+
 const String createCustomer = '$baseUrl/api/users/add/customer';
 const String checkOTP = '$baseUrl/api/users/add/checkOTP';
 
@@ -40,3 +43,5 @@ const String getComplaintById = '$baseUrl/api/job/get/complaintDetails';
 const String customerNotifications = '$baseUrl/api/job/get/allUnReadNotification';
 const String markAsReadNotifications = '$baseUrl/api/job/update/markAsReadNotifications';
 // const String createJob = '$baseUrl/api/job/details';
+
+const String genarateReport   = '$baseUrl/api/job/create/genarateReport';
