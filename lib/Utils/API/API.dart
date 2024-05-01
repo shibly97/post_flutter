@@ -36,4 +36,7 @@ const String  getComplaintByAdmin = '$baseUrl/api/job/get/complaintByAdmin';
 const String createComplaint   = '$baseUrl/api/job/create/createCOmplaint';
 const String updateComplaint   = '$baseUrl/api/job/update/complaint';
 const String getComplaintById = '$baseUrl/api/job/get/complaintDetails';
+
+const String customerNotifications = '$baseUrl/api/job/get/allUnReadNotification';
+const String markAsReadNotifications = '$baseUrl/api/job/update/markAsReadNotifications';
 // const String createJob = '$baseUrl/api/job/details';

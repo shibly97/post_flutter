@@ -108,7 +108,7 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Admin',
+              title: 'Postal Master',
               icon: Icons.person,
               imagePath: 'images/admin.png',
               onPressed: () {

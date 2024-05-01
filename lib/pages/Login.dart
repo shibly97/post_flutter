@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
           title: widget.userType == "superAdmin"
               ? const Text('Super Admin Login Page')
               : widget.userType == "admin"
-                  ? const Text('Admin Login Page')
+                  ? const Text('Postal Master Login Page')
                   : widget.userType == "customer"
                       ? const Text('Customer Login Page')
                       : const Text('Staff Page'),
@@ -172,7 +172,7 @@ class _LoginFormState extends State<LoginForm> {
                         items: const [
                           DropdownMenuItem(
                             value: 'postOfficer',
-                            child: Text('Post Officer'),
+                            child: Text('Postal Service Officer'),
                           ),
                           DropdownMenuItem(
                             value: 'postman',

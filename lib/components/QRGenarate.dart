@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class GenerateQR extends StatefulWidget {
-  const GenerateQR({super.key});
+   final String userId;
+  const GenerateQR({super.key, required this.userId});
 
   @override
   State<GenerateQR> createState() => _GenerateQRState();
 }
 
 class _GenerateQRState extends State<GenerateQR> {
+   late String userId;
   TextEditingController urlController = TextEditingController();
   late String QRString = ''; // Initialize QRString with an empty string
+  
+    @override
+  void initState() {
+    super.initState();
+    userId = widget.userId;// Call the function to fetch admins when the widget initializes
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +61,7 @@ class _GenerateQRState extends State<GenerateQR> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId),
     );
   }
 }

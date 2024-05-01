@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_p/Utils/API/API.dart';
+import 'package:flutter_p/components/BottomNavigationBar.dart';
 import 'package:flutter_p/components/JobDetails.dart';
 import 'package:flutter_p/components/SnackBar.dart';
 import 'package:http/http.dart' as http;
@@ -97,6 +98,8 @@ class _ScanQRCodeState extends State<ScanQRCode> {
           ],
         ),
       ),
+       bottomNavigationBar:
+          BottomNaviatiobBar(type: widget.type == 'post-officer' ? 'postman' : '', userId: widget.userId),
       // body: MobileScanner(
       //   onDetect: (capture) {},
       // ),

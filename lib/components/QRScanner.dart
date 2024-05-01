@@ -33,10 +33,10 @@ class _QRScannerState extends State<QRScanner> {
             SizedBox(height: 48),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return GenerateQR();
-                }));
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(builder: (BuildContext context) {
+                //   return GenerateQR();
+                // }));
               },
               child: Text('Generate QR Code'),
             )
