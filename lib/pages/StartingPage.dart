@@ -92,6 +92,33 @@ class DashboardCards extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Column(children: [
+          SizedBox(
+              width: 250.0,
+              height: 30,
+              child: Text(
+                'Welcome to TrackEaseSL!',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w800), // Decrease font size
+              ),
+            ),
+              SizedBox(
+            width: 250.0,
+            height: 100.0,
+            child: Center(
+              child: Text(
+                'Sri Lankan Registered Postal Service',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+
+        ],),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -108,7 +135,7 @@ class DashboardCards extends StatelessWidget {
               },
             ),
             DashboardCard(
-              title: 'Postal Master',
+              title: 'PostMaster',
               icon: Icons.person,
               imagePath: 'images/admin.png',
               onPressed: () {

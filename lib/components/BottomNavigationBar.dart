@@ -182,7 +182,7 @@ class _BottomNaviatiobBarState extends State<BottomNaviatiobBar> {
             break;
           // Add cases for more items if needed
           case 2:
-            if (notificationCount > 0) {
+            if (widget.type == 'customer') {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
                 return NotificationPage(

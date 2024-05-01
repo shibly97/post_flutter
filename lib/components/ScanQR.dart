@@ -99,7 +99,7 @@ class _ScanQRCodeState extends State<ScanQRCode> {
         ),
       ),
        bottomNavigationBar:
-          BottomNaviatiobBar(type: widget.type == 'post-officer' ? 'postman' : '', userId: widget.userId),
+          BottomNaviatiobBar(type: widget.type == 'post-officer' ? 'post-officer' : 'postman', userId: widget.userId),
       // body: MobileScanner(
       //   onDetect: (capture) {},
       // ),

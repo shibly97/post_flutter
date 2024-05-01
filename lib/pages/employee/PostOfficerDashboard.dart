@@ -19,7 +19,7 @@ class PostOfficerDashboard extends StatelessWidget {
       title: 'PostOfficerDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Post Officer Dashboard'),
+            title: const Text('Postal Service Officer Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),

@@ -20,7 +20,7 @@ class AdminDashboard extends StatelessWidget {
       title: 'AdminDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Admin Dashboard'),
+            title: const Text('Postmaster Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),

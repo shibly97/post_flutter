@@ -19,7 +19,7 @@ class AdminUserDashboard extends StatelessWidget {
       title: 'AdminUserDashboard',
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Admin User Dashboard'),
+            title: const Text('Postmaster User Dashboard'),
             backgroundColor: Colors.red,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -78,6 +78,7 @@ class DashboardCards extends StatelessWidget {
             DashboardCard(
               title: 'Create Users',
               icon: Icons.add_location,
+               imagePath: 'images/add-user.png',
               onPressed: () {
                  Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -89,6 +90,7 @@ class DashboardCards extends StatelessWidget {
             DashboardCard(
               title: 'Edit Users',
               icon: Icons.update,
+               imagePath: 'images/edit-info.png',
               onPressed: () {
                 // Action to perform when Update Branches card is pressed
                  Navigator.of(context)
@@ -108,12 +110,14 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onPressed;
+   final String imagePath;
 
   const DashboardCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onPressed,
+    required this.imagePath,
   });
 
   @override
@@ -129,9 +133,10 @@ class DashboardCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 40.0,
+              Image.asset(
+                imagePath,
+                width: 80.0,
+                height: 80.0,
               ),
               SizedBox(height: 10.0),
               Text(

@@ -72,6 +72,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
   late TextEditingController _currStatus = TextEditingController();
   late TextEditingController _descriptionController = TextEditingController();
   late TextEditingController _rateController = TextEditingController();
+  late TextEditingController _evidence_des = TextEditingController();
 
   String? statusTo;
   String? dispatchBranch;
@@ -886,7 +887,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
             ],
             if (statusTo == 'DELIVERED') ...[
               SizedBox(height: 1.0),
-              Text('Here, you can upload the evidence to prove that the item was delivered successfully.'),
+              Text(
+                  'Here, you can upload the evidence to prove that the item was delivered successfully.'),
               SizedBox(height: 10.0),
               FloatingActionButton(
                 onPressed: _getImage,
@@ -895,12 +897,41 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               ),
               SizedBox(height: 5.0),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 40.0),// Adjust the padding as needed
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40.0), // Adjust the padding as needed
                 child: Center(
                   child: _image == null
                       ? Text('No image selected.')
                       : Image.file(_image!),
                 ),
+              ),
+               SizedBox(height: 8.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      'Evidence Description:',
+                      style: TextStyle(fontSize: 12.0), // Decrease font size
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Expanded(
+                    child: SizedBox(
+                      height: 30.0,
+                      child: TextField(
+                        // enabled: widget.type == 'customer-edit' ? true : false,
+                        controller: _evidence_des,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8.0),
+                          // hintText: 'Enter contact number',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
             SizedBox(height: 20.0),
@@ -913,8 +944,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                   if (widget.type == 'customer-edit') {
                     _updateUsers(
                         _senderName.text,
-                        _senderAddressController.text,
                         _senderContactNumberController.text,
+                        _senderAddressController.text,
                         _senderEmailController.text,
                         _reName.text,
                         _reAddressController.text,
@@ -924,7 +955,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                         _instructionController.text,
                         _weightController.text,
                         widget.data['id'],
-                        _currStatus.text);
+                        _currStatus.text,
+                        _evidence_des.text);
                   } else if (widget.type == 'pending') {
                     print(widget.data);
                     _approvePending(widget.data['job'], 'approve');
@@ -985,7 +1017,9 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       instructionController,
       weightController,
       id,
-      currentStatus) async {
+      currentStatus,
+      ev_des
+      ) async {
     try {
       setState(() {
         isLoading = true;
@@ -1007,7 +1041,8 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
         "weightController": weightController,
         "userId": widget.userId,
         "id": id,
-        "currentStatus": currentStatus
+        "currentStatus": currentStatus,
+        "ev_des": ev_des
       };
 
       // Encode the data as JSON

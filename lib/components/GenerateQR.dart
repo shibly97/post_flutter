@@ -90,20 +90,13 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           const SizedBox(height: 20), // Add some space between QR code and text
           const Text('Download for Future References'),
           const SizedBox(height: 20),
-          ElevatedButton(
-              onPressed: () {
-                print('clicked');
-                captuAndSave();
-              },
-              child: Text('Capture and Download')),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return CustomerDashboard(userId: widget.userId);
-                }));
-              },
-              child: Text('To Dashboard')),
+          // ElevatedButton(
+          //     onPressed: () {
+          //       print('clicked');
+          //       captuAndSave();
+          //     },
+          //     child: Text('Capture and Download')),
+
           ElevatedButton(
             onPressed: () async {
               // Call the function to share the image with WhatsApp
@@ -144,8 +137,16 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                 print('Failed to capture screenshot.');
               }
             },
-            child: Text('Share'),
+            child: Text('Download and Share'),
           ),
+                    ElevatedButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return CustomerDashboard(userId: widget.userId);
+                }));
+              },
+              child: Text('To Dashboard')),
         ],
       ),
       bottomNavigationBar:
