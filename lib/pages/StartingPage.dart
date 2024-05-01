@@ -93,6 +93,12 @@ class DashboardCards extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(children: [
+          Image.asset(
+            'images/post.jpg', // Replace 'image_name.png' with the path to your local asset
+            width: 200, // Set the width of the image
+            height: 100, // Set the height of the image
+          ),
+           SizedBox(height: 30.0),
           SizedBox(
               width: 250.0,
               height: 30,

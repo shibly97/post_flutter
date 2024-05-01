@@ -219,7 +219,7 @@ class _LoginFormState extends State<LoginForm> {
               SizedBox(width: 10.0),
               Expanded(
                 child: SizedBox(
-                  height: 30.0,
+                  // height: 30.0,
                   child: TextField(
                     controller: _emailController,
                     decoration: InputDecoration(

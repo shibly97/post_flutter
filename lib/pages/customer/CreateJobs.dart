@@ -115,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: SizedBox(
-                      height: 30.0,
+                      // height: 30.0,
                       child: TextField(
                         controller: _senderAddressController,
                         decoration: InputDecoration(
@@ -169,8 +169,10 @@ class _LoginFormState extends State<LoginForm> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: SizedBox(
-                      height: 30.0,
+                      // height: 30.0,
                       child: TextField(
+                          maxLines:
+                    null,
                         controller: _senderEmailController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(8.0),
@@ -356,7 +358,7 @@ class _LoginFormState extends State<LoginForm> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: SizedBox(
-                      height: 30.0,
+                      // height: 30.0,
                       child: TextField(
                         controller: _reAddressController,
                         decoration: InputDecoration(
@@ -410,7 +412,7 @@ class _LoginFormState extends State<LoginForm> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: SizedBox(
-                      height: 30.0,
+                      // height: 30.0,
                       child: TextField(
                         controller: _reEmailController,
                         decoration: InputDecoration(

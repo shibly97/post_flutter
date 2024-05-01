@@ -496,7 +496,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: SizedBox(
-                      height: 30.0,
+                      // height: 30.0,
                       child: TextField(
                         enabled: widget.type == 'customer-edit' ? true : false,
                         controller: _senderEmailController,

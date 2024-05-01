@@ -232,7 +232,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
               SizedBox(width: 10.0),
               Expanded(
                 child: SizedBox(
-                  height: 30.0,
+                  // height: 30.0,
                   child: TextField(
                     controller: _addressController,
                     decoration: InputDecoration(

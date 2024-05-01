@@ -14,6 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ReportGenaration extends StatelessWidget {
   final String userId;
@@ -216,7 +217,7 @@ class _LoginFormState extends State<LoginForm> {
 
       // Create a Map to hold the username and password
       Map<String, String> data = {
-        "status": nature,
+        "status": nature?? '',
         "fromDate": fromDate,
         "toDate": toDate,
         "userId": widget.userId
@@ -252,36 +253,140 @@ class _LoginFormState extends State<LoginForm> {
           // final String jobId = responseBody['id'];
           final snackBar = Message(message: message, type: "success");
 
-          final excel = Excel.createExcel();
-          final sheet = excel['Sheet1'];
+          // automatically creates 1 empty sheet: Sheet1
+          var excel = Excel.createExcel();
+          Sheet sheetObject = excel['Report'];
 
-          // Add data to Excel sheet
+          CellStyle cellStyle = CellStyle(
+              backgroundColorHex: ExcelColor.blue900,
+              fontFamily: getFontFamily(FontFamily.Calibri));
+
+          // var cell = sheetObject.cell(CellIndex.indexByString('A1'));
+          // cell.value = TextCellValue('Damn Text zz');
+          // var cell1 = sheetObject.cell(CellIndex.indexByString('A2'));
+          // cell1.value = TextCellValue('Damn Text x');
+          // var cell2 = sheetObject.cell(CellIndex.indexByString('A3'));
+          // cell2.value = TextCellValue('Damn Text 3');
+          // var cell3 = sheetObject.cell(CellIndex.indexByString('A4'));
+          // cell3.value = TextCellValue('Damn Text 5');
+
+            List<CellValue> dataList = [
+                TextCellValue('Sender Name'),
+                TextCellValue('Sender Address'),
+                TextCellValue('Sender Contact'),
+                TextCellValue('Sender Email'),
+                TextCellValue('Receiver Name'),
+                TextCellValue('Receiver address'),
+                TextCellValue('Receiver contact'),
+                TextCellValue('Receiver email'),
+                TextCellValue('description'),
+                TextCellValue('instruction'),
+                TextCellValue('weight'),
+                TextCellValue('height'),
+                TextCellValue('length'),
+                TextCellValue('Status'),
+                TextCellValue('Customer Id'),
+                TextCellValue('Current Branch'),
+            ];
+
+            sheetObject.insertRowIterables(dataList, 0);
+
           for (int row = 0; row < data.length; row++) {
-            for (int col = 0; col < data[row].length; col++) {
-              sheet
-                  .cell(CellIndex.indexByColumnRow(
-                      rowIndex: row, columnIndex: col))
-                  .value = data[row][col];
-            }
+            Map<String, dynamic> rowData = data[row];
+             List<CellValue> dataList = [
+                TextCellValue(rowData['sender_name']),
+                TextCellValue(rowData['sender_address']),
+                TextCellValue(rowData['sender_contact']),
+                TextCellValue(rowData['sender_email']),
+                TextCellValue(rowData['re_name']),
+                TextCellValue(rowData['re_address']),
+                TextCellValue(rowData['re_contact']),
+                TextCellValue(rowData['re_email']),
+                TextCellValue(rowData['description']),
+                TextCellValue(rowData['instruction']),
+                TextCellValue(rowData['weight']),
+                TextCellValue(rowData['height']),
+                TextCellValue(rowData['length']),
+                TextCellValue(rowData['status']),
+                TextCellValue(rowData['customer'].toString()),
+                TextCellValue(rowData['current_branch'].toString())
+            ];
+
+            sheetObject.insertRowIterables(dataList, row + 1);
+            // for (int col = 0; col < data[row].length; col++) {
+            //   sheetObject
+            //       .cell(CellIndex.indexByColumnRow(
+            //           rowIndex: row, columnIndex: col))
+            //       .value = data[row][col];
+            // }
           }
 
-          final Directory directory =
-              await getExternalStorageDirectory() ?? Directory('default_path');
-          final String path = '${directory.path}/data.xlsx';
-          final File file = File(path);
-          // await file.writeAsBytes(excel.encode());
-          final List<int>? excelBytes = excel.encode();
+          // List<CellValue> dataList = [
+          //   TextCellValue('Google'),
+          //   TextCellValue('loves'),
+          //   TextCellValue('Flutter'),
+          //   TextCellValue('and'),
+          //   TextCellValue('Flutter'),
+          //   TextCellValue('loves'),
+          //   TextCellValue('Excel')
+          // ];
+
+          // sheetObject.insertRowIterables(dataList, 1);
+
+          
+
+          // excel.save();
+          // final List<int>? excelBytes = excel.encode();
+          var excelBytes = excel.save();
+
           if (excelBytes != null) {
-             print('ErAuccessror: Excel data encoded.');
+            // Save Excel file to device's temporary directory
+            // final Directory tempDir = await getTemporaryDirectory();
+            var directory = await getApplicationDocumentsDirectory();
+            final String path = '${directory.path}/report.xlsx';
+            final File file = File(path);
+
+            // Write Excel bytes to file
             await file.writeAsBytes(excelBytes);
+
+            //           File(join('$directory/output_file_name.xlsx'))
+            // ..createSync(recursive: true)
+            // ..writeAsBytesSync(fileBytes)
+
+            // Share the Excel file
+            await Share.shareXFiles([XFile(path)], text: 'Sharing Excel File');
           } else {
-            // Handle the case where excel.encode() returns null
-            print('Error: Excel data could not be encoded.');
+            // Handle the case where excelBytes is null
+            throw Exception('Failed to encode Excel data');
           }
 
-          ScaffoldMessenger.of(context)
-            ..removeCurrentSnackBar()
-            ..showSnackBar(snackBar);
+          // // Add data to Excel sheet
+          // for (int row = 0; row < data.length; row++) {
+          //   for (int col = 0; col < data[row].length; col++) {
+          //     sheet
+          //         .cell(CellIndex.indexByColumnRow(
+          //             rowIndex: row, columnIndex: col))
+          //         .value = data[row][col];
+          //   }
+          // }
+
+          // final Directory directory =
+          //     await getExternalStorageDirectory() ?? Directory('default_path');
+          // final String path = '${directory.path}/data.xlsx';
+          // final File file = File(path);
+          // // await file.writeAsBytes(excel.encode());
+          // final List<int>? excelBytes = excel.encode();
+          // if (excelBytes != null) {
+          //    print('Error: Excel data could not be encoded.');
+          //   await file.writeAsBytes(excelBytes);
+          // } else {
+          //   // Handle the case where excel.encode() returns null
+          //   print('Error: Excel data could not be encoded.');
+          // }
+
+          // ScaffoldMessenger.of(context)
+          //   ..removeCurrentSnackBar()
+          //   ..showSnackBar(snackBar);
 
           // await Future.delayed(Duration(seconds: 1));
 
