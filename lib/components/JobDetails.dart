@@ -649,6 +649,10 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                                 value: 'ASSIGNED_TO_POSTMAN',
                                 child: Text('Assign To Postman'),
                               ),
+                              DropdownMenuItem(
+                                value: 'DIRECT_COLLECTION',
+                                child: Text('Direct Collection'),
+                              ),
                             ],
                             onChanged: (value) {
                               setState(() {
@@ -885,7 +889,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
                 ],
               ),
             ],
-            if (statusTo == 'DELIVERED') ...[
+            if (statusTo == 'DELIVERED' || statusTo == 'DIRECT_COLLECTION') ...[
               SizedBox(height: 1.0),
               Text(
                   'Here, you can upload the evidence to prove that the item was delivered successfully.'),
