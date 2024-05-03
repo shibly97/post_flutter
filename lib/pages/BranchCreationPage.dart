@@ -429,7 +429,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
 
-          await Future.delayed(Duration(seconds: 2));
+          await Future.delayed(Duration(seconds: 1));
 
           Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
