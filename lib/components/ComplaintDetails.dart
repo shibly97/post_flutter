@@ -24,7 +24,7 @@ class ComplaintDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Complaint'),
+        title: Text(type == "admin"? 'Update Complaint' : 'Create Complaint' ),
         backgroundColor: Colors.red,
       ),
       body: LoginForm(
