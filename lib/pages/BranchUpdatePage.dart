@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_p/Utils/API/API.dart';
 import 'package:flutter_p/components/BottomNavigationBar.dart';
+import 'package:flutter_p/components/SnackBar.dart';
 import 'package:flutter_p/pages/SuperAdminDashboard.dart';
 import 'package:http/http.dart' as http;
 
@@ -101,6 +102,7 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       // setState(() {
       // });
       print(widget.userData);
+      print(json['results']);
       setState(() {
         users = json['results'];
        selectedAdmin = widget.userData['admin'].toString();
@@ -273,50 +275,50 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
             ],
           ),
           SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 120.0,
-                child: Text(
-                  'Admin:',
-                  style: TextStyle(fontSize: 12.0), // Decrease font size
-                ),
-              ),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: SizedBox(
-                    height: 30.0,
-                    child: DropdownButtonFormField(
-                      value: selectedAdmin,
-                      items: users.map((admin) {
-                        return DropdownMenuItem(
-                          value: admin['id'],
-                          child: Text(admin['user_name']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        // print(value);
-                        setState(() {
-                          selectedAdmin = value as String?;
-                        });
-                      },
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          contentPadding: EdgeInsets.all(4)),
-                    )
-                    // TextField(
-                    //   controller: _branchController,
-                    //   decoration: InputDecoration(
-                    //     contentPadding: EdgeInsets.all(8.0),
-                    //     hintText: 'Enter branch',
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-                    ),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     SizedBox(
+          //       width: 120.0,
+          //       child: Text(
+          //         'Admin:',
+          //         style: TextStyle(fontSize: 12.0), // Decrease font size
+          //       ),
+          //     ),
+          //     SizedBox(width: 10.0),
+          //     Expanded(
+          //       child: SizedBox(
+          //           height: 30.0,
+          //           child: DropdownButtonFormField(
+          //             value: selectedAdmin,
+          //             items: users?.map((admin) {
+          //               return DropdownMenuItem(
+          //                 value: admin['id'],
+          //                 child: Text(admin['user_name']),
+          //               );
+          //             }).toList(),
+          //             onChanged: (value) {
+          //               // print(value);
+          //               setState(() {
+          //                 selectedAdmin = value as String?;
+          //               });
+          //             },
+          //             decoration: InputDecoration(
+          //                 border: OutlineInputBorder(),
+          //                 contentPadding: EdgeInsets.all(4)),
+          //           )
+          //           // TextField(
+          //           //   controller: _branchController,
+          //           //   decoration: InputDecoration(
+          //           //     contentPadding: EdgeInsets.all(8.0),
+          //           //     hintText: 'Enter branch',
+          //           //     border: OutlineInputBorder(),
+          //           //   ),
+          //           // ),
+          //           ),
+          //     ),
+          //   ],
+          // ),
           SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -492,61 +494,35 @@ class _BranchCreationFormState extends State<BranchCreationForm> {
       final responseBody = response.body;
 
       // Check if the response status code is successful
-      if (response.statusCode == 200) {
+            if (response.statusCode == 200) {
         // Parse the response body as JSON
         Map<String, dynamic> responseBody = json.decode(response.body);
 
         // Access the 'success' variable from the parsed JSON
         bool success = responseBody['success'];
+        String message = responseBody['message'];
 
-        // if(!success){
-        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-          SnackBar(
-            content: Container(
-              padding: EdgeInsets.all(16),
-              height: 90,
-              decoration: BoxDecoration(
-                  color: !success
-                      ? const Color.fromARGB(255, 147, 29, 20)
-                      : Color.fromARGB(255, 20, 147, 28),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Row(
-                children: [
-                  // const SizedBox(width: 48),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Error",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                        Text(success
-                            ? "Branch Created Successfully"
-                            : "Branch Creation Failed"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            behavior: SnackBarBehavior.floating,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-        );
         if (success) {
+          // final String jobId = responseBody['id'];
+          final snackBar = Message(message: message, type: "success");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
+
+          await Future.delayed(Duration(seconds: 2));
+
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return const SuperAdminDashboard();
-          }));
+                .push(MaterialPageRoute(builder: (BuildContext context) {
+              return const SuperAdminDashboard();
+            }));
+        } else {
+          final snackBar = Message(message: message, type: "error");
+
+          ScaffoldMessenger.of(context)
+            ..removeCurrentSnackBar()
+            ..showSnackBar(snackBar);
         }
-        // }else{
-        //     // Navigator.of(context)
-        //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
-        //     //     return const SuperAdminDashboard();
-        //     //   }));
-        // }
 
         // Now you can use the 'success' variable
         print('Success: $success');

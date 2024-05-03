@@ -1062,12 +1062,6 @@ class _LoginFormState extends State<LoginForm> {
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         }
-        // }else{
-        //     // Navigator.of(context)
-        //     //       .push(MaterialPageRoute(builder: (BuildContext context) {
-        //     //     return const SuperAdminDashboard();
-        //     //   }));
-        // }
 
         // Now you can use the 'success' variable
         print('Success: $success');
