@@ -36,7 +36,8 @@ class AdminDashboard extends StatelessWidget {
             child: DashboardCards(userId: userId),
           ),
           bottomNavigationBar:
-              BottomNaviatiobBar(type: 'admin', userId: userId)),
+              BottomNaviatiobBar(type: 'admin', userId: userId)
+          ),
     );
   }
 }
@@ -142,7 +143,9 @@ class DashboardCards extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return ReportGenaration(userId: userId,);
+                  return ReportGenaration(
+                    userId: userId,
+                  );
                 }));
                 // Action to perform when Create Branches card is pressed
               },
@@ -154,7 +157,10 @@ class DashboardCards extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return ComplaintList(userId: userId, type: 'admin',);
+                  return ComplaintList(
+                    userId: userId,
+                    type: 'admin',
+                  );
                 }));
                 // Action to perform when Create Branches card is pressed
               },

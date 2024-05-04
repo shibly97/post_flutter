@@ -28,7 +28,7 @@ class ReportGenaration extends StatelessWidget {
         backgroundColor: Colors.red,
       ),
       body: LoginForm(userId: userId),
-      bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId),
+      bottomNavigationBar: BottomNaviatiobBar(type: 'admin', userId: userId),
     );
   }
 }

@@ -101,7 +101,7 @@ class _UpdateAdminState extends State<ComplaintList> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNaviatiobBar(type: 'customer', userId: userId),
+      bottomNavigationBar: BottomNaviatiobBar(type : type == 'admin'? 'admin': 'customer', userId: userId),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: fetchUsers,
       // ),
